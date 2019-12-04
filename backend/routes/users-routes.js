@@ -1,5 +1,4 @@
 const express = require("express");
-const mongoose = require("mongoose");
 
 const router = express.Router();
 
@@ -23,6 +22,55 @@ router.get("/:uid", async (req, res, next) => {
   }
 
   res.json({ user: user.toObject({ getters: true }) });
+});
+
+// update user
+router.patch("/:uid", async (req, res, next) => {
+  const { name, age, description } = req.body;
+  const userId = req.params.uid;
+
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    const error = new HttpError("Could not update user", 500);
+    return next(error);
+  }
+
+  user.name = name;
+  user.age = age;
+  user.description = description;
+
+  try {
+    await user.save();
+  } catch (err) {
+    const error = new HttpError("User updade failed", 500);
+    return next(error);
+  }
+
+  res.status(200).json({ user: user.toObject({ getters: true }) });
+});
+
+// delete user
+router.delete("/:uid", async (req, res, next) => {
+  const userId = req.params.uid;
+
+  let user;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    const error = new HttpError("Could not delete user", 500);
+    return next(error);
+  }
+
+  try {
+    await user.remove();
+  } catch (err) {
+    const error = new HttpError("Delete user failed", 500);
+    return next(error);
+  }
+
+  res.status(200).json({ message: "Deleted user." });
 });
 
 // get all users
