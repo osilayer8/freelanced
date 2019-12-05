@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
 const usersRoutes = require("./routes/users-routes");
+const customersRoutes = require("./routes/customers-routes");
 const HttpError = require("./models/http-error");
 
 const app = express();
@@ -20,6 +21,8 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/users", usersRoutes);
+
+app.use("/api/customers", customersRoutes);
 
 // give back custom error msg if route doesn't exist
 app.use((req, res, next) => {
