@@ -1,9 +1,9 @@
-const express = require("express");
+import express from 'express';
 
-const router = express.Router();
+import User from '../models/users';
+import HttpError from '../models/http-error';
 
-const User = require("../models/users");
-const HttpError = require("../models/http-error");
+export const router = express.Router();
 
 // get user
 router.get("/:uid", async (req, res, next) => {
@@ -29,7 +29,7 @@ router.patch("/:uid", async (req, res, next) => {
   const { name, age, description } = req.body;
   const userId = req.params.uid;
 
-  let user;
+  let user : any;
   try {
     user = await User.findById(userId);
   } catch (err) {
@@ -55,7 +55,7 @@ router.patch("/:uid", async (req, res, next) => {
 router.delete("/:uid", async (req, res, next) => {
   const userId = req.params.uid;
 
-  let user;
+  let user : any;
   try {
     user = await User.findById(userId);
   } catch (err) {
@@ -82,7 +82,7 @@ router.get("/", async (req, res, next) => {
     const error = new HttpError("Fetching users failed", 500);
     return next(error);
   }
-  res.json({ users: users.map(user => user.toObject({ getters: true })) });
+  res.json({ users: users.map((user: { toObject: (arg0: { getters: boolean; }) => any; }) => user.toObject({ getters: true })) });
 });
 
 // register new user
@@ -123,7 +123,7 @@ router.post("/signup", async (req, res, next) => {
 router.post("/login", async (req, res, next) => {
   const { name, email } = req.body;
 
-  let identifiedUser;
+  let identifiedUser : any;
   try {
     identifiedUser = await User.findOne({ email: email });
   } catch (err) {
@@ -138,5 +138,3 @@ router.post("/login", async (req, res, next) => {
 
   res.json({ message: "logged in!" });
 });
-
-module.exports = router;

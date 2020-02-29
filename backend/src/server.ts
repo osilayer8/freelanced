@@ -1,10 +1,10 @@
-const express = require("express");
-const mongoose = require("mongoose");
-const bodyParser = require("body-parser");
+import express from 'express';
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
 
-const usersRoutes = require("./routes/users-routes");
-const customersRoutes = require("./routes/customers-routes");
-const HttpError = require("./models/http-error");
+import { router as usersRoutes } from './routes/users-routes';
+import { router as customersRoutes } from './routes/customers-routes';
+import HttpError from './models/http-error';
 
 const app = express();
 
@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 });
 
 // default error when server is not responding
-app.use((error, req, res, next) => {
+app.use((error : any, req : any, res : any, next : any) => {
   if (res.headerSent) {
     return next(error);
   }
