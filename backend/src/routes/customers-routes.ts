@@ -1,11 +1,11 @@
-const express = require("express");
-const mongoose = require("mongoose");
+import express from 'express';
+import mongoose from 'mongoose';
 
-const router = express.Router();
+import Customer from '../models/customers';
+import User from '../models/users';
+import HttpError from '../models/http-error';
 
-const Customer = require("../models/customers");
-const User = require("../models/users");
-const HttpError = require("../models/http-error");
+export const router = express.Router();
 
 // get customer
 router.get("/:cid", async (req, res, next) => {
@@ -54,9 +54,9 @@ router.patch("/:cid", async (req, res, next) => {
   const { name, age, description } = req.body;
   const userId = req.params.cid;
 
-  let customer;
+  let customer : any;
   try {
-    customer = await Customer.findById(customerId);
+    customer = await Customer.findById(userId);
   } catch (err) {
     const error = new HttpError("Could not update customer", 500);
     return next(error);
@@ -80,7 +80,7 @@ router.patch("/:cid", async (req, res, next) => {
 router.delete("/:cid", async (req, res, next) => {
   const customerId = req.params.cid;
 
-  let customer;
+  let customer : any;
   try {
     customer = await customer.findById(customerId);
   } catch (err) {
@@ -138,7 +138,7 @@ router.post("/", async (req, res, next) => {
     creator
   });
 
-  let user;
+  let user : any;
 
   try {
     user = await User.findById(creator);
@@ -171,5 +171,3 @@ router.post("/", async (req, res, next) => {
     .status(201)
     .json({ customer: createdCustomer.toObject({ getters: true }) });
 });
-
-module.exports = router;
