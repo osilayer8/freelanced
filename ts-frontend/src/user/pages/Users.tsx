@@ -4,7 +4,7 @@ import UsersList from '../components/UsersList';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 
-const Users = () => {
+const Users: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
   const [loadedUsers, setLoadedUsers] = useState();
@@ -31,7 +31,7 @@ const Users = () => {
   }, []);
 
   const errorHandler = () => {
-    setError(null);
+    setError(undefined);
   };
 
   return (

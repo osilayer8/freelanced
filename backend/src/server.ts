@@ -41,7 +41,8 @@ app.use((error : any, req : any, res : any, next : any) => {
 
 mongoose
   .connect(
-    "mongodb+srv://osilayer8:********@cluster0-f6ait.mongodb.net/freelanced?retryWrites=true&w=majority"
+    "mongodb+srv://osilayer8:********@cluster0-f6ait.mongodb.net/freelanced?retryWrites=true&w=majority",
+    { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
   )
   .then(() => {
     console.log("Connected to database!");

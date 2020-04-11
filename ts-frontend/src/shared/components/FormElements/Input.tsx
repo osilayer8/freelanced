@@ -42,15 +42,15 @@ const inputReducer = (state: State, action: Action) => {
 };
 
 interface Props {
-  initialValue: string,
-  initialValid: boolean,
+  initialValue?: string,
+  initialValid?: boolean,
   id: string,
   onInput: (id: string, value: string, isValid: boolean) => void,
-  validators: Validators,
+  validators?: any,
   element: string,
   type: string,
-  placeholder: string,
-  rows: number,
+  placeholder?: string,
+  rows?: number,
   label: string,
   errorText: string
 }

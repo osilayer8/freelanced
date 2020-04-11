@@ -4,7 +4,9 @@ export const useHttpClient = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState();
 
-  const activeHttpRequests = useRef([]);
+  const activeHttpRequests: React.MutableRefObject<any> = useRef([]);
+
+  console.log(activeHttpRequests);
 
   const sendRequest = useCallback(
     async (url, method = 'GET', body = null, headers = {}) => {
@@ -22,9 +24,11 @@ export const useHttpClient = () => {
 
         const responseData = await response.json();
 
-        activeHttpRequests.current = activeHttpRequests.current.filter(
-          reqCtrl => reqCtrl !== httpAbortCtrl
-        );
+        activeHttpRequests.current = activeHttpRequests.current.filter((reqCtrl: any) => {
+          console.log(reqCtrl);
+          console.log('httpAbortCtrl: ' + httpAbortCtrl);
+          return reqCtrl !== httpAbortCtrl;
+        });
 
         if (!response.ok) {
           throw new Error(responseData.message);
@@ -42,13 +46,12 @@ export const useHttpClient = () => {
   );
 
   const clearError = () => {
-    setError(null);
+    setError(undefined);
   };
 
   useEffect(() => {
     return () => {
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-      activeHttpRequests.current.forEach(abortCtrl => abortCtrl.abort());
+      activeHttpRequests.current.forEach((abortCtrl: any) => abortCtrl.abort());
     };
   }, []);
 
