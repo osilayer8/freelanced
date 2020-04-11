@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import './Button.scss';
 
-type ButtonType = JSX.IntrinsicElements['button']['type']
+type ButtonType = JSX.IntrinsicElements['button']['type'];
 
 interface Props {
   href?: string,

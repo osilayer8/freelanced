@@ -2,7 +2,7 @@ import React from 'react';
 
 import './Card.scss';
 
-const Card: React.FC<any> = (props) => {
+const Card: React.FC<{ style?: React.CSSProperties, className?: string }> = (props) => {
   return (
     <div className={`card ${props.className}`} style={props.style}>
       {props.children}

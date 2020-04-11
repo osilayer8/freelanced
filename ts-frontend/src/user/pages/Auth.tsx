@@ -15,7 +15,7 @@ import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
 import './Auth.scss';
 
-const Auth = () => {
+const Auth: React.FC = () => {
   const auth = useContext(AuthContext);
   const [isLoginMode, setIsLoginMode] = useState(true);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -26,7 +26,7 @@ const Auth = () => {
         value: '',
         isValid: false
       },
-      password: {
+      pass: {
         value: '',
         isValid: false
       }
@@ -41,13 +41,13 @@ const Auth = () => {
           ...formState.inputs,
           name: undefined
         },
-        formState.inputs.email.isValid && formState.inputs.password.isValid
+        formState.inputs.email.isValid && formState.inputs.pass.isValid
       );
     } else {
       setFormData(
         {
           ...formState.inputs,
-          name: {
+          pass: {
             value: '',
             isValid: false
           }
@@ -58,7 +58,8 @@ const Auth = () => {
     setIsLoginMode(prevMode => !prevMode);
   };
 
-  const authSubmitHandler = async event => {
+  const authSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+    console.log(formState.inputs);
     event.preventDefault();
 
     if (isLoginMode) {
@@ -68,7 +69,7 @@ const Auth = () => {
           'POST',
           JSON.stringify({
             email: formState.inputs.email.value,
-            name: formState.inputs.name.value
+            pass: formState.inputs.pass.value
           }),
           {
             'Content-Type': 'application/json'
@@ -84,7 +85,7 @@ const Auth = () => {
           JSON.stringify({
             name: formState.inputs.name.value,
             email: formState.inputs.email.value,
-            password: formState.inputs.password.value
+            pass: formState.inputs.pass.value
           }),
           {
             'Content-Type': 'application/json'
@@ -126,9 +127,9 @@ const Auth = () => {
           />
           <Input
             element="input"
-            id="password"
+            id="pass"
             type="text"
-            label="dfgdfgdfg"
+            label="Password"
             validators={[VALIDATOR_REQUIRE()]}
             errorText="Please enter a valid password"
             onInput={inputHandler}

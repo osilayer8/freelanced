@@ -26,7 +26,7 @@ router.get("/:uid", async (req, res, next) => {
 
 // update user
 router.patch("/:uid", async (req, res, next) => {
-  const { name, age, description } = req.body;
+  const { name, age, description, pass } = req.body;
   const userId = req.params.uid;
 
   let user : any;
@@ -38,6 +38,7 @@ router.patch("/:uid", async (req, res, next) => {
   }
 
   user.name = name;
+  user.pass = pass;
   user.age = age;
   user.description = description;
 
@@ -87,7 +88,7 @@ router.get("/", async (req, res, next) => {
 
 // register new user
 router.post("/signup", async (req, res, next) => {
-  const { name, email, age, description } = req.body;
+  const { name, email, pass, age, description } = req.body;
 
   let existingUser;
   try {
@@ -105,6 +106,7 @@ router.post("/signup", async (req, res, next) => {
   const createdUser = new User({
     name,
     email,
+    pass,
     age,
     description
   });
@@ -121,9 +123,9 @@ router.post("/signup", async (req, res, next) => {
 
 // identify user
 router.post("/login", async (req, res, next) => {
-  const { name, email } = req.body;
+  const { pass, email } = req.body;
 
-  let identifiedUser : any;
+  let identifiedUser: any;
   try {
     identifiedUser = await User.findOne({ email: email });
   } catch (err) {
@@ -131,10 +133,11 @@ router.post("/login", async (req, res, next) => {
     return next(error);
   }
 
-  if (!identifiedUser || identifiedUser.name !== name) {
+  if (!identifiedUser || identifiedUser.pass !== pass) {
     const error = new HttpError("Could not identity user", 401);
     return next(error);
   }
 
   res.json({ message: "logged in!" });
+  
 });
