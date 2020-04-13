@@ -40,9 +40,9 @@ const DUMMY_PLACES = [
   }
 ];
 
-const UpdatePlace = () => {
+const UpdatePlace: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const placeId = useParams().placeId;
+  const placeId = useParams<{placeId: string}>().placeId;
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -79,9 +79,8 @@ const UpdatePlace = () => {
     setIsLoading(false);
   }, [setFormData, identifiedPlace]);
 
-  const placeUpdateSubmitHandler = event => {
+  const placeUpdateSubmitHandler = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(formState.inputs);
   };
 
   if (!identifiedPlace) {
@@ -118,6 +117,7 @@ const UpdatePlace = () => {
       <Input
         id="description"
         element="textarea"
+        type="text"
         label="Description"
         validators={[VALIDATOR_MINLENGTH(5)]}
         errorText="Please enter a valid description (min. 5 characters)."

@@ -6,8 +6,6 @@ export const useHttpClient = () => {
 
   const activeHttpRequests: React.MutableRefObject<any> = useRef([]);
 
-  console.log(activeHttpRequests);
-
   const sendRequest = useCallback(
     async (url, method = 'GET', body = null, headers = {}) => {
       setIsLoading(true);
@@ -25,8 +23,6 @@ export const useHttpClient = () => {
         const responseData = await response.json();
 
         activeHttpRequests.current = activeHttpRequests.current.filter((reqCtrl: any) => {
-          console.log(reqCtrl);
-          console.log('httpAbortCtrl: ' + httpAbortCtrl);
           return reqCtrl !== httpAbortCtrl;
         });
 

@@ -33,7 +33,6 @@ const ModalOverlay: React.FC<Props> = (props) => {
           {props.children}
         </div>
         <footer className={`modal__footer ${props.footerClass}`}>
-        {console.log(props.footer)};
           {props.footer}
         </footer>
       </form>
