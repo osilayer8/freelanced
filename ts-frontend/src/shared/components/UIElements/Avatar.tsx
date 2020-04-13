@@ -3,15 +3,14 @@ import React from 'react';
 import './Avatar.scss';
 
 interface Props {
-  className: string,
-  style: any,
+  className?: string,
+  style?: React.CSSProperties,
   image: string,
-  alt: string,
-  width: string
+  alt?: string,
+  width?: string
 }
 
 const Avatar: React.FC<Props> = (props) => {
-  console.log(props.style);
   return (
     <div className={`avatar ${props.className}`} style={props.style}>
       <img

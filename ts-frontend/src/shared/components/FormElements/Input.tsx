@@ -51,8 +51,8 @@ interface Props {
   type: string,
   placeholder?: string,
   rows?: number,
-  label: string,
-  errorText: string
+  label?: string,
+  errorText?: string
 }
 
 const Input: React.FC<Props> = (props) => {

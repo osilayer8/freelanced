@@ -3,7 +3,15 @@ import React from "react";
 import Card from "../../shared/components/UIElements/Card";
 import "./UserItem.scss";
 
-const UserItem = props => {
+interface Props {
+  name: string,
+  age?: string,
+  email: string,
+  description?: string,
+  id?: string
+}
+
+const UserItem: React.FC<Props> = (props) => {
   return (
     <li className="user-item">
       <Card className="user-item__content">

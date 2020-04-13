@@ -6,7 +6,17 @@ import Modal from '../../shared/components/UIElements/Modal';
 import { AuthContext } from '../../shared/context/auth-context';
 import './PlaceItem.scss';
 
-const PlaceItem = props => {
+interface Props {
+  image: string,
+  title?: string,
+  address?: string,
+  description?: string,
+  id: string,
+  creatorId?: string,
+  coordinates?: string
+}
+
+const PlaceItem: React.FC<Props> = (props) => {
   const auth = useContext(AuthContext);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 

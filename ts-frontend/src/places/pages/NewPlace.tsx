@@ -9,7 +9,7 @@ import {
 import { useForm } from '../../shared/hooks/form-hook';
 import './PlaceForm.scss';
 
-const NewPlace = () => {
+const NewPlace: React.FC = () => {
   const [formState, inputHandler] = useForm(
     {
       title: {
@@ -28,7 +28,7 @@ const NewPlace = () => {
     false
   );
 
-  const placeSubmitHandler = event => {
+  const placeSubmitHandler = (event: any) => {
     event.preventDefault();
     console.log(formState.inputs); // send this to the backend!
   };
@@ -47,6 +47,7 @@ const NewPlace = () => {
       <Input
         id="description"
         element="textarea"
+        type="text"
         label="Description"
         validators={[VALIDATOR_MINLENGTH(5)]}
         errorText="Please enter a valid description (at least 5 characters)."
@@ -55,6 +56,7 @@ const NewPlace = () => {
       <Input
         id="address"
         element="input"
+        type="text"
         label="Address"
         validators={[VALIDATOR_REQUIRE()]}
         errorText="Please enter a valid address."
