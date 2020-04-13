@@ -54,7 +54,7 @@ router.patch("/:cid", async (req, res, next) => {
   const { name, age, description } = req.body;
   const userId = req.params.cid;
 
-  let customer : any;
+  let customer: any;
   try {
     customer = await Customer.findById(userId);
   } catch (err) {
