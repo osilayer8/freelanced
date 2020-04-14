@@ -7,22 +7,25 @@ import {
 } from 'react-router-dom';
 
 import Users from './user/pages/Users';
-import NewPlace from './places/pages/NewPlace';
-import UserPlaces from './places/pages/UserPlaces';
-import UpdatePlace from './places/pages/UpdatePlace';
+import NewCustomer from './customers/pages/NewCustomer';
+import UserCustomers from './customers/pages/UserCustomers';
+import UpdateCustomer from './customers/pages/UpdateCustomer';
 import Auth from './user/pages/Auth';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
 import { AuthContext } from './shared/context/auth-context';
 
 const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState<any>(false);
 
-  const login = useCallback(() => {
+  const login = useCallback<any>((uid: string) => {
     setIsLoggedIn(true);
+    setUserId(uid);
   }, []);
 
   const logout = useCallback(() => {
     setIsLoggedIn(false);
+    setUserId(null);
   }, []);
 
   let routes;
@@ -33,14 +36,14 @@ const App = () => {
         <Route path="/" exact>
           <Users />
         </Route>
-        <Route path="/:userId/places" exact>
-          <UserPlaces />
+        <Route path="/:userId/customers" exact>
+          <UserCustomers />
         </Route>
-        <Route path="/places/new" exact>
-          <NewPlace />
+        <Route path="/customers/new" exact>
+          <NewCustomer />
         </Route>
-        <Route path="/places/:placeId">
-          <UpdatePlace />
+        <Route path="/customers/:customerId">
+          <UpdateCustomer />
         </Route>
         <Redirect to="/" />
       </Switch>
@@ -58,7 +61,7 @@ const App = () => {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
+      value={{ isLoggedIn: isLoggedIn, userId: userId, login: login, logout: logout }}
     >
       <Router>
         <MainNavigation />

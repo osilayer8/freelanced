@@ -51,20 +51,36 @@ router.get("/user/:uid", async (req, res, next) => {
 
 // update customer
 router.patch("/:cid", async (req, res, next) => {
-  const { name, age, description } = req.body;
-  const userId = req.params.cid;
+  const {
+    company,
+    email,
+    street,
+    plz,
+    city,
+    country,
+    phone,
+    website,
+    creator
+  } = req.body;
+
+  const customerId = req.params.cid;
 
   let customer: any;
   try {
-    customer = await Customer.findById(userId);
+    customer = await Customer.findById(customerId);
   } catch (err) {
     const error = new HttpError("Could not update customer", 500);
     return next(error);
   }
 
-  customer.name = name;
-  customer.age = age;
-  customer.description = description;
+  customer.company = company;
+  customer.email = email;
+  customer.street = street;
+  customer.plz = plz;
+  customer.city = city;
+  customer.country = country;
+  customer.phone = phone;
+  customer.website = website;
 
   try {
     await customer.save();
@@ -76,20 +92,30 @@ router.patch("/:cid", async (req, res, next) => {
   res.status(200).json({ customer: customer.toObject({ getters: true }) });
 });
 
-// delete user
+// delete customer
 router.delete("/:cid", async (req, res, next) => {
   const customerId = req.params.cid;
 
-  let customer : any;
+  let customer: any;
   try {
-    customer = await customer.findById(customerId);
+    customer = await Customer.findById(customerId).populate('creator');
   } catch (err) {
     const error = new HttpError("Could not delete customer", 500);
     return next(error);
   }
 
+  if (!customer) {
+    const error = new HttpError("Could not find customer for this id", 404);
+    return next(error);
+  }
+
   try {
-    await customer.remove();
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
+    await customer.remove({ session: sess });
+    customer.creator.customers.pull(customer);
+    await customer.creator.save({ session: sess });
+    await sess.commitTransaction();
   } catch (err) {
     const error = new HttpError("Delete customer failed", 500);
     return next(error);
@@ -138,13 +164,13 @@ router.post("/", async (req, res, next) => {
     creator
   });
 
-  let user : any;
+  let user: any;
 
   try {
     user = await User.findById(creator);
     console.log(user);
   } catch (err) {
-    const error = new HttpError("Could not find user for the provided id", 500);
+    const error = new HttpError("Create customer failed", 500);
     return next(error);
   }
 
@@ -153,6 +179,7 @@ router.post("/", async (req, res, next) => {
       "Could not find user for the provided id",
       404
     );
+    return next(error);
   }
 
   try {
@@ -163,7 +190,7 @@ router.post("/", async (req, res, next) => {
     await user.save({ session: sess });
     await sess.commitTransaction();
   } catch (err) {
-    const error = new HttpError("creating customer failed", 500);
+    const error = new HttpError("creating customer failed while user connection", 500);
     return next(error);
   }
 

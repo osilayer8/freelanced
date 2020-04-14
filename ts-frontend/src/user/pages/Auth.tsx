@@ -15,8 +15,15 @@ import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
 import './Auth.scss';
 
+interface authProps {
+  isLoggedIn: boolean,
+  userId: number | null,
+  login: (userId?: number) => void,
+  logout: () => void
+}
+
 const Auth: React.FC = () => {
-  const auth = useContext(AuthContext);
+  const auth: authProps = useContext(AuthContext);
   const [isLoginMode, setIsLoginMode] = useState(true);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
@@ -63,7 +70,7 @@ const Auth: React.FC = () => {
 
     if (isLoginMode) {
       try {
-        await sendRequest(
+        const responseData = await sendRequest(
           'http://localhost:5000/api/users/login',
           'POST',
           JSON.stringify({
@@ -74,11 +81,11 @@ const Auth: React.FC = () => {
             'Content-Type': 'application/json'
           }
         );
-        auth.login();
+        auth.login(responseData.user.id);
       } catch (err) {}
     } else {
       try {
-        await sendRequest(
+        const responseData = await sendRequest(
           'http://localhost:5000/api/users/signup',
           'POST',
           JSON.stringify({
@@ -91,7 +98,7 @@ const Auth: React.FC = () => {
           }
         );
 
-        auth.login();
+        auth.login(responseData.user.id);
       } catch (err) {}
     }
   };

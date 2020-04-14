@@ -1,7 +1,7 @@
 import React, { useReducer, useEffect } from 'react';
 
 import { validate } from '../../util/validators';
-import './Input.scss';
+import './Input.scss';setTimeout(() => {}, 500);
 
 interface State {
   value: string,

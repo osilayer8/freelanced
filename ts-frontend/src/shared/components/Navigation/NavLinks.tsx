@@ -16,12 +16,12 @@ const NavLinks: React.FC = () => {
       </li>
       {auth.isLoggedIn && (
         <li>
-          <NavLink to="/u1/places">MY PLACES</NavLink>
+          <NavLink to={`/${auth.userId}/customers`}>MY CUSTOMERS</NavLink>
         </li>
       )}
       {auth.isLoggedIn && (
         <li>
-          <NavLink to="/places/new">ADD PLACE</NavLink>
+          <NavLink to="/customers/new">ADD CUSTOMER</NavLink>
         </li>
       )}
       {!auth.isLoggedIn && (

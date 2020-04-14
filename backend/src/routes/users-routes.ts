@@ -26,7 +26,7 @@ router.get("/:uid", async (req, res, next) => {
 
 // update user
 router.patch("/:uid", async (req, res, next) => {
-  const { name, age, description, pass } = req.body;
+  const { name, language, pass } = req.body;
   const userId = req.params.uid;
 
   let user : any;
@@ -39,8 +39,7 @@ router.patch("/:uid", async (req, res, next) => {
 
   user.name = name;
   user.pass = pass;
-  user.age = age;
-  user.description = description;
+  user.language = language;
 
   try {
     await user.save();
@@ -88,7 +87,7 @@ router.get("/", async (req, res, next) => {
 
 // register new user
 router.post("/signup", async (req, res, next) => {
-  const { name, email, pass, age, description } = req.body;
+  const { name, email, pass, language } = req.body;
 
   let existingUser;
   try {
@@ -107,8 +106,8 @@ router.post("/signup", async (req, res, next) => {
     name,
     email,
     pass,
-    age,
-    description
+    language: 'de',
+    customers: []
   });
 
   try {
@@ -138,6 +137,6 @@ router.post("/login", async (req, res, next) => {
     return next(error);
   }
 
-  res.json({ message: "logged in!" });
+  res.json({ message: "logged in!", user: identifiedUser.toObject({ getters: true }) });
   
 });
