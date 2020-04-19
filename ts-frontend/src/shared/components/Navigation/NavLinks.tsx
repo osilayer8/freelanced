@@ -9,11 +9,13 @@ const NavLinks: React.FC = () => {
 
   return (
     <ul className="nav-links">
+      {auth.isLoggedIn && (
       <li>
-        <NavLink to="/" exact>
-          ALL USERS
+        <NavLink to="/user">
+          MY PROFILE
         </NavLink>
       </li>
+      )}
       {auth.isLoggedIn && (
         <li>
           <NavLink to={`/${auth.userId}/customers`}>MY CUSTOMERS</NavLink>

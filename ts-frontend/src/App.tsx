@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
@@ -6,35 +6,25 @@ import {
   Switch
 } from 'react-router-dom';
 
-import Users from './user/pages/Users';
+import User from './user/pages/User';
 import NewCustomer from './customers/pages/NewCustomer';
 import UserCustomers from './customers/pages/UserCustomers';
 import UpdateCustomer from './customers/pages/UpdateCustomer';
 import Auth from './user/pages/Auth';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
 import { AuthContext } from './shared/context/auth-context';
+import { useAuth } from './shared/hooks/auth-hook';
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userId, setUserId] = useState<any>(false);
-
-  const login = useCallback<any>((uid: string) => {
-    setIsLoggedIn(true);
-    setUserId(uid);
-  }, []);
-
-  const logout = useCallback(() => {
-    setIsLoggedIn(false);
-    setUserId(null);
-  }, []);
+  const { token, login, logout, userId, checkLogin } = useAuth();
 
   let routes;
 
-  if (isLoggedIn) {
+  if (token) {
     routes = (
       <Switch>
-        <Route path="/" exact>
-          <Users />
+        <Route path="/user" exact>
+          <User />
         </Route>
         <Route path="/:userId/customers" exact>
           <UserCustomers />
@@ -45,7 +35,7 @@ const App = () => {
         <Route path="/customers/:customerId">
           <UpdateCustomer />
         </Route>
-        <Redirect to="/" />
+        <Redirect to="/user" />
       </Switch>
     );
   } else {
@@ -61,14 +51,15 @@ const App = () => {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn: isLoggedIn, userId: userId, login: login, logout: logout }}
+      value={{ isLoggedIn: !!token, token: token, userId: userId, login: login, logout: logout }}
     >
       <Router>
         <MainNavigation />
-        <main>{routes}</main>
+        {checkLogin && <main>{routes}</main>}
       </Router>
     </AuthContext.Provider>
   );
 };
+
 
 export default App;

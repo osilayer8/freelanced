@@ -1,39 +1,42 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
 
+import UserItem from '../components/UserItem';
+import Card from '../../shared/components/UIElements/Card';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
-
-import CustomerList from '../components/CustomerList';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
+import '../components/UsersList.scss';
 
-const UserCustomers: React.FC = () => {
+const User: React.FC = () => {
   const auth = useContext(AuthContext);
-  const [loadedCustomers, setLoadedCustomers] = useState<any>();
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const userId = useParams<{userId: string}>().userId;
+  const [loadedUser, setLoadedUser] = useState<any>();
 
   useEffect(() => {
-    const fetchCustomers = async () => {
+    const fetchUser = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/customers/user/${userId}`,
+          `http://localhost:5000/api/users/${auth.userId}`,
           'GET',
           null,
           {
             Authorization: 'Bearer ' + auth.token
           }
         );
-        setLoadedCustomers(responseData.customers);
+        setLoadedUser(responseData.user);
       } catch (err) {}
-    }
-    fetchCustomers();
-  }, [sendRequest, userId]);
+    };
+    {auth.userId && fetchUser()};
+  }, [sendRequest, auth.userId]);
 
-  const customerDeletedHandler = (deletedCustomerId: number) => {
-    setLoadedCustomers((prevCustomers: any) =>
-      prevCustomers.filter((customer: any) => customer.id !== deletedCustomerId)
+  if (!loadedUser) {
+    return (
+      <div className="center">
+        <Card>
+          <h2>Could not find User!</h2>
+        </Card>
+      </div>
     );
   }
 
@@ -45,9 +48,17 @@ const UserCustomers: React.FC = () => {
           <LoadingSpinner />
         </div>
       )}
-      {!isLoading && loadedCustomers && <CustomerList items={loadedCustomers} onDeleteCustomer={customerDeletedHandler} />}
+
+      {!isLoading && loadedUser && (<ul className="users-list">
+      <UserItem
+        key={loadedUser.id}
+        id={loadedUser.id}
+        name={loadedUser.name}
+        email={loadedUser.email}
+      />
+      </ul>)}
     </React.Fragment>
   );
 };
 
-export default UserCustomers;
+export default User;

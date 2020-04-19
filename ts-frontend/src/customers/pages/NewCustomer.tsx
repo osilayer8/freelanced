@@ -7,7 +7,6 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import {
   VALIDATOR_EMAIL,
-  VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
@@ -48,14 +47,14 @@ const NewCustomer: React.FC = () => {
           city: formState.inputs.city.value,
           country: formState.inputs.country.value,
           phone: formState.inputs.phone.value,
-          website: formState.inputs.website.value,
-          creator: auth.userId
+          website: formState.inputs.website.value
         }),
         {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + auth.token
         }
       );
-      history.push('/');
+      history.push('/' + auth.userId + '/customers');
     } catch(err) {}
   };
 

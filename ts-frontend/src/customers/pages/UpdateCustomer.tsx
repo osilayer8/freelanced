@@ -8,7 +8,6 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import {
   VALIDATOR_REQUIRE,
-  VALIDATOR_MINLENGTH,
   VALIDATOR_EMAIL
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
@@ -41,7 +40,12 @@ const UpdateCustomer: React.FC = () => {
     const fetchCustomer = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/customers/${customerId}`
+          `http://localhost:5000/api/customers/${customerId}`,
+          'GET',
+          null,
+          {
+            Authorization: 'Bearer ' + auth.token
+          }
         );
         setLoadedCustomer(responseData.customer);
         setFormData(
@@ -79,7 +83,8 @@ const UpdateCustomer: React.FC = () => {
           website: formState.inputs.website.value
         }),
         {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + auth.token
         }
       );
       history.push('/' + auth.userId + '/customers');

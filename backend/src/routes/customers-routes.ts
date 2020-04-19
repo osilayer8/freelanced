@@ -4,17 +4,20 @@ import mongoose from 'mongoose';
 import Customer from '../models/customers';
 import User from '../models/users';
 import HttpError from '../models/http-error';
+import checkAuth from '../middleware/check-auth';
 
 export const router = express.Router();
 
+router.use(checkAuth);
+
 // get customer
-router.get("/:cid", async (req, res, next) => {
+router.get("/:cid", async (req: any, res: any, next: any) => {
   const reqId = await req.params.cid;
   let customer;
   try {
     customer = await Customer.findById(reqId);
   } catch (err) {
-    const error = new HttpError("Looking for customer failed", 500);
+    const error = new HttpError("Looking for customer failed!", 500);
     return next(error);
   }
 
@@ -23,11 +26,16 @@ router.get("/:cid", async (req, res, next) => {
     return next(error);
   }
 
+  if (customer.toObject().creator.toString() !== req.userData.userId) {
+    const error = new HttpError("Not allowed to see this place", 401);
+    return next(error);
+  }
+
   res.json({ customer: customer.toObject({ getters: true }) });
 });
 
 // get customers by user id
-router.get("/user/:uid", async (req, res, next) => {
+router.get("/user/:uid", async (req: any, res: any, next: any) => {
   const userId = req.params.uid;
 
   let customers;
@@ -44,13 +52,18 @@ router.get("/user/:uid", async (req, res, next) => {
     );
   }
 
+  if (customers[0].toObject().creator.toString() !== req.userData.userId) {
+    const error = new HttpError("Not allowed to see this places", 401);
+    return next(error);
+  }
+
   res.json({
     customers: customers.map(customer => customer.toObject({ getters: true }))
   });
 });
 
 // update customer
-router.patch("/:cid", async (req, res, next) => {
+router.patch("/:cid", async (req: any, res: any, next: any) => {
   const {
     company,
     email,
@@ -59,8 +72,7 @@ router.patch("/:cid", async (req, res, next) => {
     city,
     country,
     phone,
-    website,
-    creator
+    website
   } = req.body;
 
   const customerId = req.params.cid;
@@ -70,6 +82,11 @@ router.patch("/:cid", async (req, res, next) => {
     customer = await Customer.findById(customerId);
   } catch (err) {
     const error = new HttpError("Could not update customer", 500);
+    return next(error);
+  }
+
+  if (customer.creator.toString() !== req.userData.userId) {
+    const error = new HttpError("Not allowed to edit this place", 401);
     return next(error);
   }
 
@@ -93,7 +110,7 @@ router.patch("/:cid", async (req, res, next) => {
 });
 
 // delete customer
-router.delete("/:cid", async (req, res, next) => {
+router.delete("/:cid", async (req: any, res: any, next: any) => {
   const customerId = req.params.cid;
 
   let customer: any;
@@ -106,6 +123,11 @@ router.delete("/:cid", async (req, res, next) => {
 
   if (!customer) {
     const error = new HttpError("Could not find customer for this id", 404);
+    return next(error);
+  }
+
+  if (customer.creator.id !== req.userData.userId) {
+    const error = new HttpError("Not allowed to delete this place", 401);
     return next(error);
   }
 
@@ -125,7 +147,7 @@ router.delete("/:cid", async (req, res, next) => {
 });
 
 // get all customers
-router.get("/", async (req, res, next) => {
+router.get("/", async (req: any, res: any, next: any) => {
   let customers;
   try {
     customers = await Customer.find().exec();
@@ -133,13 +155,20 @@ router.get("/", async (req, res, next) => {
     const error = new HttpError("Fetching customers failed", 500);
     return next(error);
   }
+
+  // no one allowed to see all customers
+  if (req.userData.userId !== '0123456789') {
+    const error = new HttpError("Not allowed to see this places", 401);
+    return next(error);
+  }
+
   res.json({
     customers: customers.map(customer => customer.toObject({ getters: true }))
   });
 });
 
 // add new customer
-router.post("/", async (req, res, next) => {
+router.post("/", async (req: any, res: any, next: any) => {
   const {
     company,
     email,
@@ -148,8 +177,7 @@ router.post("/", async (req, res, next) => {
     city,
     country,
     phone,
-    website,
-    creator
+    website
   } = req.body;
 
   const createdCustomer = new Customer({
@@ -161,14 +189,13 @@ router.post("/", async (req, res, next) => {
     country,
     phone,
     website,
-    creator
+    creator: req.userData.userId
   });
 
   let user: any;
 
   try {
-    user = await User.findById(creator);
-    console.log(user);
+    user = await User.findById(req.userData.userId);
   } catch (err) {
     const error = new HttpError("Create customer failed", 500);
     return next(error);

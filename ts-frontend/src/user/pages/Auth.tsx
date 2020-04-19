@@ -7,7 +7,6 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import {
   VALIDATOR_EMAIL,
-  VALIDATOR_MINLENGTH,
   VALIDATOR_REQUIRE
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
@@ -18,7 +17,7 @@ import './Auth.scss';
 interface authProps {
   isLoggedIn: boolean,
   userId: number | null,
-  login: (userId?: number) => void,
+  login: (userId?: number, token?: string) => void,
   logout: () => void
 }
 
@@ -81,7 +80,7 @@ const Auth: React.FC = () => {
             'Content-Type': 'application/json'
           }
         );
-        auth.login(responseData.user.id);
+        auth.login(responseData.userId, responseData.token);
       } catch (err) {}
     } else {
       try {
@@ -97,8 +96,7 @@ const Auth: React.FC = () => {
             'Content-Type': 'application/json'
           }
         );
-
-        auth.login(responseData.user.id);
+        auth.login(responseData.userId, responseData.token);
       } catch (err) {}
     }
   };

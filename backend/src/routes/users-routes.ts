@@ -1,93 +1,57 @@
 import express from 'express';
+import bcrypt from 'bcryptjs';
+import jsonwebtoken from 'jsonwebtoken';
 
 import User from '../models/users';
 import HttpError from '../models/http-error';
+import checkAuth from '../middleware/check-auth';
 
 export const router = express.Router();
 
-// get user
-router.get("/:uid", async (req, res, next) => {
-  const reqId = await req.params.uid;
-  let user;
+// identify user
+router.post("/login", async (req, res, next) => {
+  const { pass, email } = req.body;
+
+  let identifiedUser: any;
   try {
-    user = await User.findById(reqId);
+    identifiedUser = await User.findOne({ email: email });
   } catch (err) {
-    const error = new HttpError("Looking for user failed", 500);
+    const error = new HttpError("Login failed", 500);
     return next(error);
   }
 
-  if (!user) {
-    const error = new HttpError("Could not find an user", 404);
+  if (!identifiedUser) {
+    const error = new HttpError("Could not identity user", 401);
     return next(error);
   }
 
-  res.json({ user: user.toObject({ getters: true }) });
-});
-
-// update user
-router.patch("/:uid", async (req, res, next) => {
-  const { name, language, pass } = req.body;
-  const userId = req.params.uid;
-
-  let user : any;
+  let isValidPassword: boolean = false;
   try {
-    user = await User.findById(userId);
+    isValidPassword = await bcrypt.compare(pass, identifiedUser.pass);
   } catch (err) {
-    const error = new HttpError("Could not update user", 500);
+    const error = new HttpError("Credentials wrong, try again", 500);
     return next(error);
   }
 
-  user.name = name;
-  user.pass = pass;
-  user.language = language;
+  if (!isValidPassword) {
+    const error = new HttpError("Invalid credentials", 401);
+    return next(error);
+  }
 
+  let token: string;
   try {
-    await user.save();
+    token = jsonwebtoken.sign({ user: identifiedUser.id, email: identifiedUser.email }, '5b45b45h4h45h45', { expiresIn: '2h' });
   } catch (err) {
-    const error = new HttpError("User updade failed", 500);
+    const error = new HttpError("Login failed", 500);
     return next(error);
   }
 
-  res.status(200).json({ user: user.toObject({ getters: true }) });
-});
-
-// delete user
-router.delete("/:uid", async (req, res, next) => {
-  const userId = req.params.uid;
-
-  let user : any;
-  try {
-    user = await User.findById(userId);
-  } catch (err) {
-    const error = new HttpError("Could not delete user", 500);
-    return next(error);
-  }
-
-  try {
-    await user.remove();
-  } catch (err) {
-    const error = new HttpError("Delete user failed", 500);
-    return next(error);
-  }
-
-  res.status(200).json({ message: "Deleted user." });
-});
-
-// get all users
-router.get("/", async (req, res, next) => {
-  let users;
-  try {
-    users = await User.find().exec();
-  } catch (err) {
-    const error = new HttpError("Fetching users failed", 500);
-    return next(error);
-  }
-  res.json({ users: users.map((user: { toObject: (arg0: { getters: boolean; }) => any; }) => user.toObject({ getters: true })) });
+  res.json({ userId: identifiedUser.id, email: identifiedUser.email, token: token });
 });
 
 // register new user
 router.post("/signup", async (req, res, next) => {
-  const { name, email, pass, language } = req.body;
+  const { name, email, pass } = req.body;
 
   let existingUser;
   try {
@@ -102,10 +66,18 @@ router.post("/signup", async (req, res, next) => {
     return next(error);
   }
 
-  const createdUser = new User({
+  let hashedPassword: string;
+  try {
+    hashedPassword = await bcrypt.hash(pass, 12);
+  } catch (err) {
+    const error = new HttpError("Could not create user", 500);
+    return next(error);
+  }
+
+  const createdUser: any = new User({
     name,
     email,
-    pass,
+    pass: hashedPassword,
     language: 'de',
     customers: []
   });
@@ -117,26 +89,117 @@ router.post("/signup", async (req, res, next) => {
     return next(error);
   }
 
-  res.status(201).json({ user: createdUser.toObject({ getters: true }) });
+  let token: string;
+  try {
+    token = jsonwebtoken.sign({ user: createdUser.id, email: createdUser.email }, '5b45b45h4h45h45', { expiresIn: '2h' });
+  } catch (err) {
+    const error = new HttpError("Signing up failed", 500);
+    return next(error);
+  }
+
+  res.status(201).json({ userId: createdUser.id, email: createdUser.email, token: token });
 });
 
-// identify user
-router.post("/login", async (req, res, next) => {
-  const { pass, email } = req.body;
+router.use(checkAuth);
 
-  let identifiedUser: any;
+// get user
+router.get("/:uid", async (req: any, res: any, next: any) => {
+  const reqId = await req.params.uid;
+  let user;
   try {
-    identifiedUser = await User.findOne({ email: email });
+    user = await User.findById(reqId);
   } catch (err) {
-    const error = new HttpError("Login failed", 500);
+    const error = new HttpError("Looking for user failed", 500);
     return next(error);
   }
 
-  if (!identifiedUser || identifiedUser.pass !== pass) {
-    const error = new HttpError("Could not identity user", 401);
+  if (!user) {
+    const error = new HttpError("Could not find an user", 404);
     return next(error);
   }
 
-  res.json({ message: "logged in!", user: identifiedUser.toObject({ getters: true }) });
-  
+  if (user.id !== req.userData.userId) {
+    const error = new HttpError("Not allowed to see this user", 401);
+    return next(error);
+  }
+
+  res.json({ user: user.toObject({ getters: true }) });
+});
+
+// get all users
+router.get("/", async (req: any, res: any, next: any) => {
+  let users;
+  try {
+    users = await User.find({}, '-pass');
+  } catch (err) {
+    const error = new HttpError("Fetching users failed", 500);
+    return next(error);
+  }
+
+  // no one allowed to see all customers
+  if (req.userData.userId !== '0123456789') {
+    const error = new HttpError("Not allowed to see this users", 401);
+    return next(error);
+  }
+
+  res.json({ users: users.map((user: { toObject: (arg0: { getters: boolean; }) => any; }) => user.toObject({ getters: true })) });
+});
+
+// update user
+router.patch("/:uid", async (req: any, res: any, next: any) => {
+  const { name, language, pass } = req.body;
+  const userId = req.params.uid;
+
+  let user : any;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    const error = new HttpError("Could not update user", 500);
+    return next(error);
+  }
+
+  if (user.id !== req.userData.userId) {
+    const error = new HttpError("Not allowed to edit this user", 401);
+    return next(error);
+  }
+
+  user.name = name;
+  user.pass = pass;
+  user.language = language;
+
+  try {
+    await user.save();
+  } catch (err) {
+    const error = new HttpError("User update failed", 500);
+    return next(error);
+  }
+
+  res.status(200).json({ user: user.toObject({ getters: true }) });
+});
+
+// delete user
+router.delete("/:uid", async (req: any, res: any, next: any) => {
+  const userId = req.params.uid;
+
+  let user: any;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    const error = new HttpError("Could not delete user", 500);
+    return next(error);
+  }
+
+  if (user.id !== req.userData.userId) {
+    const error = new HttpError("Not allowed to delete this user", 401);
+    return next(error);
+  }
+
+  try {
+    await user.remove();
+  } catch (err) {
+    const error = new HttpError("Delete user failed", 500);
+    return next(error);
+  }
+
+  res.status(200).json({ message: "Deleted user." });
 });
