@@ -40,7 +40,7 @@ const UpdateCustomer: React.FC = () => {
     const fetchCustomer = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/customers/${customerId}`,
+          process.env.REACT_APP_BACKEND_URL + `/customers/${customerId}`,
           'GET',
           null,
           {
@@ -70,7 +70,7 @@ const UpdateCustomer: React.FC = () => {
     event.preventDefault();
     try {
       await sendRequest(
-        `http://localhost:5000/api/customers/${customerId}`,
+        process.env.REACT_APP_BACKEND_URL + `/customers/${customerId}`,
         'PATCH',
         JSON.stringify({
           company: formState.inputs.company.value,

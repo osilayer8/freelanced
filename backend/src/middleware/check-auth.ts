@@ -10,7 +10,7 @@ export default (req: any, res: any, next: any) => {
     if (!token) {
       throw new Error('Authentication failed 1');
     }
-    const decodedToken: any = jsonwebtoken.verify(token, '5b45b45h4h45h45');
+    const decodedToken: any = jsonwebtoken.verify(token, process.env.JWL_KEY as string);
     req.userData = { userId: decodedToken.user };
     next();
   } catch(err) {

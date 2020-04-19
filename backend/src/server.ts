@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 });
 
 // default error when server is not responding
-app.use((error : any, req : any, res : any, next : any) => {
+app.use((error: any, req: any, res: any, next: any) => {
   if (res.headerSent) {
     return next(error);
   }
@@ -41,7 +41,7 @@ app.use((error : any, req : any, res : any, next : any) => {
 
 mongoose
   .connect(
-    "mongodb+srv://osilayer8:********@cluster0-f6ait.mongodb.net/freelanced?retryWrites=true&w=majority",
+    `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0-f6ait.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`,
     { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
   )
   .then(() => {

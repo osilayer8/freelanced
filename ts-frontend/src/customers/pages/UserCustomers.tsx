@@ -18,7 +18,7 @@ const UserCustomers: React.FC = () => {
     const fetchCustomers = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/customers/user/${userId}`,
+          process.env.REACT_APP_BACKEND_URL + `/customers/user/${userId}`,
           'GET',
           null,
           {

@@ -17,7 +17,7 @@ const User: React.FC = () => {
     const fetchUser = async () => {
       try {
         const responseData = await sendRequest(
-          `http://localhost:5000/api/users/${auth.userId}`,
+          process.env.REACT_APP_BACKEND_URL + `/users/${auth.userId}`,
           'GET',
           null,
           {

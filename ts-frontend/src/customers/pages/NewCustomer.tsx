@@ -37,7 +37,7 @@ const NewCustomer: React.FC = () => {
     event.preventDefault();
     try {
       await sendRequest(
-        'http://localhost:5000/api/customers',
+        process.env.REACT_APP_BACKEND_URL + '/customers',
         'POST',
         JSON.stringify({
           company: formState.inputs.company.value,
