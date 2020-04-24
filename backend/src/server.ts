@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 
 import { router as usersRoutes } from './routes/users-routes';
 import { router as customersRoutes } from './routes/customers-routes';
+import { router as projectsRoutes } from './routes/projects-routes';
 import HttpError from './models/http-error';
 
 const app = express();
@@ -23,6 +24,8 @@ app.use((req, res, next) => {
 app.use("/api/users", usersRoutes);
 
 app.use("/api/customers", customersRoutes);
+
+app.use("/api/projects", projectsRoutes);
 
 // give back custom error msg if route doesn't exist
 app.use((req, res, next) => {

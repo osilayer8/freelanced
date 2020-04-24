@@ -2,7 +2,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 
 export const useHttpClient = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState();
+  const [error, setError] = useState<any>();
 
   const activeHttpRequests: React.MutableRefObject<any> = useRef([]);
 
@@ -22,9 +22,7 @@ export const useHttpClient = () => {
 
         const responseData = await response.json();
 
-        activeHttpRequests.current = activeHttpRequests.current.filter((reqCtrl: any) => {
-          return reqCtrl !== httpAbortCtrl;
-        });
+        activeHttpRequests.current = activeHttpRequests.current.filter( (reqCtrl: AbortController) => reqCtrl !== httpAbortCtrl );
 
         if (!response.ok) {
           throw new Error(responseData.message);
@@ -42,7 +40,7 @@ export const useHttpClient = () => {
   );
 
   const clearError = () => {
-    setError(undefined);
+    setError(null);
   };
 
   useEffect(() => {

@@ -9,7 +9,8 @@ const customerSchema = new mongoose.Schema({
   country: { type: String, required: false },
   phone: { type: String, required: false },
   website: { type: String, required: false },
+  projects: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Projects' }],
   creator: { type: mongoose.Types.ObjectId, required: true, ref: 'User' }
 });
 
-export = mongoose.model("Customer", customerSchema);
+export = mongoose.model('Customer', customerSchema);

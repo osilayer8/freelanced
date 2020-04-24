@@ -38,28 +38,26 @@ router.get("/:cid", async (req: any, res: any, next: any) => {
 router.get("/user/:uid", async (req: any, res: any, next: any) => {
   const userId = req.params.uid;
 
-  let customers;
+  let userWithCustomers: any;
   try {
-    customers = await Customer.find({ creator: userId });
+    userWithCustomers = await User.findById(userId).populate('customers');
   } catch (err) {
-    const error = new HttpError("Could not find user", 500);
+    const error = new HttpError("Fetching customers failed", 500);
     return next(error);
   }
 
-  if (!customers || customers.length === 0) {
+  if (!userWithCustomers || userWithCustomers.customers.length === 0) {
     return next(
       new HttpError("Could not find customers for the provided used id", 404)
     );
   }
 
-  if (customers[0].toObject().creator.toString() !== req.userData.userId) {
+  if (userWithCustomers.customers[0].toObject().creator.toString() !== req.userData.userId) {
     const error = new HttpError("Not allowed to see this places", 401);
     return next(error);
   }
 
-  res.json({
-    customers: customers.map(customer => customer.toObject({ getters: true }))
-  });
+  res.json({ customers: userWithCustomers.customers.map((customer: any) => customer.toObject({ getters: true })) });
 });
 
 // update customer
@@ -189,6 +187,7 @@ router.post("/", async (req: any, res: any, next: any) => {
     country,
     phone,
     website,
+    projects: [],
     creator: req.userData.userId
   });
 

@@ -10,21 +10,22 @@ import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
 import './CustomerItem.scss';
 
+interface Array {
+  title: string,
+  hours: number
+}
+
 interface Props {
-  company: string,
-  email: string,
-  street?: string,
-  plz?: string,
-  city?: string,
-  country?: string,
-  phone?: string,
-  website?: string,
+  name: string,
+  price?: number,
+  status?: string,
+  tasks?: Array,
   id: string,
-  creatorId?: string,
+  ownerId?: string,
   onDelete?: any
 }
 
-const CustomerItem: React.FC<Props> = (props) => {
+const ProjectItem: React.FC<Props> = (props) => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
@@ -41,7 +42,7 @@ const CustomerItem: React.FC<Props> = (props) => {
     setShowConfirmModal(false);
     try {
       await sendRequest(
-        process.env.REACT_APP_BACKEND_URL + `/customers/${props.id}`,
+        process.env.REACT_APP_BACKEND_URL + `/projects/${props.id}`,
         'DELETE',
         null,
         {
@@ -71,7 +72,7 @@ const CustomerItem: React.FC<Props> = (props) => {
         }
       >
         <p>
-          Do you want to proceed and delete this customer? Please note that it
+          Do you want to proceed and delete this project? Please note that it
           can't be undone thereafter.
         </p>
       </Modal>
@@ -79,25 +80,13 @@ const CustomerItem: React.FC<Props> = (props) => {
         <Card className="customer-item__content">
           {isLoading && <LoadingSpinner asOverlay />}
           <div className="customer-item__info">
-            <h2>{props.company}</h2>
-            <h3>{props.email}</h3>
-            {props.street ? <p>{props.street}</p> : null}
-            {props.plz ? <p>{props.country} {props.plz} {props.city}</p> : null}
-            {props.phone ? <p>{props.phone}</p> : null}
-            {props.website ? <p>{props.website}</p> : null}
+            <h2>{props.name}</h2>
+            <h3>{props.price}</h3>
           </div>
           <div className="customer-item__actions">
-            <Button to={`/${props.id}/projects`}>PROJECTS</Button>
+            <Button to={`/projects/${props.id}`}>EDIT</Button>
 
-            {auth.userId === props.creatorId && (
-              <Button to={`/customers/${props.id}`}>EDIT</Button>
-            )}
-
-            {auth.userId === props.creatorId && (
-              <Button danger onClick={showDeleteWarningHandler}>
-                DELETE
-              </Button>
-            )}
+            <Button danger onClick={showDeleteWarningHandler}>DELETE</Button>
           </div>
         </Card>
       </li>
@@ -105,4 +94,4 @@ const CustomerItem: React.FC<Props> = (props) => {
   );
 };
 
-export default CustomerItem;
+export default ProjectItem;

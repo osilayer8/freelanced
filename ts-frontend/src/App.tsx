@@ -15,7 +15,10 @@ const User = React.lazy(() => import('./user/pages/User'));
 const NewCustomer = React.lazy(() => import('./customers/pages/NewCustomer'));
 const UserCustomers = React.lazy(() => import('./customers/pages/UserCustomers'));
 const UpdateCustomer = React.lazy(() => import('./customers/pages/UpdateCustomer'));
-const Auth = React.lazy(() => import('./user/pages/User'));
+const NewProject = React.lazy(() => import('./customers/pages/NewProject'));
+const CustomerProjects = React.lazy(() => import('./customers/pages/CustomerProjects'));
+const Project = React.lazy(() => import('./customers/pages/Project'));
+const Auth = React.lazy(() => import('./user/pages/Auth'));
 
 const App = () => {
   const { token, login, logout, userId, checkLogin } = useAuth();
@@ -34,8 +37,17 @@ const App = () => {
         <Route path="/customers/new" exact>
           <NewCustomer />
         </Route>
-        <Route path="/customers/:customerId">
+        <Route path="/customers/:customerId" exact>
           <UpdateCustomer />
+        </Route>
+        <Route path="/:customerId/projects" exact>
+          <CustomerProjects />
+        </Route>
+        <Route path="/:customerId/projects/new" exact>
+          <NewProject />
+        </Route>
+        <Route path="/projects/:projectId">
+          <Project />
         </Route>
         <Redirect to="/user" />
       </Switch>
