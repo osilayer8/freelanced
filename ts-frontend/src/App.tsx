@@ -14,9 +14,9 @@ import LoadingSpinner from './shared/components/UIElements/LoadingSpinner';
 const User = React.lazy(() => import('./user/pages/User'));
 const NewCustomer = React.lazy(() => import('./customers/pages/NewCustomer'));
 const UserCustomers = React.lazy(() => import('./customers/pages/UserCustomers'));
+const Customer = React.lazy(() => import('./customers/pages/Customer'));
 const UpdateCustomer = React.lazy(() => import('./customers/pages/UpdateCustomer'));
 const NewProject = React.lazy(() => import('./customers/pages/NewProject'));
-const CustomerProjects = React.lazy(() => import('./customers/pages/CustomerProjects'));
 const Project = React.lazy(() => import('./customers/pages/Project'));
 const Auth = React.lazy(() => import('./user/pages/Auth'));
 
@@ -31,22 +31,22 @@ const App = () => {
         <Route path="/user" exact>
           <User />
         </Route>
-        <Route path="/:userId/customers" exact>
+        <Route path="/customers" exact>
           <UserCustomers />
         </Route>
-        <Route path="/customers/new" exact>
+        <Route path="/customer/new" exact>
           <NewCustomer />
         </Route>
         <Route path="/customers/:customerId" exact>
+          <Customer />
+        </Route>
+        <Route path="/customers/:customerId/edit" exact>
           <UpdateCustomer />
         </Route>
-        <Route path="/:customerId/projects" exact>
-          <CustomerProjects />
-        </Route>
-        <Route path="/:customerId/projects/new" exact>
+        <Route path="/customers/:customerId/projects/new" exact>
           <NewProject />
         </Route>
-        <Route path="/projects/:projectId">
+        <Route path="/customers/:customerId/projects/:projectId" exact>
           <Project />
         </Route>
         <Redirect to="/user" />

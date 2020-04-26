@@ -64,7 +64,7 @@ const UpdateCustomer: React.FC = () => {
       } catch (err) {}
     }
     fetchCustomer();
-  }, [sendRequest, customerId, setFormData]);
+  }, [sendRequest, customerId, setFormData, auth.token]);
 
   const customerUpdateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -87,7 +87,7 @@ const UpdateCustomer: React.FC = () => {
           Authorization: 'Bearer ' + auth.token
         }
       );
-      history.push('/' + auth.userId + '/customers');
+      history.push('/customers/' + customerId);
     } catch (err) {}
   };
 

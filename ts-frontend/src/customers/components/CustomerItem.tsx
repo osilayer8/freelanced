@@ -87,10 +87,8 @@ const CustomerItem: React.FC<Props> = (props) => {
             {props.website ? <p>{props.website}</p> : null}
           </div>
           <div className="customer-item__actions">
-            <Button to={`/${props.id}/projects`}>PROJECTS</Button>
-
             {auth.userId === props.creatorId && (
-              <Button to={`/customers/${props.id}`}>EDIT</Button>
+              <Button to={`/customers/${props.id}`}>OPEN</Button>
             )}
 
             {auth.userId === props.creatorId && (

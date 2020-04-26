@@ -32,7 +32,7 @@ const NewProject: React.FC = () => {
   const projectSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await sendRequest(
+      const responsiveData = await sendRequest(
         process.env.REACT_APP_BACKEND_URL + '/projects',
         'POST',
         JSON.stringify({
@@ -45,9 +45,13 @@ const NewProject: React.FC = () => {
           Authorization: 'Bearer ' + auth.token
         }
       );
-      history.push('/' + customerId + '/projects');
+      redirectToProject(customerId, responsiveData.project.id);
     } catch(err) {}
   };
+
+  const redirectToProject = (cid: string, pid: number) => {
+    history.push('/customers/' + cid + '/projects/' + pid);
+  }
 
   return (
     <React.Fragment>
@@ -71,7 +75,6 @@ const NewProject: React.FC = () => {
           validators={[VALIDATOR_REQUIRE()]}
           errorText="Please enter a valid price."
           onInput={inputHandler}
-          initialValid={true}
         />
         <Button type="submit" disabled={!formState.isValid}>
           ADD PROJECT

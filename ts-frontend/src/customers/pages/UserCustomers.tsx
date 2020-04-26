@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams } from 'react-router-dom';
 
 import CustomerList from '../components/CustomerList';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
@@ -9,14 +8,13 @@ import { AuthContext } from '../../shared/context/auth-context';
 const UserCustomers: React.FC = () => {
   const auth = useContext(AuthContext);
   const [loadedCustomers, setLoadedCustomers] = useState<any>([]);
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const userId = useParams<{userId: string}>().userId;
+  const { isLoading,  sendRequest } = useHttpClient();
 
   useEffect(() => {
     const fetchCustomers = async () => {
       try {
         const responseData = await sendRequest(
-          process.env.REACT_APP_BACKEND_URL + `/customers/user/${userId}`,
+          process.env.REACT_APP_BACKEND_URL + `/customers/user/${auth.userId}`,
           'GET',
           null,
           {
@@ -27,7 +25,7 @@ const UserCustomers: React.FC = () => {
       } catch (err) {}
     }
     fetchCustomers();
-  }, [sendRequest, userId]);
+  }, [sendRequest, auth.userId, auth.token]);
 
   const customerDeletedHandler = (deletedCustomerId: number) => {
     setLoadedCustomers((prevCustomers: any) =>

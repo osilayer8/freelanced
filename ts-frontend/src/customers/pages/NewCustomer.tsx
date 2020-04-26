@@ -31,12 +31,11 @@ const NewCustomer: React.FC = () => {
     false
   );
 
-  const history = useHistory();
-
+  
   const customerSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      await sendRequest(
+      const responseData = await sendRequest(
         process.env.REACT_APP_BACKEND_URL + '/customers',
         'POST',
         JSON.stringify({
@@ -53,10 +52,16 @@ const NewCustomer: React.FC = () => {
           'Content-Type': 'application/json',
           Authorization: 'Bearer ' + auth.token
         }
-      );
-      history.push('/' + auth.userId + '/customers');
-    } catch(err) {}
-  };
+        );
+        redirectToCustomer(responseData.customer.id);
+      } catch(err) {}
+    };
+
+  const history = useHistory();
+  
+  const redirectToCustomer = (id: number) => {
+    history.push('/customers/' + id);
+  }
 
   return (
     <React.Fragment>

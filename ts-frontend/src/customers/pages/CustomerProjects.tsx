@@ -11,7 +11,7 @@ import Button from '../../shared/components/FormElements/Button';
 const UserProjects: React.FC = () => {
   const auth = useContext(AuthContext);
   const [loadedProjects, setLoadedProjects] = useState<any>([]);
-  const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { isLoading, sendRequest } = useHttpClient();
   let cid = useParams<{customerId: string}>().customerId;
    
   useEffect(() => {
@@ -29,7 +29,7 @@ const UserProjects: React.FC = () => {
       } catch (err) {}
     }
     fetchProjects();
-  }, [sendRequest, cid]);
+  }, [sendRequest, cid, auth.token]);
 
   const projectDeletedHandler = (deletedProjectId: number) => {
     setLoadedProjects((prevProjects: any) =>
@@ -45,7 +45,7 @@ const UserProjects: React.FC = () => {
         </div>
       )}
       <div className="center">
-        <Button to={`/${cid}/projects/new`}>ADD NEW</Button>
+        <Button to={`/customers/${cid}/projects/new`}>ADD NEW PROJECT</Button>
       </div>
       {!isLoading && loadedProjects && <ProjectList items={loadedProjects} onDeleteProject={projectDeletedHandler} />}
     </React.Fragment>

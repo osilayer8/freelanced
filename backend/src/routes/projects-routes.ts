@@ -148,11 +148,11 @@ router.get("/", async (req: any, res: any, next: any) => {
     return next(error);
   }
 
-  // no one allowed to see all projects
-  // if (req.userData.customerId !== '0123456789') {
-  //   const error = new HttpError("Not allowed to see this places", 401);
-  //   return next(error);
-  // }
+  //no one allowed to see all projects
+  if (req.userData.userId !== '0123456789') {
+    const error = new HttpError("Not allowed to see this places", 401);
+    return next(error);
+  }
 
   res.json({
     projects: projects.map(project => project.toObject({ getters: true }))

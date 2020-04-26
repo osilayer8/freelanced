@@ -11,7 +11,7 @@ const CustomerList: React.FC<any> = (props) => {
       <div className="customer-list center">
         <Card>
           <h2>No customers found. Maybe create one?</h2>
-          <Button to="/customers/new">New customer</Button>
+          <Button to="/customer/new">New customer</Button>
         </Card>
       </div>
     );

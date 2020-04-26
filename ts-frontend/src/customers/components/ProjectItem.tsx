@@ -17,11 +17,11 @@ interface Array {
 
 interface Props {
   name: string,
-  price?: number,
+  price: number,
   status?: string,
-  tasks?: Array,
+  tasks?: any,
   id: string,
-  ownerId?: string,
+  ownerId: string,
   onDelete?: any
 }
 
@@ -52,6 +52,19 @@ const ProjectItem: React.FC<Props> = (props) => {
       props.onDelete(props.id);
     } catch(err) {}
   };
+
+  const projectCalc = () => {
+    let hours = 0, item;
+    for(item in props.tasks) {
+      hours += props.tasks[item].hours;
+    }
+    const total = props.price * hours;
+    return {
+      hours: hours,
+      costs: total
+    };
+  };
+
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
@@ -81,10 +94,11 @@ const ProjectItem: React.FC<Props> = (props) => {
           {isLoading && <LoadingSpinner asOverlay />}
           <div className="customer-item__info">
             <h2>{props.name}</h2>
-            <h3>{props.price}</h3>
+            <h3>Total costs:  {projectCalc().costs},-</h3>
+            <h4>Calculation: {projectCalc().hours} Hours</h4>
           </div>
           <div className="customer-item__actions">
-            <Button to={`/projects/${props.id}`}>EDIT</Button>
+            <Button to={`/customers/${props.ownerId}/projects/${props.id}`}>OPEN</Button>
 
             <Button danger onClick={showDeleteWarningHandler}>DELETE</Button>
           </div>

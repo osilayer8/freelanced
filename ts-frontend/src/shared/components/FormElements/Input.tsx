@@ -5,8 +5,8 @@ import './Input.scss';setTimeout(() => {}, 500);
 
 interface State {
   value: string,
-  isTouched: boolean,
-  isValid: boolean
+  isTouched?: boolean,
+  isValid?: boolean
 }
 
 interface Action {
@@ -63,7 +63,7 @@ const Input: React.FC<Props> = (props) => {
   });
 
   const { id, onInput } = props;
-  const { value, isValid } = inputState;
+  const { value, isValid }: any = inputState;
 
 
   useEffect(() => {

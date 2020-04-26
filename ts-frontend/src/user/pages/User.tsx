@@ -27,10 +27,10 @@ const User: React.FC = () => {
         setLoadedUser(responseData.user);
       } catch (err) {}
     };
-    {auth.userId && fetchUser()};
-  }, [sendRequest, auth.userId]);
+    auth.userId && fetchUser();
+  }, [sendRequest, auth.userId, auth.token]);
 
-  if (!loadedUser) {
+  if (!isLoading && !loadedUser) {
     return (
       <div className="center">
         <Card>
@@ -43,7 +43,7 @@ const User: React.FC = () => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      {isLoading && (
+      {isLoading && !loadedUser && (
         <div className="center">
           <LoadingSpinner />
         </div>
