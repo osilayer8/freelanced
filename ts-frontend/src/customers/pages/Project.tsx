@@ -93,7 +93,6 @@ const UpdateProject: React.FC = () => {
       if (idx !== sidx) return task;
       return { ...task, [name]: value };
     });
-
     setLoadedProject({ ...loadedProject, tasks: newTasks });
   };
   
@@ -107,6 +106,19 @@ const UpdateProject: React.FC = () => {
     setLoadedProject({
       ...loadedProject, tasks: loadedProject.tasks.filter((_s: any, sidx: number) => idx !== sidx)
     });
+  };
+
+  const projectCalc = () => {
+    let hours = 0, item = '';
+    for(item in loadedProject.tasks) {
+      const hour = parseInt(loadedProject.tasks[item].hours);
+      const parse = hour >= 0 ? hour : 0;
+      hours += parse;
+    }
+    return {
+      hours: hours,
+      costs: loadedProject.price * hours
+    }
   };
 
   return (
@@ -127,6 +139,8 @@ const UpdateProject: React.FC = () => {
                 />
               ))}
             </ul>
+            <h3>Total costs: {projectCalc().costs},-</h3>
+            <h4>Calculation: {projectCalc().hours} Hours</h4>
           </Card>
           <Card>
             <form className="customer-form" onSubmit={projectUpdateSubmitHandler}>
@@ -155,7 +169,7 @@ const UpdateProject: React.FC = () => {
               {loadedProject.tasks.map((task: Array, idx: number) => (
                 <div className="fields" key={task.id}>
                   <input type="text" name="title" value={task.title} onChange={handleSubInputChange(idx)} />
-                  <input type="number" name="hours" value={task.hours} onChange={handleSubInputChange(idx)} />
+                  <input type="number" name="hours" value={task.hours === null ? 0 : task.hours} onChange={handleSubInputChange(idx)} />
                   <button
                     type="button"
                     onClick={handleRemoveTask(idx)}

@@ -32,7 +32,7 @@ const NewProject: React.FC = () => {
   const projectSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
-      const responsiveData = await sendRequest(
+      const responseData = await sendRequest(
         process.env.REACT_APP_BACKEND_URL + '/projects',
         'POST',
         JSON.stringify({
@@ -45,7 +45,7 @@ const NewProject: React.FC = () => {
           Authorization: 'Bearer ' + auth.token
         }
       );
-      redirectToProject(customerId, responsiveData.project.id);
+      redirectToProject(customerId, responseData.project.id);
     } catch(err) {}
   };
 
