@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
+import { PDFDownloadLink } from "@react-pdf/renderer";
 
 import Button from '../../shared/components/FormElements/Button';
 import Card from '../../shared/components/UIElements/Card';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import Pdf from '../../shared/components/UIElements/generatePdf';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
 import TaskItem from '../components/TaskItem';
@@ -141,6 +143,23 @@ const UpdateProject: React.FC = () => {
             </ul>
             <h3>Total costs: {projectCalc().costs},-</h3>
             <h4>Calculation: {projectCalc().hours} Hours</h4>
+            {
+              <PDFDownloadLink
+                document={<Pdf data={projectCalc()} />}
+                fileName="invoice.pdf"
+                style={{
+                  textDecoration: "none",
+                  padding: "10px",
+                  color: "#4a4a4a",
+                  backgroundColor: "#f2f2f2",
+                  border: "1px solid #4a4a4a"
+                }}
+              >
+                {({ blob, url, loading, error }) =>
+                  loading ? "Loading document..." : "Download Pdf"
+                }
+              </PDFDownloadLink>
+            }
           </Card>
           <Card>
             <form className="customer-form" onSubmit={projectUpdateSubmitHandler}>
