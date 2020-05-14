@@ -58,6 +58,9 @@ const NewProject: React.FC = () => {
       <ErrorModal error={error} onClear={clearError} />
       <form className="customer-form" onSubmit={projectSubmitHandler}>
         {isLoading && <LoadingSpinner asOverlay />}
+        <div className="center">
+          <h1>Create new Project</h1>
+        </div>
         <Input
           id="name"
           element="input"

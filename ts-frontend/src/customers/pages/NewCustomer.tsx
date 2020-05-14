@@ -68,6 +68,9 @@ const NewCustomer: React.FC = () => {
       <ErrorModal error={error} onClear={clearError} />
       <form className="customer-form" onSubmit={customerSubmitHandler}>
         {isLoading && <LoadingSpinner asOverlay />}
+        <div className="center">
+          <h1>Create new customer</h1>
+        </div>
         <Input
           id="company"
           element="input"

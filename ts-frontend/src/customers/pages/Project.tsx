@@ -6,10 +6,11 @@ import Button from '../../shared/components/FormElements/Button';
 import Card from '../../shared/components/UIElements/Card';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
-import Pdf from '../../shared/components/UIElements/generatePdf';
+//import Pdf from '../../shared/components/UIElements/generatePdf';
+import Invoice from '../../shared/components/Invoice/Invoice';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
-import TaskItem from '../components/TaskItem';
+//import TaskItem from '../components/TaskItem';
 import './CustomerForm.scss';
 
 interface Array {
@@ -18,12 +19,35 @@ interface Array {
   hours: number
 }
 
+interface Result {
+  costs: number,
+  hours: number
+}
+
+function projectCalc(res: any) {
+  let hours = 0, item = '';
+  for(item in res.tasks) {
+    const hour = parseInt(res.tasks[item].hours);
+    const parse = hour >= 0 ? hour : 0;
+    hours += parse;
+  }
+  return({
+    hours: hours,
+    costs: res.price * hours
+  });
+};
+
 const UpdateProject: React.FC = () => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [loadedProject, setLoadedProject] = useState<any>();
+  const [result, setResult] = useState<Result>({
+    costs: 0,
+    hours: 0
+  });
+  const [show, setHide] = useState<boolean>(false);
   const projectId = useParams<{projectId: string}>().projectId;
-  
+
   useEffect(() => {
     const fetchProject = async () => {
       try {
@@ -36,12 +60,14 @@ const UpdateProject: React.FC = () => {
           }
         );
         setLoadedProject(responseData.project);
+        setResult(projectCalc(responseData.project));
       } catch (err) {}
     }
     fetchProject();
   }, [sendRequest, projectId, auth.token]);
 
   const projectUpdateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+    setHide(false);
     event.preventDefault();
     try {
       const responseData = await sendRequest(
@@ -85,6 +111,8 @@ const UpdateProject: React.FC = () => {
     const name = target.name;
     
     setLoadedProject({ ...loadedProject, [name]: value });
+    setResult(projectCalc({ ...loadedProject, [name]: value }));
+    setHide(false);
   }
 
   const handleSubInputChange = (idx: number) => (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -96,6 +124,8 @@ const UpdateProject: React.FC = () => {
       return { ...task, [name]: value };
     });
     setLoadedProject({ ...loadedProject, tasks: newTasks });
+    setResult(projectCalc({ ...loadedProject, tasks: newTasks }));
+    setHide(false);
   };
   
   const handleAddTask = () => {
@@ -110,27 +140,17 @@ const UpdateProject: React.FC = () => {
     });
   };
 
-  const projectCalc = () => {
-    let hours = 0, item = '';
-    for(item in loadedProject.tasks) {
-      const hour = parseInt(loadedProject.tasks[item].hours);
-      const parse = hour >= 0 ? hour : 0;
-      hours += parse;
-    }
-    return {
-      hours: hours,
-      costs: loadedProject.price * hours
-    }
-  };
+  const showButton = () => {
+    console.log('show');
+    setHide(true);
+  }
 
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
       {!isLoading && loadedProject && (
-        <div className="center">
-          <Card>
-            <h1>{loadedProject.name}</h1>
-            <h2>Price per Hour: {loadedProject.price},-</h2>
+        <div className="text-center">
+            {/* <h2>Price per Hour: {loadedProject.price},-</h2>
             <ul className="customer-list">
               {loadedProject.tasks.map((task: Array) => (
                 <TaskItem
@@ -140,74 +160,72 @@ const UpdateProject: React.FC = () => {
                   hours={task.hours}
                 />
               ))}
-            </ul>
-            <h3>Total costs: {projectCalc().costs},-</h3>
-            <h4>Calculation: {projectCalc().hours} Hours</h4>
-            {
-              <PDFDownloadLink
-                document={<Pdf data={projectCalc()} />}
-                fileName="invoice.pdf"
-                style={{
-                  textDecoration: "none",
-                  padding: "10px",
-                  color: "#4a4a4a",
-                  backgroundColor: "#f2f2f2",
-                  border: "1px solid #4a4a4a"
-                }}
-              >
-                {({ blob, url, loading, error }) =>
-                  loading ? "Loading document..." : "Download Pdf"
-                }
-              </PDFDownloadLink>
-            }
-          </Card>
-          <Card>
-            <form className="customer-form" onSubmit={projectUpdateSubmitHandler}>
-              <input type="text" name="name" value={loadedProject.name} onChange={handleInputChange} />
-              <input type="number" name="price" value={loadedProject.price} onChange={handleInputChange} />
-              {/* <Input
-                id="name"
-                element="input"
-                type="text"
-                label="Project Name"
-                validators={[]}
-                onInput={inputHandler}
-                initialValue={loadedProject.name}
-                initialValid={true}
+            </ul> */}
+          <form className="customer-form" onSubmit={projectUpdateSubmitHandler}>
+            <div className="center">
+              <input type="text" className="h1 inputTitle" name="name" value={loadedProject.name} onChange={handleInputChange} />
+            </div>
+            <label>Price per hour:</label>
+            <input type="number" name="price" value={loadedProject.price} onChange={handleInputChange} className="price" />
+            {/* <Input
+              id="name"
+              element="input"
+              type="text"
+              label="Project Name"
+              validators={[]}
+              onInput={inputHandler}
+              initialValue={loadedProject.name}
+              initialValid={true}
               />
               <Input
-                id="price"
-                element="input"
-                type="text"
-                label="Price"
-                validators={[]}
-                onInput={inputHandler}
-                initialValue={loadedProject.price}
-                initialValid={true}
-              /> */}
-              {loadedProject.tasks.map((task: Array, idx: number) => (
-                <div className="fields" key={task.id}>
-                  <input type="text" name="title" value={task.title} onChange={handleSubInputChange(idx)} />
-                  <input type="number" name="hours" value={task.hours === null ? 0 : task.hours} onChange={handleSubInputChange(idx)} />
-                  <button
-                    type="button"
-                    onClick={handleRemoveTask(idx)}
-                  >
-                    Remove Task
-                  </button>
-                </div>
-              ))}
-
+              id="price"
+              element="input"
+              type="text"
+              label="Price"
+              validators={[]}
+              onInput={inputHandler}
+              initialValue={loadedProject.price}
+              initialValid={true}
+            /> */}
+            <div className="labels">
+              <label>Task</label>
+              <label>Calculation</label>
+            </div>
+            {loadedProject.tasks.map((task: Array, idx: number) => (
+              <div className="fields" key={task.id}>
+                <input type="text" name="title" value={task.title} onChange={handleSubInputChange(idx)} />
+                <input type="number" name="hours" value={task.hours === null ? 0 : task.hours} onChange={handleSubInputChange(idx)} />
+                <button
+                  type="button"
+                  onClick={handleRemoveTask(idx)}
+                >
+                  Remove Task
+                </button>
+              </div>
+            ))}
+            <div className="sidebar">
               <Button type="submit">
-                UPDATE PROJECT
+                SAVE
               </Button>
-            </form>
+              <Button type="button" onClick={showButton} hide={show}>Generate PDF</Button>
+              {show && (<Button type="button"><PDFDownloadLink
+                  document={<Invoice result={result} />}
+                  fileName="invoice.pdf"
+                >
+                  {({ blob, url, loading, error }) =>
+                    loading ? "Loading document..." : "Download PDF"
+                  }
+                </PDFDownloadLink></Button>
+              )}
+              <h3>Total costs: {result.costs},-</h3>
+              <h4>Calculation: {result.hours} Hours</h4>
+            </div>
+          </form>
           <Button
             type="button"
             onClick={handleAddTask}>
             Add Task
           </Button>
-          </Card>
         </div>
       )}
     </React.Fragment>

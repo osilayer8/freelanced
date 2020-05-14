@@ -1,10 +1,49 @@
 .customer-form {
   list-style: none;
+}
+
+.h1 {
+  font-size: 2em;
+  font-weight: 500;
+  border: 0;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.inputTitle {
+  border-bottom: 1px solid transparent;
+  &:focus {
+    border-color: #000;
+  }
+}
+
+.price {
+  text-align: center;
+  font-size: 4rem;
+  width: 140px;
   margin: 0 auto;
-  padding: 1rem;
-  width: 90%;
-  max-width: 40rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  border-radius: 6px;
-  background: white;
+  padding: .5rem 0;
+}
+
+.labels {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  label {
+    margin: 0 3rem 0 1.5rem;
+  }
+}
+
+.fields {
+  display: flex;
+  margin-bottom: 1.5rem;
+  input {
+    margin: 0 .5rem;
+    &[type='number'] {
+      max-width: 100px;
+      text-align: center;
+      font-weight: 700;
+    }
+  }
 }

@@ -12,7 +12,8 @@ interface Props {
   to?: string,
   type?: ButtonType,
   onClick?: () => void,
-  disabled?: boolean
+  disabled?: boolean,
+  hide?: boolean
 }
 
 const Button: React.FC<Props> = (props) => {
@@ -46,6 +47,7 @@ const Button: React.FC<Props> = (props) => {
       type={props.type}
       onClick={props.onClick}
       disabled={props.disabled}
+      hidden={props.hide}
     >
       {props.children}
     </button>

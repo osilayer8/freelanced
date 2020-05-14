@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 
-import Card from '../../shared/components/UIElements/Card';
+import Row from '../../shared/components/UIElements/Row';
 import Button from '../../shared/components/FormElements/Button';
 import Modal from '../../shared/components/UIElements/Modal';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
@@ -76,28 +77,24 @@ const CustomerItem: React.FC<Props> = (props) => {
         </p>
       </Modal>
       <li className="customer-item">
-        <Card className="customer-item__content">
+        <Row className="customer-item__content relative">
           {isLoading && <LoadingSpinner asOverlay />}
-          <div className="customer-item__info">
-            <h2>{props.company}</h2>
-            <h3>{props.email}</h3>
-            {props.street ? <p>{props.street}</p> : null}
-            {props.plz ? <p>{props.country} {props.plz} {props.city}</p> : null}
-            {props.phone ? <p>{props.phone}</p> : null}
-            {props.website ? <p>{props.website}</p> : null}
-          </div>
-          <div className="customer-item__actions">
-            {auth.userId === props.creatorId && (
-              <Button to={`/customers/${props.id}`}>OPEN</Button>
-            )}
-
-            {auth.userId === props.creatorId && (
-              <Button danger onClick={showDeleteWarningHandler}>
-                DELETE
-              </Button>
-            )}
-          </div>
-        </Card>
+          {auth.userId === props.creatorId && props.onDelete && (
+            <button className="customer-item__action" onClick={showDeleteWarningHandler}>DELETE</button>
+          )}
+          <Link to={props.onDelete ? `/customers/${props.id}` : `/customers/${props.id}/edit`}>
+            <div className="customer-item__details">
+              <p>{props.email}</p>
+              {props.street ? <p>{props.street}</p> : null}
+              {props.plz ? <p>{props.country} {props.plz} {props.city}</p> : null}
+              {props.phone ? <p>{props.phone}</p> : null}
+              {props.website ? <p>{props.website}</p> : null}
+            </div>
+            <div className="customer-item__info">
+              <h2>{props.company}</h2>
+            </div>
+          </Link>
+        </Row>
       </li>
     </React.Fragment>
   );

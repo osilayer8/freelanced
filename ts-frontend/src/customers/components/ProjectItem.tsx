@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 
 import Card from '../../shared/components/UIElements/Card';
 import Button from '../../shared/components/FormElements/Button';
@@ -8,7 +9,7 @@ import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
-import './CustomerItem.scss';
+import './ProjectItem.scss';
 
 interface Array {
   title: string,
@@ -55,7 +56,7 @@ const ProjectItem: React.FC<Props> = (props) => {
 
   const projectCalc = () => {
     let hours = 0, item;
-    for(item in props.tasks) {
+    for (item in props.tasks) {
       hours += props.tasks[item].hours;
     }
     const total = props.price * hours;
@@ -72,7 +73,7 @@ const ProjectItem: React.FC<Props> = (props) => {
         show={showConfirmModal}
         onCancel={cancelDeleteHandler}
         header="Are you sure?"
-        footerClass="customer-item__modal-actions"
+        footerClass="project-item__modal-actions"
         footer={
           <React.Fragment>
             <Button inverse onClick={cancelDeleteHandler}>
@@ -89,19 +90,20 @@ const ProjectItem: React.FC<Props> = (props) => {
           can't be undone thereafter.
         </p>
       </Modal>
-      <li className="customer-item">
-        <Card className="customer-item__content">
+      <li className="project-item">
+        <Card className="project-item__content relative">
           {isLoading && <LoadingSpinner asOverlay />}
-          <div className="customer-item__info">
+          <button className="project-item__action" onClick={showDeleteWarningHandler}>DELETE</button>
+          <Link to={`/customers/${props.ownerId}/projects/${props.id}`}>
+          <div className="project-item__info">
             <h2>{props.name}</h2>
-            <h3>Total costs:  {projectCalc().costs},-</h3>
-            <h4>Calculation: {projectCalc().hours} Hours</h4>
           </div>
-          <div className="customer-item__actions">
-            <Button to={`/customers/${props.ownerId}/projects/${props.id}`}>OPEN</Button>
-
-            <Button danger onClick={showDeleteWarningHandler}>DELETE</Button>
+          <div className="project-item__details">
+            <p>Tasks: {props.tasks.length}</p>
+            <p>Calculation: {projectCalc().hours}h</p>
+            <p>Price:  {projectCalc().costs},-</p>
           </div>
+          </Link>
         </Card>
       </li>
     </React.Fragment>

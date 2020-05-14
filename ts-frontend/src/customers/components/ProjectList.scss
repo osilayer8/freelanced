@@ -1,0 +1,18 @@
+.project-list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-flow: row wrap;
+}
+
+@media (min-width: 768px) {
+  .project-list {
+    margin-left: -1%;
+  }
+}
+
+@media (min-width: 2000px) {
+  .project-list {
+    margin-left: -2%;
+  }
+}

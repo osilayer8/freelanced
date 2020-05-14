@@ -2,12 +2,12 @@ import React from 'react';
 
 import Card from '../../shared/components/UIElements/Card';
 import ProjectItem from './ProjectItem';
-import './CustomerList.scss';
+import './ProjectList.scss';
 
 const ProjectList: React.FC<any> = (props) => {
   if (props.items.length === 0) {
     return (
-      <div className="customer-list center">
+      <div className="project-list center">
         <Card>
           <h2>No projects found. Maybe create one?</h2>
         </Card>
@@ -16,8 +16,8 @@ const ProjectList: React.FC<any> = (props) => {
   }
 
   return (
-    <ul className="customer-list">
-      {props.items.map((project: any) => (
+    <ul className="project-list">
+      {props.items.reverse().map((project: any) => (
         <ProjectItem
           key={project.id}
           id={project.id}

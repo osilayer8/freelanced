@@ -4,6 +4,7 @@ import CustomerList from '../components/CustomerList';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
+import Button from '../../shared/components/FormElements/Button';
 
 const UserCustomers: React.FC = () => {
   const auth = useContext(AuthContext);
@@ -40,6 +41,10 @@ const UserCustomers: React.FC = () => {
           <LoadingSpinner />
         </div>
       )}
+      <div className="sidebar">
+        <Button to={`/customer/new`}>New Customer</Button>
+      </div>
+      <div className="center"><h1>My Customers</h1></div>
       {!isLoading && loadedCustomers && <CustomerList items={loadedCustomers} onDeleteCustomer={customerDeletedHandler} />}
     </React.Fragment>
   );

@@ -44,8 +44,8 @@ const UserProjects: React.FC = () => {
           <LoadingSpinner />
         </div>
       )}
-      <div className="center">
-        <Button to={`/customers/${cid}/projects/new`}>ADD NEW PROJECT</Button>
+      <div className="sidebar">
+        <Button to={`/customers/${cid}/projects/new`}>NEW PROJECT</Button>
       </div>
       {!isLoading && loadedProjects && <ProjectList items={loadedProjects} onDeleteProject={projectDeletedHandler} />}
     </React.Fragment>

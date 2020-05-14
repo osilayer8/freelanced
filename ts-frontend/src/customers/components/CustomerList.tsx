@@ -19,7 +19,7 @@ const CustomerList: React.FC<any> = (props) => {
 
   return (
     <ul className="customer-list">
-      {props.items.map((customer: any) => (
+      {props.items.reverse().map((customer: any) => (
         <CustomerItem
           key={customer.id}
           id={customer.id}

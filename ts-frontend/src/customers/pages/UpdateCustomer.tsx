@@ -113,6 +113,9 @@ const UpdateCustomer: React.FC = () => {
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
       {!isLoading && loadedCustomer && (<form className="customer-form" onSubmit={customerUpdateSubmitHandler}>
+        <div className="center">
+          <h1>Edit customer</h1>
+        </div>
         <Input
           id="company"
           element="input"

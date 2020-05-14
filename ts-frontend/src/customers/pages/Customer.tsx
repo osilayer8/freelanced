@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
 import CustomerProjects from './CustomerProjects';
-import Button from '../../shared/components/FormElements/Button';
+import CustomerItem from '../components/CustomerItem';
 import Card from '../../shared/components/UIElements/Card';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
@@ -54,21 +54,23 @@ const Customer: React.FC = () => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      {!isLoading && loadedCustomer && (<div className="customer-form">
-        <h1>{loadedCustomer.company}</h1>
-        <h3>{loadedCustomer.email}</h3>
-        <ul>
-          <li>{loadedCustomer.street}</li>
-          <li>{loadedCustomer.plz} {loadedCustomer.city}</li>
-          <li>{loadedCustomer.country}</li>
-          <li>{loadedCustomer.phone}</li>
-          <li>{loadedCustomer.website}</li>
-        </ul>
-        <Button to={`/customers/${customerId}/edit`}>
-          EDIT CUSTOMER
-        </Button>
-      </div>)}
+      <div className="center"><h1>Projects at {loadedCustomer.company}</h1></div>
       <CustomerProjects />
+      {!isLoading && loadedCustomer && (
+        <CustomerItem
+          id={loadedCustomer.id}
+          company={loadedCustomer.company}
+          email={loadedCustomer.email}
+          street={loadedCustomer.street}
+          plz={loadedCustomer.plz}
+          city={loadedCustomer.city}
+          country={loadedCustomer.country}
+          phone={loadedCustomer.phone}
+          website={loadedCustomer.website}
+          creatorId={loadedCustomer.creator}
+          onDelete={false}
+          />
+      )}
     </React.Fragment>
   );
 };
