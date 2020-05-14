@@ -1,6 +1,7 @@
 import React from "react";
 
 import Card from "../../shared/components/UIElements/Card";
+import Button from '../../shared/components/FormElements/Button';
 import "./UserItem.scss";
 
 interface Props {
@@ -18,6 +19,7 @@ const UserItem: React.FC<Props> = (props) => {
             {props.name}
           </h1>
           <h2>{props.email}</h2>
+          <Button to="/user/edit">EDIT USER</Button>
         </div>
       </Card>
     </li>

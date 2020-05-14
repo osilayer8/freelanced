@@ -7,7 +7,8 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import {
   VALIDATOR_EMAIL,
-  VALIDATOR_REQUIRE
+  VALIDATOR_REQUIRE,
+  VALIDATOR_MINLENGTH
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
@@ -53,7 +54,7 @@ const Auth: React.FC = () => {
       setFormData(
         {
           ...formState.inputs,
-          pass: {
+          name: {
             value: '',
             isValid: false
           }
@@ -132,9 +133,9 @@ const Auth: React.FC = () => {
           <Input
             element="input"
             id="pass"
-            type="text"
+            type="password"
             label="Password"
-            validators={[VALIDATOR_REQUIRE()]}
+            validators={[VALIDATOR_MINLENGTH(6)]}
             errorText="Please enter a valid password"
             onInput={inputHandler}
           />

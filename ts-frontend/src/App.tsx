@@ -12,6 +12,7 @@ import { useAuth } from './shared/hooks/auth-hook';
 import LoadingSpinner from './shared/components/UIElements/LoadingSpinner';
 
 const User = React.lazy(() => import('./user/pages/User'));
+const UpdateUser = React.lazy(() => import('./user/pages/UpdateUser'));
 const NewCustomer = React.lazy(() => import('./customers/pages/NewCustomer'));
 const UserCustomers = React.lazy(() => import('./customers/pages/UserCustomers'));
 const Customer = React.lazy(() => import('./customers/pages/Customer'));
@@ -31,6 +32,9 @@ const App = () => {
         <Route path="/user" exact>
           <User />
         </Route>
+        <Route path="/user/edit" exact>
+          <UpdateUser />
+        </Route>
         <Route path="/customers" exact>
           <UserCustomers />
         </Route>
@@ -49,7 +53,7 @@ const App = () => {
         <Route path="/customers/:customerId/projects/:projectId" exact>
           <Project />
         </Route>
-        <Redirect to="/user" />
+        <Redirect to="/customers" />
       </Switch>
     );
   } else {
@@ -69,11 +73,11 @@ const App = () => {
     >
       <Router>
         <MainNavigation />
-        {checkLogin && <main><Suspense fallback={
+        {checkLogin && <div className="content"><Suspense fallback={
           <div className="center">
             <LoadingSpinner />
           </div>
-        }>{routes}</Suspense></main>}
+        }>{routes}</Suspense></div>}
       </Router>
     </AuthContext.Provider>
   );
