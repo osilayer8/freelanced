@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import uniqueValidator from 'mongoose-unique-validator';
 
 const userSchema = new mongoose.Schema({
+  created: { type: Date, required: false },
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   pass: { type: String, required: true },

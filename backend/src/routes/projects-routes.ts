@@ -170,6 +170,7 @@ router.post("/", async (req: any, res: any, next: any) => {
   } = req.body;
 
   const createdProject = new Project({
+    created: new Date(),
     name,
     price,
     status,

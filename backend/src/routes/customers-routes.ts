@@ -179,6 +179,7 @@ router.post("/", async (req: any, res: any, next: any) => {
   } = req.body;
 
   const createdCustomer = new Customer({
+    created: new Date(),
     company,
     email,
     street,

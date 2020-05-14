@@ -75,6 +75,7 @@ router.post("/signup", async (req, res, next) => {
   }
 
   const createdUser: any = new User({
+    created: new Date(),
     name,
     email,
     pass: hashedPassword,
@@ -91,7 +92,7 @@ router.post("/signup", async (req, res, next) => {
 
   let token: string;
   try {
-    token = jsonwebtoken.sign({ user: createdUser.id, email: createdUser.email }, process.env.JWL_KEY as string, { expiresIn: '2h' });
+    token = jsonwebtoken.sign({ user: createdUser.id, email: createdUser.email }, process.env.JWL_KEY as string, { expiresIn: '4h' });
   } catch (err) {
     const error = new HttpError("Signing up failed", 500);
     return next(error);
@@ -107,7 +108,7 @@ router.get("/:uid", async (req: any, res: any, next: any) => {
   const reqId = await req.params.uid;
   let user;
   try {
-    user = await User.findById(reqId);
+    user = await User.findById(reqId, '-pass');
   } catch (err) {
     const error = new HttpError("Looking for user failed", 500);
     return next(error);
@@ -147,7 +148,7 @@ router.get("/", async (req: any, res: any, next: any) => {
 
 // update user
 router.patch("/:uid", async (req: any, res: any, next: any) => {
-  const { name, language, pass } = req.body;
+  const { name, pass } = req.body;
   const userId = req.params.uid;
 
   let user : any;
@@ -163,9 +164,16 @@ router.patch("/:uid", async (req: any, res: any, next: any) => {
     return next(error);
   }
 
+  let hashedPassword: string;
+  try {
+    hashedPassword = await bcrypt.hash(pass, 12);
+  } catch (err) {
+    const error = new HttpError("Could not create user", 500);
+    return next(error);
+  }
+
   user.name = name;
-  user.pass = pass;
-  user.language = language;
+  user.pass = hashedPassword;
 
   try {
     await user.save();
