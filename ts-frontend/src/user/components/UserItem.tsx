@@ -7,6 +7,8 @@ import "./UserItem.scss";
 interface Props {
   name: string,
   email: string,
+  currency?: string,
+  language: string,
   id?: string
 }
 
@@ -19,6 +21,8 @@ const UserItem: React.FC<Props> = (props) => {
             {props.name}
           </h1>
           <h2>{props.email}</h2>
+          <p>Currency: {props.currency}</p>
+          <p>Language: {props.language}</p>
           <Button to="/user/edit">EDIT USER</Button>
         </div>
       </Card>

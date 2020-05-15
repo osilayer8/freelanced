@@ -51,7 +51,7 @@ router.post("/login", async (req, res, next) => {
 
 // register new user
 router.post("/signup", async (req, res, next) => {
-  const { name, email, pass } = req.body;
+  const { name, email, pass, language, currency } = req.body;
 
   let existingUser;
   try {
@@ -79,7 +79,8 @@ router.post("/signup", async (req, res, next) => {
     name,
     email,
     pass: hashedPassword,
-    language: 'de',
+    language,
+    currency,
     customers: []
   });
 
@@ -148,7 +149,7 @@ router.get("/", async (req: any, res: any, next: any) => {
 
 // update user
 router.patch("/:uid", async (req: any, res: any, next: any) => {
-  const { name, pass } = req.body;
+  const { name, pass, language, currency } = req.body;
   const userId = req.params.uid;
 
   let user : any;
@@ -174,6 +175,8 @@ router.patch("/:uid", async (req: any, res: any, next: any) => {
 
   user.name = name;
   user.pass = hashedPassword;
+  user.language = language;
+  user.currency = currency;
 
   try {
     await user.save();

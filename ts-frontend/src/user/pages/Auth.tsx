@@ -13,6 +13,7 @@ import {
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
+import { Currency } from '../../shared/util/currency';
 import './Auth.scss';
 
 interface authProps {
@@ -68,6 +69,8 @@ const Auth: React.FC = () => {
   const authSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
+    const countryCode = navigator.language ? navigator.language : 'en-US';
+
     if (isLoginMode) {
       try {
         const responseData = await sendRequest(
@@ -91,7 +94,9 @@ const Auth: React.FC = () => {
           JSON.stringify({
             name: formState.inputs.name.value,
             email: formState.inputs.email.value,
-            pass: formState.inputs.pass.value
+            pass: formState.inputs.pass.value,
+            language: countryCode,
+            currency: Currency(countryCode)
           }),
           {
             'Content-Type': 'application/json'

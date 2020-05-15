@@ -55,6 +55,8 @@ const User: React.FC = () => {
         id={loadedUser.id}
         name={loadedUser.name}
         email={loadedUser.email}
+        currency={loadedUser.currency}
+        language={loadedUser.language}
       />
       </ul>)}
     </React.Fragment>

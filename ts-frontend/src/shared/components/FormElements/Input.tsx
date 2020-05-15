@@ -48,11 +48,12 @@ interface Props {
   onInput: (id: string, value: string, isValid: boolean) => void,
   validators?: any,
   element: string,
-  type: string,
+  type?: string,
   placeholder?: string,
   rows?: number,
   label?: string,
-  errorText?: string
+  errorText?: string,
+  datas?: any
 }
 
 const Input: React.FC<Props> = (props) => {
@@ -70,7 +71,7 @@ const Input: React.FC<Props> = (props) => {
     onInput(id, value, isValid)
   }, [id, value, isValid, onInput]);
 
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
+  const changeHandler = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>) => {
     dispatch({
       type: 'CHANGE',
       val: event.target.value,
@@ -96,6 +97,17 @@ const Input: React.FC<Props> = (props) => {
         onBlur={touchHandler}
         value={inputState.value}
       />
+    ) : props.element === 'select' ? (
+      <select
+        id={props.id}
+        onChange={changeHandler}
+        onBlur={touchHandler}
+        value={inputState.value}
+      >
+        {props.datas.map((data: string, index: number) => (
+          <option key={index} value={data}>{data}</option>
+        ))}
+      </select>
     ) : (
       <textarea
         id={props.id}

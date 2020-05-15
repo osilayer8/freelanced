@@ -23,6 +23,8 @@ const UsersList: React.FC<any> = (props) => {
           id={user.id}
           name={user.name}
           email={user.email}
+          language={user.language}
+          currency={user.currency}
         />
       ))}
     </ul>

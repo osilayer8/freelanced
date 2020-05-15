@@ -13,6 +13,7 @@ import {
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
+import { currencies } from '../../shared/util/currency';
 import '../../customers/pages/CustomerForm.scss';
 
 const UpdateUser: React.FC = () => {
@@ -20,6 +21,7 @@ const UpdateUser: React.FC = () => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [loadedUser, setLoadedUser] = useState<any>();
   const history = useHistory();
+  const languages = ['de-DE', 'en-US']
 
   const [formState, inputHandler, setFormData] = useForm(
     {
@@ -53,6 +55,14 @@ const UpdateUser: React.FC = () => {
               value: responseData.user.name,
               isValid: true
             },
+            language: {
+              value: responseData.user.language,
+              isValid: true
+            },
+            currency: {
+              value: responseData.user.currency,
+              isValid: true
+            },
             pass: {
               value: '',
               isValid: false
@@ -73,6 +83,8 @@ const UpdateUser: React.FC = () => {
         'PATCH',
         JSON.stringify({
           name: formState.inputs.name.value,
+          currency: formState.inputs.currency.value,
+          language: formState.inputs.language.value,
           pass: formState.inputs.pass.value
         }),
         {
@@ -115,6 +127,26 @@ const UpdateUser: React.FC = () => {
           errorText="Please enter a valid name."
           onInput={inputHandler}
           initialValue={loadedUser.name}
+          initialValid={true}
+        />
+        <Input
+          id="language"
+          element="select"
+          label="Language"
+          validators={[]}
+          onInput={inputHandler}
+          datas={languages}
+          initialValue={loadedUser.language}
+          initialValid={true}
+        />
+        <Input
+          id="currency"
+          element="select"
+          label="Currency"
+          validators={[]}
+          onInput={inputHandler}
+          datas={currencies}
+          initialValue={loadedUser.currency}
           initialValid={true}
         />
         <Input

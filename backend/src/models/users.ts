@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   pass: { type: String, required: true },
   language: { type: String, required: true },
+  currency: { type: String, required: false },
   customers: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Customer' }]
 });
 
