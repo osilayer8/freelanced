@@ -174,7 +174,10 @@ router.post("/", async (req: any, res: any, next: any) => {
     name,
     price,
     status,
-    tasks,
+    tasks: [{
+      title: '',
+      hours: 0
+    }],
     owner
   });
 

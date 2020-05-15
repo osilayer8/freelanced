@@ -41,6 +41,7 @@ const UpdateProject: React.FC = () => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [loadedProject, setLoadedProject] = useState<any>();
+  const [loadedUser, setLoadedUser] = useState<any>();
   const [result, setResult] = useState<Result>({
     costs: 0,
     hours: 0
@@ -65,6 +66,23 @@ const UpdateProject: React.FC = () => {
     }
     fetchProject();
   }, [sendRequest, projectId, auth.token]);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const responseData = await sendRequest(
+          process.env.REACT_APP_BACKEND_URL + `/users/${auth.userId}`,
+          'GET',
+          null,
+          {
+            Authorization: 'Bearer ' + auth.token
+          }
+        );
+        setLoadedUser(responseData.user);
+      } catch (err) {}
+    };
+    auth.userId && fetchUser();
+  }, [sendRequest, auth.userId, auth.token]);
 
   const projectUpdateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     setHide(false);
@@ -148,7 +166,7 @@ const UpdateProject: React.FC = () => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      {!isLoading && loadedProject && (
+      {!isLoading && loadedProject && loadedUser && (
         <div className="text-center">
             {/* <h2>Price per Hour: {loadedProject.price},-</h2>
             <ul className="customer-list">
@@ -167,26 +185,7 @@ const UpdateProject: React.FC = () => {
             </div>
             <label>Price per hour:</label>
             <input type="number" name="price" value={loadedProject.price} onChange={handleInputChange} className="price" />
-            {/* <Input
-              id="name"
-              element="input"
-              type="text"
-              label="Project Name"
-              validators={[]}
-              onInput={inputHandler}
-              initialValue={loadedProject.name}
-              initialValid={true}
-              />
-              <Input
-              id="price"
-              element="input"
-              type="text"
-              label="Price"
-              validators={[]}
-              onInput={inputHandler}
-              initialValue={loadedProject.price}
-              initialValid={true}
-            /> */}
+            <span>{loadedUser.currency}</span>
             <div className="labels">
               <label>Task</label>
               <label>Calculation</label>
@@ -195,12 +194,14 @@ const UpdateProject: React.FC = () => {
               <div className="fields" key={task.id}>
                 <input type="text" name="title" value={task.title} onChange={handleSubInputChange(idx)} />
                 <input type="number" name="hours" value={task.hours === null ? 0 : task.hours} onChange={handleSubInputChange(idx)} />
-                <button
-                  type="button"
-                  onClick={handleRemoveTask(idx)}
-                >
-                  Remove Task
-                </button>
+                {idx > 0 && (
+                  <button
+                    type="button"
+                    onClick={handleRemoveTask(idx)}
+                  >
+                    Remove Task
+                  </button>
+                )}
               </div>
             ))}
             <div className="sidebar">
@@ -217,7 +218,7 @@ const UpdateProject: React.FC = () => {
                   }
                 </PDFDownloadLink></Button>
               )}
-              <h3>Total costs: {result.costs},-</h3>
+              <h3>Total costs: {result.costs}{loadedUser.currency}</h3>
               <h4>Calculation: {result.hours} Hours</h4>
             </div>
           </form>
