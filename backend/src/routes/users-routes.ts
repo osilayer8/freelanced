@@ -81,6 +81,7 @@ router.post("/signup", async (req, res, next) => {
     pass: hashedPassword,
     language,
     currency,
+    vat: 0,
     customers: []
   });
 
@@ -149,7 +150,7 @@ router.get("/", async (req: any, res: any, next: any) => {
 
 // update user
 router.patch("/:uid", async (req: any, res: any, next: any) => {
-  const { name, pass, language, currency } = req.body;
+  const { name, pass, language, currency, vat } = req.body;
   const userId = req.params.uid;
 
   let user : any;
@@ -177,6 +178,7 @@ router.patch("/:uid", async (req: any, res: any, next: any) => {
   user.pass = hashedPassword;
   user.language = language;
   user.currency = currency;
+  user.vat = vat;
 
   try {
     await user.save();

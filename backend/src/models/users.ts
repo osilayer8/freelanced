@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   pass: { type: String, required: true },
   language: { type: String, required: true },
   currency: { type: String, required: false },
+  vat: { type: Number, required: true },
   customers: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Customer' }]
 });
 

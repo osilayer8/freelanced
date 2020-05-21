@@ -57,6 +57,7 @@ const User: React.FC = () => {
         email={loadedUser.email}
         currency={loadedUser.currency}
         language={loadedUser.language}
+        vat={loadedUser.vat}
       />
       </ul>)}
     </React.Fragment>

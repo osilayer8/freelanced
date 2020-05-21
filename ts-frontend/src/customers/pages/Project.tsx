@@ -159,8 +159,11 @@ const UpdateProject: React.FC = () => {
   };
 
   const showButton = () => {
-    console.log('show');
     setHide(true);
+  }
+
+  const bruttoCalc = (costs: number, vat: number) => {
+    return costs * (1 + vat / 100);
   }
 
   return (
@@ -205,11 +208,8 @@ const UpdateProject: React.FC = () => {
               </div>
             ))}
             <div className="sidebar">
-              <Button type="submit">
-                SAVE
-              </Button>
               <Button type="button" onClick={showButton} hide={show}>Generate PDF</Button>
-              {show && (<Button type="button"><PDFDownloadLink
+              {show && (<Button className="fadeIn" type="button" danger><PDFDownloadLink
                   document={<Invoice result={result} />}
                   fileName="invoice.pdf"
                 >
@@ -218,15 +218,25 @@ const UpdateProject: React.FC = () => {
                   }
                 </PDFDownloadLink></Button>
               )}
-              <h3>Total costs: {result.costs}{loadedUser.currency}</h3>
+              <h3>Netto costs: {result.costs}{loadedUser.currency}</h3>
+              <h3>{loadedUser.vat}% VAT: {bruttoCalc(result.costs, loadedUser.vat) - result.costs}{loadedUser.currency}</h3>
+              <h2>Total costs: {bruttoCalc(result.costs, loadedUser.vat)}{loadedUser.currency}</h2>
               <h4>Calculation: {result.hours} Hours</h4>
             </div>
+            <Button
+              type="button"
+              inverse
+              onClick={handleAddTask}>
+              Add Task
+            </Button>
+            <div>
+              <p></p>
+              {/* <Paper /> */}
+              <Button type="submit">
+                SAVE
+              </Button>
+            </div>
           </form>
-          <Button
-            type="button"
-            onClick={handleAddTask}>
-            Add Task
-          </Button>
         </div>
       )}
     </React.Fragment>

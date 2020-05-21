@@ -9,6 +9,7 @@ interface Props {
   email: string,
   currency?: string,
   language: string,
+  vat: number,
   id?: string
 }
 
@@ -23,6 +24,7 @@ const UserItem: React.FC<Props> = (props) => {
           <h2>{props.email}</h2>
           <p>Currency: {props.currency}</p>
           <p>Language: {props.language}</p>
+          <p>VAT: {props.vat}</p>
           <Button to="/user/edit">EDIT USER</Button>
         </div>
       </Card>

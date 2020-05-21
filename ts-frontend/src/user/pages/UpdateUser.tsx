@@ -63,6 +63,10 @@ const UpdateUser: React.FC = () => {
               value: responseData.user.currency,
               isValid: true
             },
+            vat: {
+              value: responseData.user.vat,
+              isValid: true
+            },
             pass: {
               value: '',
               isValid: false
@@ -85,6 +89,7 @@ const UpdateUser: React.FC = () => {
           name: formState.inputs.name.value,
           currency: formState.inputs.currency.value,
           language: formState.inputs.language.value,
+          vat: formState.inputs.vat.value,
           pass: formState.inputs.pass.value
         }),
         {
@@ -148,6 +153,16 @@ const UpdateUser: React.FC = () => {
           datas={currencies}
           initialValue={loadedUser.currency}
           initialValid={true}
+        />
+        <Input
+          id="vat"
+          element="input"
+          type="number"
+          label="VAT"
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="Please enter a VAT % value."
+          onInput={inputHandler}
+          initialValue={loadedUser.vat}
         />
         <Input
           id="pass"

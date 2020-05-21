@@ -25,6 +25,7 @@ const UsersList: React.FC<any> = (props) => {
           email={user.email}
           language={user.language}
           currency={user.currency}
+          vat={user.vat}
         />
       ))}
     </ul>
