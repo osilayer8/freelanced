@@ -13,7 +13,8 @@ interface Props {
   type?: ButtonType,
   onClick?: () => void,
   disabled?: boolean,
-  hide?: boolean
+  hide?: boolean,
+  className?: string
 }
 
 const Button: React.FC<Props> = (props) => {
@@ -42,7 +43,7 @@ const Button: React.FC<Props> = (props) => {
   }
   return (
     <button
-      className={`button button--default ${props.inverse ?
+      className={`button button--default ${props.className} ${props.inverse ?
         'button--inverse' : ''} ${props.danger ? 'button--danger' : ''}`}
       type={props.type}
       onClick={props.onClick}

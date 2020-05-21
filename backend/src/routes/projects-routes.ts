@@ -165,7 +165,6 @@ router.post("/", async (req: any, res: any, next: any) => {
     name,
     price,
     status,
-    tasks,
     owner
   } = req.body;
 

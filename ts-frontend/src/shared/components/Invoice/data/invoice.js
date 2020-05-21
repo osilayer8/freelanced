@@ -11,7 +11,7 @@ const invoice = {
     "items": [
       {
         "sno": 1,
-        "desc": "ad sunt culpa occaecat qui",
+        "desc": "ad sunt culpa occaecat qui cillum quis sunt qui aute cillum quis sunt qui aute cillum quis sunt qui aute cillum quis sunt qui aute cillum quis sunt qui aute cillum quis sunt qui aute",
         "qty": 5,
         "rate": 405.89
       },

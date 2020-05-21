@@ -1,36 +1,34 @@
 import React from 'react';
 import {Text, View, StyleSheet } from '@react-pdf/renderer';
 
-const borderColor = '#90e5fc'
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        borderBottomColor: '#bff0fd',
-        backgroundColor: '#bff0fd',
-        borderBottomWidth: 1,
+        borderBottomColor: '#aaaaaa',
+        borderBottomWidth: 2,
         alignItems: 'center',
         height: 24,
-        textAlign: 'center',
-        fontStyle: 'bold',
-        flexGrow: 1,
+        fontFamily: 'RobotoBold',
+        flexGrow: 1
     },
     description: {
-        width: '60%',
-        borderRightColor: borderColor,
-        borderRightWidth: 1,
+        width: '70%',
+        paddingLeft: 8
     },
     qty: {
         width: '10%',
-        borderRightColor: borderColor,
-        borderRightWidth: 1,
+        paddingRight: 8,
+        textAlign: 'right'
     },
-    rate: {
-        width: '15%',
-        borderRightColor: borderColor,
-        borderRightWidth: 1,
-    },
+    // rate: {
+    //     width: '15%',
+    //     paddingLeft: 8,
+    //     textAlign: 'right'
+    // },
     amount: {
-        width: '15%'
+        width: '20%',
+        paddingRight: 8,
+        textAlign: 'right'
     },
   });
 
@@ -38,7 +36,6 @@ const styles = StyleSheet.create({
     <View style={styles.container}>
         <Text style={styles.description}>Item Description</Text>
         <Text style={styles.qty}>Qty</Text>
-        <Text style={styles.rate}>@</Text>
         <Text style={styles.amount}>Amount</Text>
     </View>
   );
