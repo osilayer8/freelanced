@@ -2,6 +2,7 @@
   "name": "freelance",
   "version": "0.1.0",
   "scripts": {
+    "tsc": "tsc",
     "postinstall": "npm install --prefix backend && tsc -p ./backend",
     "start": "node backend/dist/server.js"
   }
