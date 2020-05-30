@@ -52,6 +52,11 @@
   }
 }
 
+.invoice {
+  max-width: 100px;
+  display: inline;
+}
+
 .fadeIn {
   opacity: 1;
   animation: fadeIn 2s ease;

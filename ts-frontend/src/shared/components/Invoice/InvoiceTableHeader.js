@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         paddingLeft: 8
     },
     qty: {
-        width: '10%',
+        width: '15%',
         paddingRight: 8,
         textAlign: 'right'
     },
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     //     textAlign: 'right'
     // },
     amount: {
-        width: '20%',
+        width: '15%',
         paddingRight: 8,
         textAlign: 'right'
     },
@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
 
   const InvoiceTableHeader = () => (
     <View style={styles.container}>
-        <Text style={styles.description}>Item Description</Text>
-        <Text style={styles.qty}>Qty</Text>
+        <Text style={styles.description}>Task Description</Text>
+        <Text style={styles.qty}>Calculation</Text>
         <Text style={styles.amount}>Amount</Text>
     </View>
   );

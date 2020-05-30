@@ -16,16 +16,18 @@ const styles = StyleSheet.create({
     
   });
 
+  const today = new Date();
+  const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
 
-  const InvoiceNo = ({invoice}) => (
+  const InvoiceNo = ({invoice, result}) => (
         <Fragment>
             <View style={styles.invoiceNoContainer}>
                 <Text style={styles.label}>Invoice No:</Text>
-                <Text style={styles.invoiceDate}>{invoice.invoice_no}</Text>
+                <Text style={styles.invoiceDate}>{result.invoiceNo}</Text>
             </View >
             <View style={styles.invoiceDateContainer}>
-                <Text style={styles.label}>Date: </Text>
-                <Text >{invoice.trans_date}</Text>
+                <Text style={styles.label}>Date:</Text>
+                <Text >{date}</Text>
             </View >
         </Fragment>
   );

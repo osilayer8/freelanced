@@ -7,8 +7,8 @@ import InvoiceItemsTable from './InvoiceItemsTable'
 import InvoiceThankYouMsg from './InvoiceThankYouMsg'
 import invoice from './data/invoice'
 
-Font.register('https://evoleeq.com/uploads/Roboto-Regular.ttf', { family: 'Roboto' } );
-Font.register('https://evoleeq.com/uploads/Roboto-Bold.ttf', { family: 'RobotoBold' } );
+Font.register({ family: 'Roboto', src: 'https://evoleeq.com/uploads/Roboto-Regular.ttf' });
+Font.register({ family: 'RobotoBold', src: 'https://evoleeq.com/uploads/Roboto-Bold.ttf' });
 
 const styles = StyleSheet.create({
     page: {
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
                 <Page size="A4" style={styles.page}>
                     {/* <InvoiceTitle title='Invoice'/> */}
                     <BillTo invoice={invoice}/>
-                    <InvoiceNo invoice={invoice}/>
+                    <InvoiceNo invoice={invoice} result={result}/>
                     <InvoiceItemsTable invoice={invoice} result={result} />
                     <InvoiceThankYouMsg />
                 </Page>

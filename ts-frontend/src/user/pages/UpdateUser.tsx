@@ -158,7 +158,7 @@ const UpdateUser: React.FC = () => {
           id="vat"
           element="input"
           type="number"
-          label="VAT"
+          label="VAT (%)"
           validators={[VALIDATOR_REQUIRE()]}
           errorText="Please enter a VAT % value."
           onInput={inputHandler}

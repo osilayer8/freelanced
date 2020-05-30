@@ -24,6 +24,17 @@ interface Result {
   hours: number
 }
 
+interface pdfData {
+  invoiceNo: string,
+  tasks: Array,
+  price: number,
+  currency: string,
+  netto: number,
+  vat: number,
+  brutto: number,
+  hours: number
+}
+
 function projectCalc(res: any) {
   let hours = 0, item = '';
   for(item in res.tasks) {
@@ -94,7 +105,8 @@ const UpdateProject: React.FC = () => {
         JSON.stringify({
           name: loadedProject.name,
           price: loadedProject.price,
-          tasks: loadedProject.tasks
+          tasks: loadedProject.tasks,
+          invoiceNo: loadedProject.invoiceNo
         }),
         {
           'Content-Type': 'application/json',
@@ -160,10 +172,22 @@ const UpdateProject: React.FC = () => {
 
   const showButton = () => {
     setHide(true);
+    console.log(onGeneratePdf);
   }
 
   const bruttoCalc = (costs: number, vat: number) => {
     return costs * (1 + vat / 100);
+  }
+
+  const onGeneratePdf: pdfData = {
+    invoiceNo: loadedProject.invoiceNo,
+    tasks: loadedProject.tasks,
+    price: loadedProject.price,
+    currency: loadedUser && loadedUser.currency,
+    netto: result.costs,
+    vat: loadedUser && loadedUser.vat,
+    brutto: loadedUser && bruttoCalc(result.costs, loadedUser.vat),
+    hours: result.hours
   }
 
   return (
@@ -210,7 +234,7 @@ const UpdateProject: React.FC = () => {
             <div className="sidebar">
               <Button type="button" onClick={showButton} hide={show}>Generate PDF</Button>
               {show && (<Button className="fadeIn" type="button" danger><PDFDownloadLink
-                  document={<Invoice result={result} />}
+                  document={<Invoice result={onGeneratePdf} />}
                   fileName="invoice.pdf"
                 >
                   {({ blob, url, loading, error }) =>
@@ -222,6 +246,7 @@ const UpdateProject: React.FC = () => {
               <h3>{loadedUser.vat}% VAT: {bruttoCalc(result.costs, loadedUser.vat) - result.costs}{loadedUser.currency}</h3>
               <h2>Total costs: {bruttoCalc(result.costs, loadedUser.vat)}{loadedUser.currency}</h2>
               <h4>Calculation: {result.hours} Hours</h4>
+              <p className="text-right">Invoice No: <input type="text" name="invoiceNo" value={loadedProject.invoiceNo} onChange={handleInputChange} className="invoice" /></p>
             </div>
             <Button
               type="button"

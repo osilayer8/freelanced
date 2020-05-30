@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
         paddingLeft: 8,
     },
     qty: {
-        width: '10%',
+        width: '15%',
         textAlign: 'right',
         paddingRight: 8,
     },
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     //     paddingRight: 18,
     // },
     amount: {
-        width: '20%',
+        width: '15%',
         textAlign: 'right',
         paddingRight: 8,
     },
@@ -34,11 +34,11 @@ const styles = StyleSheet.create({
 
 
 const InvoiceTableRow = ({items}) => {
-    const rows = items.map( item => 
-        <View style={styles.row} key={item.sno.toString()}>
-            <Text style={styles.description}>{item.desc}</Text>
-            <Text style={styles.qty}>{item.qty}</Text>
-            <Text style={styles.amount}>{(item.qty * item.rate).toFixed(2)}</Text>
+    const rows = items.tasks.map( item => 
+        <View style={styles.row} key={item.id.toString()}>
+            <Text style={styles.description}>{item.title}</Text>
+            <Text style={styles.qty}>{item.hours.toString()}</Text>
+            <Text style={styles.amount}>{(item.hours * items.price).toFixed(2)}</Text>
         </View>
     )
     return (<Fragment>{rows}</Fragment> )
