@@ -68,7 +68,8 @@ router.patch("/:pid", async (req: any, res: any, next: any) => {
     name,
     price,
     status,
-    tasks
+    tasks,
+    invoiceNo
   } = req.body;
 
   const projectId = req.params.pid;
@@ -90,6 +91,7 @@ router.patch("/:pid", async (req: any, res: any, next: any) => {
   project.price = price;
   project.status = status;
   project.tasks = tasks;
+  project.invoiceNo = invoiceNo;
 
   try {
     await project.save();
@@ -177,6 +179,7 @@ router.post("/", async (req: any, res: any, next: any) => {
       title: '',
       hours: 0
     }],
+    invoiceNo: '0',
     owner
   });
 

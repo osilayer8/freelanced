@@ -9,6 +9,7 @@ const projectSchema = new mongoose.Schema({
     title: { type: String, required: false },
     hours: { type: Number, required: false },
   }],
+  invoiceNo: { type: String, required: false },
   owner: { type: mongoose.Types.ObjectId, required: true, ref: 'Customer' }
 });
 
