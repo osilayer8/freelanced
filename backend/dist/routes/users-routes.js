@@ -60,6 +60,8 @@ exports.router.post("/login", (req, res, next) => __awaiter(void 0, void 0, void
 exports.router.post("/signup", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, pass, language, currency } = req.body;
     let existingUser;
+    const error = new http_error_1.default("Not allowed to create user", 401);
+    return next(error);
     try {
         existingUser = yield users_1.default.findOne({ email: email });
     }
