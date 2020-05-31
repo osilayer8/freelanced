@@ -1,0 +1,8 @@
+{
+  "name": "morevenue_rest_api",
+  "version": "0.1.0",
+  "scripts": {
+    "postinstall": "npm install --prefix backend",
+    "start": "node backend/dist/server.js"
+  }
+}
