@@ -54,6 +54,10 @@ router.post("/signup", async (req, res, next) => {
   const { name, email, pass, language, currency } = req.body;
 
   let existingUser;
+
+  const error = new HttpError("Not allowed to create user", 401);
+  return next(error);
+
   try {
     existingUser = await User.findOne({ email: email });
   } catch (err) {
