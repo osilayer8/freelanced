@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Input from '../../shared/components/FormElements/Input';
@@ -11,11 +11,9 @@ import {
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
-import { AuthContext } from '../../shared/context/auth-context';
 import './CustomerForm.scss';
 
 const NewCustomer: React.FC = () => {
-  const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [formState, inputHandler] = useForm(
     {
@@ -31,7 +29,7 @@ const NewCustomer: React.FC = () => {
     false
   );
 
-  
+
   const customerSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     try {
@@ -47,18 +45,14 @@ const NewCustomer: React.FC = () => {
           country: formState.inputs.country.value,
           phone: formState.inputs.phone.value,
           website: formState.inputs.website.value
-        }),
-        {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + auth.token
-        }
-        );
-        redirectToCustomer(responseData.customer.id);
-      } catch(err) {}
-    };
+        })
+      );
+      redirectToCustomer(responseData.customer.id);
+    } catch (err) { }
+  };
 
   const history = useHistory();
-  
+
   const redirectToCustomer = (id: number) => {
     history.push('/customers/' + id);
   }

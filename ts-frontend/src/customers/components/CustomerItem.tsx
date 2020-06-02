@@ -44,13 +44,9 @@ const CustomerItem: React.FC<Props> = (props) => {
       await sendRequest(
         process.env.REACT_APP_BACKEND_URL + `/customers/${props.id}`,
         'DELETE',
-        null,
-        {
-          Authorization: 'Bearer ' + auth.token
-        }
       );
       props.onDelete(props.id);
-    } catch(err) {}
+    } catch (err) { }
   };
   return (
     <React.Fragment>

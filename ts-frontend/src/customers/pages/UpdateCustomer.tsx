@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import Input from '../../shared/components/FormElements/Input';
@@ -12,14 +12,12 @@ import {
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
-import { AuthContext } from '../../shared/context/auth-context';
 import './CustomerForm.scss';
 
 const UpdateCustomer: React.FC = () => {
-  const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [loadedCustomer, setLoadedCustomer] = useState<any>();
-  const customerId = useParams<{customerId: string}>().customerId;
+  const customerId = useParams<{ customerId: string }>().customerId;
   const history = useHistory();
 
   const [formState, inputHandler, setFormData] = useForm(
@@ -42,10 +40,6 @@ const UpdateCustomer: React.FC = () => {
         const responseData = await sendRequest(
           process.env.REACT_APP_BACKEND_URL + `/customers/${customerId}`,
           'GET',
-          null,
-          {
-            Authorization: 'Bearer ' + auth.token
-          }
         );
         setLoadedCustomer(responseData.customer);
         setFormData(
@@ -61,10 +55,10 @@ const UpdateCustomer: React.FC = () => {
           },
           true
         );
-      } catch (err) {}
+      } catch (err) { }
     }
     fetchCustomer();
-  }, [sendRequest, customerId, setFormData, auth.token]);
+  }, [sendRequest, customerId, setFormData]);
 
   const customerUpdateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -82,13 +76,9 @@ const UpdateCustomer: React.FC = () => {
           phone: formState.inputs.phone.value,
           website: formState.inputs.website.value
         }),
-        {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + auth.token
-        }
       );
       history.push('/customers/' + customerId);
-    } catch (err) {}
+    } catch (err) { }
   };
 
   if (isLoading) {

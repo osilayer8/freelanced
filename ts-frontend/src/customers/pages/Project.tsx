@@ -66,17 +66,13 @@ const UpdateProject: React.FC = () => {
         const responseData = await sendRequest(
           process.env.REACT_APP_BACKEND_URL + `/projects/${projectId}`,
           'GET',
-          null,
-          {
-            Authorization: 'Bearer ' + auth.token
-          }
         );
         setLoadedProject(responseData.project);
         setResult(projectCalc(responseData.project));
-      } catch (err) {}
+      } catch (err) { }
     }
     fetchProject();
-  }, [sendRequest, projectId, auth.token]);
+  }, [sendRequest, projectId]);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -84,16 +80,12 @@ const UpdateProject: React.FC = () => {
         const responseData = await sendRequest(
           process.env.REACT_APP_BACKEND_URL + `/users/${auth.userId}`,
           'GET',
-          null,
-          {
-            Authorization: 'Bearer ' + auth.token
-          }
         );
         setLoadedUser(responseData.user);
-      } catch (err) {}
+      } catch (err) { }
     };
     auth.userId && fetchUser();
-  }, [sendRequest, auth.userId, auth.token]);
+  }, [sendRequest, auth.userId]);
 
   const projectUpdateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     setHide(false);
@@ -108,13 +100,9 @@ const UpdateProject: React.FC = () => {
           tasks: loadedProject.tasks,
           invoiceNo: loadedProject.invoiceNo
         }),
-        {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + auth.token
-        }
       );
       setLoadedProject(responseData.project);
-    } catch (err) {}
+    } catch (err) { }
   };
 
   if (isLoading) {
@@ -139,7 +127,7 @@ const UpdateProject: React.FC = () => {
     const target = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
-    
+
     setLoadedProject({ ...loadedProject, [name]: value });
     setResult(projectCalc({ ...loadedProject, [name]: value }));
     setHide(false);
@@ -157,7 +145,7 @@ const UpdateProject: React.FC = () => {
     setResult(projectCalc({ ...loadedProject, tasks: newTasks }));
     setHide(false);
   };
-  
+
   const handleAddTask = () => {
     setLoadedProject({
       ...loadedProject, tasks: loadedProject.tasks.concat([{ title: '', hours: 0, id: Math.random() }])

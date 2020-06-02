@@ -85,7 +85,7 @@ const Auth: React.FC = () => {
           }
         );
         auth.login(responseData.userId, responseData.token);
-      } catch (err) {}
+      } catch (err) { }
     } else {
       try {
         const responseData = await sendRequest(
@@ -103,7 +103,7 @@ const Auth: React.FC = () => {
           }
         );
         auth.login(responseData.userId, responseData.token);
-      } catch (err) {}
+      } catch (err) { }
     }
   };
 

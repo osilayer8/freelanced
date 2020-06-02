@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 
 import Input from '../../shared/components/FormElements/Input';
@@ -10,12 +10,10 @@ import {
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
-import { AuthContext } from '../../shared/context/auth-context';
 import './CustomerForm.scss';
 
 const NewProject: React.FC = () => {
-  const auth = useContext(AuthContext);
-  const customerId = useParams<{customerId: string}>().customerId;
+  const customerId = useParams<{ customerId: string }>().customerId;
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [formState, inputHandler] = useForm(
     {
@@ -40,13 +38,9 @@ const NewProject: React.FC = () => {
           price: formState.inputs.price.value,
           owner: customerId
         }),
-        {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + auth.token
-        }
       );
       redirectToProject(customerId, responseData.project.id);
-    } catch(err) {}
+    } catch (err) { }
   };
 
   const redirectToProject = (cid: string, pid: number) => {

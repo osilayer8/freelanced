@@ -1,13 +1,20 @@
-import { useState, useCallback, useRef, useEffect } from 'react';
+import { useState, useCallback, useRef, useEffect, useContext } from 'react';
+import { AuthContext } from '../context/auth-context';
 
 export const useHttpClient = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<any>();
+  const auth = useContext(AuthContext);
+
 
   const activeHttpRequests: React.MutableRefObject<any> = useRef([]);
 
   const sendRequest = useCallback(
     async (url, method = 'GET', body = null, headers = {}) => {
+      headers = {
+        ...headers, 'Authorization': 'Bearer ' + auth.token, 'Content-Type': 'application/json',
+      }
+
       setIsLoading(true);
       const httpAbortCtrl = new AbortController();
       activeHttpRequests.current.push(httpAbortCtrl);
@@ -22,7 +29,7 @@ export const useHttpClient = () => {
 
         const responseData = await response.json();
 
-        activeHttpRequests.current = activeHttpRequests.current.filter( (reqCtrl: AbortController) => reqCtrl !== httpAbortCtrl );
+        activeHttpRequests.current = activeHttpRequests.current.filter((reqCtrl: AbortController) => reqCtrl !== httpAbortCtrl);
 
         if (!response.ok) {
           throw new Error(responseData.message);
@@ -36,7 +43,7 @@ export const useHttpClient = () => {
         throw err;
       }
     },
-    []
+    [auth.token]
   );
 
   const clearError = () => {

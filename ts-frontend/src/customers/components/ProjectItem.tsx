@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Card from '../../shared/components/UIElements/Card';
@@ -8,7 +8,6 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 
 import { useHttpClient } from '../../shared/hooks/http-hook';
-import { AuthContext } from '../../shared/context/auth-context';
 import './ProjectItem.scss';
 
 interface Array {
@@ -27,7 +26,6 @@ interface Props {
 }
 
 const ProjectItem: React.FC<Props> = (props) => {
-  const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [showConfirmModal, setShowConfirmModal] = useState(false);
 
@@ -45,13 +43,9 @@ const ProjectItem: React.FC<Props> = (props) => {
       await sendRequest(
         process.env.REACT_APP_BACKEND_URL + `/projects/${props.id}`,
         'DELETE',
-        null,
-        {
-          Authorization: 'Bearer ' + auth.token
-        }
       );
       props.onDelete(props.id);
-    } catch(err) {}
+    } catch (err) { }
   };
 
   const projectCalc = () => {

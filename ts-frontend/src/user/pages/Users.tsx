@@ -15,13 +15,9 @@ const Users: React.FC = () => {
     const fetchUsers = async () => {
       try {
         const responseData = await sendRequest(process.env.REACT_APP_BACKEND_URL + '/users',
-        'GET',
-        null,
-        {
-          Authorization: 'Bearer ' + auth.token
-        });
+          'GET');
         setLoadedUsers(responseData.users);
-      } catch (err) {}
+      } catch (err) { }
     };
     fetchUsers();
   }, [sendRequest]);

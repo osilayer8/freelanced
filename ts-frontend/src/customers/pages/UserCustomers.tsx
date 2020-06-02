@@ -17,16 +17,12 @@ const UserCustomers: React.FC = () => {
         const responseData = await sendRequest(
           process.env.REACT_APP_BACKEND_URL + `/customers/user/${auth.userId}`,
           'GET',
-          null,
-          {
-            Authorization: 'Bearer ' + auth.token
-          }
         );
         setLoadedCustomers(responseData.customers);
-      } catch (err) {}
+      } catch (err) { }
     }
     fetchCustomers();
-  }, [sendRequest, auth.userId, auth.token]);
+  }, [sendRequest, auth.userId]);
 
   const customerDeletedHandler = (deletedCustomerId: number) => {
     setLoadedCustomers((prevCustomers: any) =>

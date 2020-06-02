@@ -43,10 +43,6 @@ const UpdateUser: React.FC = () => {
         const responseData = await sendRequest(
           process.env.REACT_APP_BACKEND_URL + `/users/${auth.userId}`,
           'GET',
-          null,
-          {
-            Authorization: 'Bearer ' + auth.token
-          }
         );
         setLoadedUser(responseData.user);
         setFormData(
@@ -74,10 +70,10 @@ const UpdateUser: React.FC = () => {
           },
           true
         );
-      } catch (err) {}
+      } catch (err) { }
     }
     fetchUser();
-  }, [sendRequest, auth.userId, setFormData, auth.token]);
+  }, [sendRequest, auth.userId, setFormData]);
 
   const userUpdateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -92,13 +88,9 @@ const UpdateUser: React.FC = () => {
           vat: formState.inputs.vat.value,
           pass: formState.inputs.pass.value
         }),
-        {
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer ' + auth.token
-        }
       );
       history.push('/user');
-    } catch (err) {}
+    } catch (err) { }
   };
 
   if (isLoading) {

@@ -19,16 +19,12 @@ const User: React.FC = () => {
         const responseData = await sendRequest(
           process.env.REACT_APP_BACKEND_URL + `/users/${auth.userId}`,
           'GET',
-          null,
-          {
-            Authorization: 'Bearer ' + auth.token
-          }
         );
         setLoadedUser(responseData.user);
-      } catch (err) {}
+      } catch (err) { }
     };
     auth.userId && fetchUser();
-  }, [sendRequest, auth.userId, auth.token]);
+  }, [sendRequest, auth.userId]);
 
   if (!isLoading && !loadedUser) {
     return (
