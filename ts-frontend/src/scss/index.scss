@@ -64,7 +64,7 @@ h1,h2,h3 {
 .content {
   max-width: 1200px;
   margin: 0 auto;
-  padding-top: 1.5rem;
+  padding-top: 5rem;
 }
 
 button {
@@ -92,4 +92,10 @@ textarea {
 input:focus,
 textarea:focus {
   outline: none;
+}
+
+@media screen and (min-width: 768px) {
+  .content {
+    padding-top: 1.5rem;
+  }
 }

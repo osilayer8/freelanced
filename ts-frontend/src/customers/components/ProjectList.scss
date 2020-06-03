@@ -1,8 +1,16 @@
 .project-list {
   list-style: none;
   padding: 0;
+  margin: 1rem auto;
+  width: 90%;
   display: flex;
   flex-flow: row wrap;
+}
+
+@media screen and (min-width: 768px) {
+  .project-list {
+    width: auto;
+  }
 }
 
 @media (min-width: 768px) {

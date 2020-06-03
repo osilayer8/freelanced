@@ -4,3 +4,9 @@
   padding: 0;
   width: 90%;
 }
+
+@media screen and (min-width: 768px) {
+  .customer-list {
+    width: auto;
+  }
+}

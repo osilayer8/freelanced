@@ -8,6 +8,7 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import './CustomerForm.scss';
+import '../components/CustomerList.scss';
 
 const Customer: React.FC = () => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -51,6 +52,7 @@ const Customer: React.FC = () => {
       <div className="center"><h1>Projects at {loadedCustomer.company}</h1></div>
       <CustomerProjects />
       {!isLoading && loadedCustomer && (
+        <ul className="customer-list">
         <CustomerItem
           id={loadedCustomer.id}
           company={loadedCustomer.company}
@@ -64,6 +66,7 @@ const Customer: React.FC = () => {
           creatorId={loadedCustomer.creator}
           onDelete={false}
           />
+        </ul>
       )}
     </React.Fragment>
   );

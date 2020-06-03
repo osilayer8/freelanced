@@ -13,6 +13,8 @@ import { AuthContext } from '../../shared/context/auth-context';
 //import TaskItem from '../components/TaskItem';
 import './CustomerForm.scss';
 
+//TO DO: create Task component
+
 interface Array {
   id: number,
   title: string,
