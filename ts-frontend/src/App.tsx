@@ -13,6 +13,8 @@ import LoadingSpinner from './shared/components/UIElements/LoadingSpinner';
 
 const User = React.lazy(() => import('./user/pages/User'));
 const UpdateUser = React.lazy(() => import('./user/pages/UpdateUser'));
+const UpdateSettings = React.lazy(() => import('./user/pages/UpdateSettings'));
+const UpdatePassword = React.lazy(() => import('./user/pages/UpdatePassword'));
 const NewCustomer = React.lazy(() => import('./customers/pages/NewCustomer'));
 const UserCustomers = React.lazy(() => import('./customers/pages/UserCustomers'));
 const Customer = React.lazy(() => import('./customers/pages/Customer'));
@@ -34,6 +36,12 @@ const App = () => {
         </Route>
         <Route path="/user/edit" exact>
           <UpdateUser />
+        </Route>
+        <Route path="/user/settings" exact>
+          <UpdateSettings />
+        </Route>
+        <Route path="/user/password" exact>
+          <UpdatePassword />
         </Route>
         <Route path="/customers" exact>
           <UserCustomers />

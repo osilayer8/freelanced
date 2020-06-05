@@ -53,6 +53,7 @@ interface Props {
   rows?: number,
   label?: string,
   errorText?: string,
+  autoComplete?: string,
   datas?: any
 }
 
@@ -96,6 +97,7 @@ const Input: React.FC<Props> = (props) => {
         onChange={changeHandler}
         onBlur={touchHandler}
         value={inputState.value}
+        autoComplete={props.autoComplete}
       />
     ) : props.element === 'select' ? (
       <select

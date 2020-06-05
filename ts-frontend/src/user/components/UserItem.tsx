@@ -24,8 +24,10 @@ const UserItem: React.FC<Props> = (props) => {
           <h2>{props.email}</h2>
           <p>Currency: {props.currency}</p>
           <p>Language: {props.language}</p>
-          <p>VAT: {props.vat}</p>
+          <p>VAT: {props.vat}%</p>
           <Button to="/user/edit">EDIT USER</Button>
+          <Button to="/user/settings">EDIT PDF SETTINGS</Button>
+          <Button to="/user/password">CHANGE PASSWORD</Button>
         </div>
       </Card>
     </li>

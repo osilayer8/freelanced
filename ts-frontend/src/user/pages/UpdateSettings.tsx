@@ -12,24 +12,26 @@ import {
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
+import { currencies } from '../../shared/util/currency';
 import '../../customers/pages/CustomerForm.scss';
 
-const UpdateUser: React.FC = () => {
+const UpdateSettings: React.FC = () => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [loadedUser, setLoadedUser] = useState<any>();
   const history = useHistory();
-  const languages = ['de-DE', 'en-US'];
 
-  const [formState, inputHandler, setFormData] = useForm(
-    {
-      name: {
-        value: '',
-        isValid: false
-      }
+  const [formState, inputHandler, setFormData] = useForm({
+    currency: {
+      value: '',
+      isValid: false
     },
-    false
-  );
+    vat: {
+      value: '',
+      isValid: false
+    }
+  },
+  false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -41,12 +43,12 @@ const UpdateUser: React.FC = () => {
         setLoadedUser(responseData.user);
         setFormData(
           {
-            name: {
-              value: responseData.user.name,
+            currency: {
+              value: responseData.user.currency,
               isValid: true
             },
-            language: {
-              value: responseData.user.language,
+            vat: {
+              value: responseData.user.vat,
               isValid: true
             }
           },
@@ -64,10 +66,10 @@ const UpdateUser: React.FC = () => {
         process.env.REACT_APP_BACKEND_URL + `/users/${auth.userId}`,
         'PATCH',
         JSON.stringify({
-          name: formState.inputs.name.value,
-          language: formState.inputs.language.value,
-          currency: loadedUser.currency,
-          vat: loadedUser.vat
+          name: loadedUser.name,
+          language: loadedUser.language,
+          currency: formState.inputs.currency.value,
+          vat: formState.inputs.vat.value
         }),
       );
       history.push('/user');
@@ -97,32 +99,31 @@ const UpdateUser: React.FC = () => {
       <ErrorModal error={error} onClear={clearError} />
       {!isLoading && loadedUser && (<form className="customer-form" onSubmit={userUpdateSubmitHandler}>
         <Input
-          id="name"
-          element="input"
-          type="text"
-          label="Name"
-          validators={[VALIDATOR_REQUIRE()]}
-          errorText="Please enter a valid name."
+          id="currency"
+          element="select"
+          label="Currency"
+          validators={[]}
           onInput={inputHandler}
-          initialValue={loadedUser.name}
+          datas={currencies}
+          initialValue={loadedUser.currency}
           initialValid={true}
         />
         <Input
-          id="language"
-          element="select"
-          label="Language"
-          validators={[]}
+          id="vat"
+          element="input"
+          type="number"
+          label="VAT (%)"
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="Please enter a VAT % value."
           onInput={inputHandler}
-          datas={languages}
-          initialValue={loadedUser.language}
-          initialValid={true}
+          initialValue={loadedUser.vat}
         />
         <Button type="submit" disabled={!formState.isValid}>
-          UPDATE USER
+          UPDATE SETTINGS
         </Button>
       </form>)}
     </React.Fragment>
   );
 };
 
-export default UpdateUser;
+export default UpdateSettings;

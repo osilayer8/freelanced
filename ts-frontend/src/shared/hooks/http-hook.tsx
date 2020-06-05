@@ -3,7 +3,7 @@ import { AuthContext } from '../context/auth-context';
 
 export const useHttpClient = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<any>();
+  const [error, setError] = useState<string>();
   const auth = useContext(AuthContext);
 
 
@@ -47,7 +47,7 @@ export const useHttpClient = () => {
   );
 
   const clearError = () => {
-    setError(null);
+    setError('');
   };
 
   useEffect(() => {

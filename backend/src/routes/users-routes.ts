@@ -55,9 +55,6 @@ router.post("/signup", async (req, res, next) => {
 
   let existingUser;
 
-  const error = new HttpError("Not allowed to create user", 401);
-  return next(error);
-
   try {
     existingUser = await User.findOne({ email: email });
   } catch (err) {
@@ -154,7 +151,7 @@ router.get("/", async (req: any, res: any, next: any) => {
 
 // update user
 router.patch("/:uid", async (req: any, res: any, next: any) => {
-  const { name, pass, language, currency, vat } = req.body;
+  const { name, language, currency, vat } = req.body;
   const userId = req.params.uid;
 
   let user : any;
@@ -170,16 +167,7 @@ router.patch("/:uid", async (req: any, res: any, next: any) => {
     return next(error);
   }
 
-  let hashedPassword: string;
-  try {
-    hashedPassword = await bcrypt.hash(pass, 12);
-  } catch (err) {
-    const error = new HttpError("Could not create user", 500);
-    return next(error);
-  }
-
   user.name = name;
-  user.pass = hashedPassword;
   user.language = language;
   user.currency = currency;
   user.vat = vat;
@@ -188,6 +176,44 @@ router.patch("/:uid", async (req: any, res: any, next: any) => {
     await user.save();
   } catch (err) {
     const error = new HttpError("User update failed", 500);
+    return next(error);
+  }
+
+  res.status(200).json({ user: user.toObject({ getters: true }) });
+});
+
+// update password
+router.patch("/password/:uid", async (req: any, res: any, next: any) => {
+  const { pass } = req.body;
+  const userId = req.params.uid;
+
+  let user : any;
+  try {
+    user = await User.findById(userId);
+  } catch (err) {
+    const error = new HttpError("Could not update password", 500);
+    return next(error);
+  }
+
+  if (user.id !== req.userData.userId) {
+    const error = new HttpError("Not allowed to change password", 401);
+    return next(error);
+  }
+
+  let hashedPassword: string;
+  try {
+    hashedPassword = await bcrypt.hash(pass, 12);
+  } catch (err) {
+    const error = new HttpError("Could not save password", 500);
+    return next(error);
+  }
+
+  user.pass = hashedPassword;
+
+  try {
+    await user.save();
+  } catch (err) {
+    const error = new HttpError("Update password failed", 500);
     return next(error);
   }
 
