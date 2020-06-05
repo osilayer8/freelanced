@@ -232,9 +232,9 @@ const UpdateProject: React.FC = () => {
                   }
                 </PDFDownloadLink></Button>
               )}
-              <h3>Netto costs: {result.costs}{loadedUser.currency}</h3>
-              <h3>{loadedUser.vat}% VAT: {bruttoCalc(result.costs, loadedUser.vat) - result.costs}{loadedUser.currency}</h3>
-              <h2>Total costs: {bruttoCalc(result.costs, loadedUser.vat)}{loadedUser.currency}</h2>
+              <h3>Netto costs: {result.costs.toFixed(2)}{loadedUser.currency}</h3>
+              <h3>{loadedUser.vat}% VAT: {(bruttoCalc(result.costs, loadedUser.vat) - result.costs).toFixed(2)}{loadedUser.currency}</h3>
+              <h2>Total costs: {bruttoCalc(result.costs, loadedUser.vat).toFixed(2)}{loadedUser.currency}</h2>
               <h4>Calculation: {result.hours} Hours</h4>
               <p className="text-right">Invoice No: <input type="text" name="invoiceNo" value={loadedProject.invoiceNo} onChange={handleInputChange} className="invoice" /></p>
             </div>

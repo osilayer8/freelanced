@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   });
 
   const today = new Date();
-  const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  const date = today.getDate()+'.'+(today.getMonth()+1)+'.'+today.getFullYear();
 
   const InvoiceNo = ({invoice, result}) => (
         <Fragment>
