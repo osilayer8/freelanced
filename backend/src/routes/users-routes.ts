@@ -1,5 +1,6 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
+import cryptr from 'cryptr';
 import jsonwebtoken from 'jsonwebtoken';
 
 import User from '../models/users';
@@ -7,6 +8,7 @@ import HttpError from '../models/http-error';
 import checkAuth from '../middleware/check-auth';
 
 export const router = express.Router();
+const crypter = new cryptr(`${process.env.CYP_KEY}`);
 
 // identify user
 router.post("/login", async (req, res, next) => {
@@ -122,19 +124,26 @@ router.get("/:uid", async (req: any, res: any, next: any) => {
     return next(error);
   }
 
+  const userObj = user.toObject({ getters: true });
+  let securedUser;
+  if (userObj.iban) {
+    const decryptIban = crypter.decrypt(userObj.iban);
+    securedUser = { ...userObj, iban: '**** **** **** **** ' + decryptIban.substr(decryptIban.length - 4) }
+  }
+
   if (user.id !== req.userData.userId) {
     const error = new HttpError("Not allowed to see this user", 401);
     return next(error);
   }
 
-  res.json({ user: user.toObject({ getters: true }) });
+  res.json({ user: userObj.iban ? securedUser : userObj });
 });
 
 // get all users
 router.get("/", async (req: any, res: any, next: any) => {
   let users;
   try {
-    users = await User.find({}, '-pass');
+    users = await User.find({}, '-pass -iban');
   } catch (err) {
     const error = new HttpError("Fetching users failed", 500);
     return next(error);
@@ -186,6 +195,16 @@ router.patch("/:uid", async (req: any, res: any, next: any) => {
     return next(error);
   }
 
+  let encryptIban;
+  if (iban) {
+    try {
+      encryptIban = crypter.encrypt(iban);
+    } catch (err) {
+      const error = new HttpError("Could not encrypt iban", 500);
+      return next(error);
+    }
+  }
+
   user.company = company;
   user.firstName = firstName;
   user.name = name;
@@ -196,7 +215,7 @@ router.patch("/:uid", async (req: any, res: any, next: any) => {
   user.phone = phone;
   user.businessMail = businessMail;
   user.web = web;
-  user.iban = iban;
+  user.iban = encryptIban ? encryptIban : iban;
   user.bic = bic;
   user.bank = bank;
   user.taxId = taxId;
@@ -235,7 +254,7 @@ router.patch("/password/:uid", async (req: any, res: any, next: any) => {
 
   let hashedPassword: string;
   try {
-    hashedPassword = await bcrypt.hash(  pass, 12);
+    hashedPassword = await bcrypt.hash(pass, 12);
   } catch (err) {
     const error = new HttpError("Could not save password", 500);
     return next(error);
