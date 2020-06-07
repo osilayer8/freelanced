@@ -49,7 +49,11 @@ const User: React.FC = () => {
       <UserItem
         key={loadedUser.id}
         id={loadedUser.id}
+        company={loadedUser.company}
+        firstName={loadedUser.firstName}
         name={loadedUser.name}
+        iban={loadedUser.iban}
+        phone={loadedUser.phone}
         email={loadedUser.email}
         currency={loadedUser.currency}
         language={loadedUser.language}

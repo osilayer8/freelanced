@@ -151,7 +151,26 @@ router.get("/", async (req: any, res: any, next: any) => {
 
 // update user
 router.patch("/:uid", async (req: any, res: any, next: any) => {
-  const { name, language, currency, vat } = req.body;
+  const {
+    company,
+    firstName,
+    name,
+    street,
+    zip,
+    city,
+    country,
+    phone,
+    businessMail,
+    web,
+    iban,
+    bic,
+    bank,
+    taxId,
+    commercialRegister,
+    language,
+    currency,
+    vat
+  } = req.body;
   const userId = req.params.uid;
 
   let user : any;
@@ -167,7 +186,21 @@ router.patch("/:uid", async (req: any, res: any, next: any) => {
     return next(error);
   }
 
+  user.company = company;
+  user.firstName = firstName;
   user.name = name;
+  user.street = street;
+  user.zip = zip;
+  user.city = city;
+  user.country = country;
+  user.phone = phone;
+  user.businessMail = businessMail;
+  user.web = web;
+  user.iban = iban;
+  user.bic = bic;
+  user.bank = bank;
+  user.taxId = taxId;
+  user.commercialRegister = commercialRegister;
   user.language = language;
   user.currency = currency;
   user.vat = vat;
@@ -202,7 +235,7 @@ router.patch("/password/:uid", async (req: any, res: any, next: any) => {
 
   let hashedPassword: string;
   try {
-    hashedPassword = await bcrypt.hash(pass, 12);
+    hashedPassword = await bcrypt.hash(  pass, 12);
   } catch (err) {
     const error = new HttpError("Could not save password", 500);
     return next(error);

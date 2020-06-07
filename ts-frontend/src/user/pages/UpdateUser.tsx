@@ -41,6 +41,14 @@ const UpdateUser: React.FC = () => {
         setLoadedUser(responseData.user);
         setFormData(
           {
+            company: {
+              value: responseData.user.company,
+              isValid: true
+            },
+            firstName: {
+              value: responseData.user.firstName,
+              isValid: true
+            },
             name: {
               value: responseData.user.name,
               isValid: true
@@ -64,7 +72,21 @@ const UpdateUser: React.FC = () => {
         process.env.REACT_APP_BACKEND_URL + `/users/${auth.userId}`,
         'PATCH',
         JSON.stringify({
+          company: formState.inputs.company.value,
+          firstName: formState.inputs.firstName.value,
           name: formState.inputs.name.value,
+          street: loadedUser.street,
+          zip: loadedUser.zip,
+          city: loadedUser.city,
+          country: loadedUser.country,
+          phone: loadedUser.phone,
+          businessMail: loadedUser.businessMail,
+          web: loadedUser.web,
+          iban: loadedUser.iban,
+          bic: loadedUser.bic,
+          bank: loadedUser.bank,
+          taxId: loadedUser.taxId,
+          commercialRegister: loadedUser.commercialRegister,
           language: formState.inputs.language.value,
           currency: loadedUser.currency,
           vat: loadedUser.vat
@@ -96,6 +118,29 @@ const UpdateUser: React.FC = () => {
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
       {!isLoading && loadedUser && (<form className="customer-form" onSubmit={userUpdateSubmitHandler}>
+        <div className="center">
+          <h1>Edit profile</h1>
+        </div>
+        <Input
+          id="company"
+          element="input"
+          type="text"
+          label="Company Name"
+          validators={[]}
+          onInput={inputHandler}
+          initialValue={loadedUser.company}
+          initialValid={true}
+        />
+        <Input
+          id="firstName"
+          element="input"
+          type="text"
+          label="First Name"
+          validators={[]}
+          onInput={inputHandler}
+          initialValue={loadedUser.firstName}
+          initialValid={true}
+        />
         <Input
           id="name"
           element="input"

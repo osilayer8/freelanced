@@ -88,6 +88,9 @@ const UpdatePassword: React.FC = () => {
         <p>Passwords are not matching!</p>
       </Modal>
       {!isLoading && (<form className="customer-form" onSubmit={passwordUpdateSubmitHandler}>
+        <div className="center">
+          <h1>Change password</h1>
+        </div>
         <Input
           id="pass"
           element="input"
