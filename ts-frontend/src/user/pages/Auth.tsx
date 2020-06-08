@@ -162,6 +162,7 @@ const Auth: React.FC = () => {
             id="pass"
             type="password"
             label="Password"
+            autoComplete="current-password"
             validators={[VALIDATOR_MINLENGTH(6)]}
             errorText="Please enter a valid password"
             onInput={inputHandler}
