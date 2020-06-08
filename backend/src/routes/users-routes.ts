@@ -55,6 +55,9 @@ router.post("/login", async (req, res, next) => {
 router.post("/signup", async (req, res, next) => {
   const { name, email, pass, language, currency } = req.body;
 
+  const error = new HttpError("Not allowed to create user", 401);
+  return next(error);
+
   let existingUser;
 
   try {
@@ -143,7 +146,7 @@ router.get("/:uid", async (req: any, res: any, next: any) => {
 router.get("/", async (req: any, res: any, next: any) => {
   let users;
   try {
-    users = await User.find({}, '-pass -iban');
+    users = await User.find({}, '-pass');
   } catch (err) {
     const error = new HttpError("Fetching users failed", 500);
     return next(error);

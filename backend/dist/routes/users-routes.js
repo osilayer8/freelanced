@@ -14,11 +14,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const cryptr_1 = __importDefault(require("cryptr"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const users_1 = __importDefault(require("../models/users"));
 const http_error_1 = __importDefault(require("../models/http-error"));
 const check_auth_1 = __importDefault(require("../middleware/check-auth"));
 exports.router = express_1.default.Router();
+const crypter = new cryptr_1.default(`${process.env.CYP_KEY}`);
 // identify user
 exports.router.post("/login", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { pass, email } = req.body;
@@ -59,9 +61,9 @@ exports.router.post("/login", (req, res, next) => __awaiter(void 0, void 0, void
 // register new user
 exports.router.post("/signup", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, email, pass, language, currency } = req.body;
-    let existingUser;
     const error = new http_error_1.default("Not allowed to create user", 401);
     return next(error);
+    let existingUser;
     try {
         existingUser = yield users_1.default.findOne({ email: email });
     }
@@ -124,11 +126,17 @@ exports.router.get("/:uid", (req, res, next) => __awaiter(void 0, void 0, void 0
         const error = new http_error_1.default("Could not find an user", 404);
         return next(error);
     }
+    const userObj = user.toObject({ getters: true });
+    let securedUser;
+    if (userObj.iban) {
+        const decryptIban = crypter.decrypt(userObj.iban);
+        securedUser = Object.assign(Object.assign({}, userObj), { iban: '**** **** **** **** ' + decryptIban.substr(decryptIban.length - 4) });
+    }
     if (user.id !== req.userData.userId) {
         const error = new http_error_1.default("Not allowed to see this user", 401);
         return next(error);
     }
-    res.json({ user: user.toObject({ getters: true }) });
+    res.json({ user: userObj.iban ? securedUser : userObj });
 }));
 // get all users
 exports.router.get("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -149,7 +157,7 @@ exports.router.get("/", (req, res, next) => __awaiter(void 0, void 0, void 0, fu
 }));
 // update user
 exports.router.patch("/:uid", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, pass, language, currency, vat } = req.body;
+    const { company, firstName, name, street, zip, city, country, phone, businessMail, web, iban, bic, bank, taxId, commercialRegister, language, currency, vat } = req.body;
     const userId = req.params.uid;
     let user;
     try {
@@ -163,16 +171,31 @@ exports.router.patch("/:uid", (req, res, next) => __awaiter(void 0, void 0, void
         const error = new http_error_1.default("Not allowed to edit this user", 401);
         return next(error);
     }
-    let hashedPassword;
-    try {
-        hashedPassword = yield bcryptjs_1.default.hash(pass, 12);
+    let encryptIban;
+    if (iban) {
+        try {
+            encryptIban = crypter.encrypt(iban);
+        }
+        catch (err) {
+            const error = new http_error_1.default("Could not encrypt iban", 500);
+            return next(error);
+        }
     }
-    catch (err) {
-        const error = new http_error_1.default("Could not create user", 500);
-        return next(error);
-    }
+    user.company = company;
+    user.firstName = firstName;
     user.name = name;
-    user.pass = hashedPassword;
+    user.street = street;
+    user.zip = zip;
+    user.city = city;
+    user.country = country;
+    user.phone = phone;
+    user.businessMail = businessMail;
+    user.web = web;
+    user.iban = encryptIban ? encryptIban : iban;
+    user.bic = bic;
+    user.bank = bank;
+    user.taxId = taxId;
+    user.commercialRegister = commercialRegister;
     user.language = language;
     user.currency = currency;
     user.vat = vat;
@@ -181,6 +204,40 @@ exports.router.patch("/:uid", (req, res, next) => __awaiter(void 0, void 0, void
     }
     catch (err) {
         const error = new http_error_1.default("User update failed", 500);
+        return next(error);
+    }
+    res.status(200).json({ user: user.toObject({ getters: true }) });
+}));
+// update password
+exports.router.patch("/password/:uid", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { pass } = req.body;
+    const userId = req.params.uid;
+    let user;
+    try {
+        user = yield users_1.default.findById(userId);
+    }
+    catch (err) {
+        const error = new http_error_1.default("Could not update password", 500);
+        return next(error);
+    }
+    if (user.id !== req.userData.userId) {
+        const error = new http_error_1.default("Not allowed to change password", 401);
+        return next(error);
+    }
+    let hashedPassword;
+    try {
+        hashedPassword = yield bcryptjs_1.default.hash(pass, 12);
+    }
+    catch (err) {
+        const error = new http_error_1.default("Could not save password", 500);
+        return next(error);
+    }
+    user.pass = hashedPassword;
+    try {
+        yield user.save();
+    }
+    catch (err) {
+        const error = new http_error_1.default("Update password failed", 500);
         return next(error);
     }
     res.status(200).json({ user: user.toObject({ getters: true }) });
