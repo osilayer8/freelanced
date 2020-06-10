@@ -21,7 +21,7 @@ const UserCustomers: React.FC = () => {
         setLoadedCustomers(responseData.customers);
       } catch (err) { }
     }
-    fetchCustomers();
+    auth.userId && fetchCustomers();
   }, [sendRequest, auth.userId]);
 
   const customerDeletedHandler = (deletedCustomerId: number) => {

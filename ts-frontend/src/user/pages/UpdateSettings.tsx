@@ -100,7 +100,7 @@ const UpdateSettings: React.FC = () => {
         );
       } catch (err) { }
     }
-    fetchUser();
+    auth.userId && fetchUser();
   }, [sendRequest, auth.userId, setFormData]);
 
   const userUpdateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
