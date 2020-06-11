@@ -7,7 +7,8 @@ import Card from '../../shared/components/UIElements/Card';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import {
-  VALIDATOR_REQUIRE
+  VALIDATOR_REQUIRE,
+  VALIDATOR_IBAN
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
@@ -234,9 +235,9 @@ const UpdateSettings: React.FC = () => {
           element="input"
           type="text"
           label="IBAN (Decryped)"
-          validators={[]}
+          validators={[VALIDATOR_IBAN()]}
+          errorText='Enter a valid IBAN'
           onInput={inputHandler}
-          initialValue={loadedUser.iban}
           initialValid={true}
         />
         <Input

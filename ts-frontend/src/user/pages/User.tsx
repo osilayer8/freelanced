@@ -36,6 +36,12 @@ const User: React.FC = () => {
     );
   }
 
+  function iban() {
+    const ibanCountry = loadedUser.iban.substr(0, 2);
+    const ibanFun = parseInt(loadedUser.iban.substr(2)) * 1337;
+    return ibanCountry + ibanFun.toString().substr(1);
+  }
+
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
@@ -52,7 +58,7 @@ const User: React.FC = () => {
         company={loadedUser.company}
         firstName={loadedUser.firstName}
         name={loadedUser.name}
-        iban={loadedUser.iban}
+        iban={iban()}
         phone={loadedUser.phone}
         email={loadedUser.email}
         currency={loadedUser.currency}

@@ -131,7 +131,9 @@ router.get("/:uid", async (req: any, res: any, next: any) => {
   let securedUser;
   if (userObj.iban) {
     const decryptIban = crypter.decrypt(userObj.iban);
-    securedUser = { ...userObj, iban: decryptIban }
+    const ibanCountry = decryptIban.substr(0, 2);
+    const ibanFun = parseInt('1' + decryptIban.substr(2)) / 1337;
+    securedUser = { ...userObj, iban: ibanCountry + ibanFun }
   }
 
   if (user.id !== req.userData.userId) {
@@ -139,7 +141,7 @@ router.get("/:uid", async (req: any, res: any, next: any) => {
     return next(error);
   }
 
-  res.json({ user: securedUser ? securedUser : user });
+  res.json({ user: securedUser ? securedUser : userObj });
 });
 
 // get all users
