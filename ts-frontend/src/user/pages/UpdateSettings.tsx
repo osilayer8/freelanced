@@ -239,6 +239,7 @@ const UpdateSettings: React.FC = () => {
           errorText='Enter a valid IBAN'
           onInput={inputHandler}
           initialValid={true}
+          placeholder="hidden"
         />
         <Input
           id="bic"

@@ -1,19 +1,16 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import { PDFDownloadLink } from "@react-pdf/renderer";
 
 import Button from '../../shared/components/FormElements/Button';
 import Card from '../../shared/components/UIElements/Card';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
-//import Pdf from '../../shared/components/UIElements/generatePdf';
-import Invoice from '../../shared/components/Invoice/Invoice';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
+import { usePdf } from '../../shared/hooks/pdf-hook';
+import Costs from '../components/Costs';
 //import TaskItem from '../components/TaskItem';
 import './CustomerForm.scss';
-
-//TO DO: create Task component
 
 interface Array {
   id: number,
@@ -23,17 +20,6 @@ interface Array {
 
 interface Result {
   costs: number,
-  hours: number
-}
-
-interface pdfData {
-  invoiceNo: string,
-  tasks: Array,
-  price: number,
-  currency: string,
-  netto: number,
-  vat: number,
-  brutto: number,
   hours: number
 }
 
@@ -53,13 +39,14 @@ function projectCalc(res: any) {
 const UpdateProject: React.FC = () => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const { updateState } = usePdf();
   const [loadedProject, setLoadedProject] = useState<any>();
   const [loadedUser, setLoadedUser] = useState<any>();
   const [result, setResult] = useState<Result>({
     costs: 0,
     hours: 0
   });
-  const [show, setHide] = useState<boolean>(false);
+  //const [show, setHide] = useState<boolean>(false);
   const projectId = useParams<{projectId: string}>().projectId;
 
   useEffect(() => {
@@ -77,6 +64,7 @@ const UpdateProject: React.FC = () => {
   }, [sendRequest, projectId]);
 
   useEffect(() => {
+    // move to invoice js
     const fetchUser = async () => {
       try {
         const responseData = await sendRequest(
@@ -90,7 +78,7 @@ const UpdateProject: React.FC = () => {
   }, [sendRequest, auth.userId]);
 
   const projectUpdateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
-    setHide(false);
+    updateState(false);
     event.preventDefault();
     try {
       const responseData = await sendRequest(
@@ -132,7 +120,7 @@ const UpdateProject: React.FC = () => {
 
     setLoadedProject({ ...loadedProject, [name]: value });
     setResult(projectCalc({ ...loadedProject, [name]: value }));
-    setHide(false);
+    updateState(false);
   }
 
   const handleSubInputChange = (idx: number) => (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -145,7 +133,7 @@ const UpdateProject: React.FC = () => {
     });
     setLoadedProject({ ...loadedProject, tasks: newTasks });
     setResult(projectCalc({ ...loadedProject, tasks: newTasks }));
-    setHide(false);
+    updateState(false);
   };
 
   const handleAddTask = () => {
@@ -159,26 +147,6 @@ const UpdateProject: React.FC = () => {
       ...loadedProject, tasks: loadedProject.tasks.filter((_s: any, sidx: number) => idx !== sidx)
     });
   };
-
-  const showButton = () => {
-    setHide(true);
-    console.log(onGeneratePdf);
-  }
-
-  const bruttoCalc = (costs: number, vat: number) => {
-    return costs * (1 + vat / 100);
-  }
-
-  const onGeneratePdf: pdfData = {
-    invoiceNo: loadedProject.invoiceNo,
-    tasks: loadedProject.tasks,
-    price: loadedProject.price,
-    currency: loadedUser && loadedUser.currency,
-    netto: result.costs,
-    vat: loadedUser && loadedUser.vat,
-    brutto: loadedUser && bruttoCalc(result.costs, loadedUser.vat),
-    hours: result.hours
-  }
 
   return (
     <React.Fragment>
@@ -222,20 +190,10 @@ const UpdateProject: React.FC = () => {
               </div>
             ))}
             <div className="sidebar">
-              <Button type="button" onClick={showButton} hide={show}>Generate PDF</Button>
-              {show && (<Button className="fadeIn" type="button" danger><PDFDownloadLink
-                  document={<Invoice result={onGeneratePdf} />}
-                  fileName="invoice.pdf"
-                >
-                  {({ blob, url, loading, error }) =>
-                    loading ? "Loading document..." : "Download PDF"
-                  }
-                </PDFDownloadLink></Button>
-              )}
-              <h3>Netto costs: {result.costs.toFixed(2)}{loadedUser.currency}</h3>
-              <h3>{loadedUser.vat}% VAT: {(bruttoCalc(result.costs, loadedUser.vat) - result.costs).toFixed(2)}{loadedUser.currency}</h3>
-              <h2>Total costs: {bruttoCalc(result.costs, loadedUser.vat).toFixed(2)}{loadedUser.currency}</h2>
-              <h4>Calculation: {result.hours} Hours</h4>
+              <Costs
+                result={result}
+                project={loadedProject}
+              />
               <p className="text-right">Invoice No: <input type="text" name="invoiceNo" value={loadedProject.invoiceNo} onChange={handleInputChange} className="invoice" /></p>
             </div>
             <Button
@@ -246,7 +204,6 @@ const UpdateProject: React.FC = () => {
             </Button>
             <div>
               <p></p>
-              {/* <Paper /> */}
               <Button type="submit">
                 SAVE
               </Button>
