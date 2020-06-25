@@ -201,14 +201,7 @@ router.patch("/:uid", async (req: any, res: any, next: any) => {
   }
 
   let encryptIban;
-  if (iban) {
-    try {
-      encryptIban = crypter.encrypt(iban);
-    } catch (err) {
-      const error = new HttpError("Could not encrypt iban", 500);
-      return next(error);
-    }
-  }
+  iban !== '' && (encryptIban = crypter.encrypt(iban));
 
   user.company = company;
   user.firstName = firstName;
@@ -220,7 +213,7 @@ router.patch("/:uid", async (req: any, res: any, next: any) => {
   user.phone = phone;
   user.businessMail = businessMail;
   user.web = web;
-  user.iban = encryptIban ? encryptIban : iban;
+  iban !== '' && (user.iban = encryptIban);
   user.bic = bic;
   user.bank = bank;
   user.taxId = taxId;
