@@ -26,7 +26,7 @@
 }
 
 .button--inverse {
-  background: transparent;
+  background: #fff;
   color: #000;
 }
 
@@ -54,10 +54,4 @@
 
 .button--big {
   font-size: 1.5rem;
-}
-
-@media screen and (min-width: 768px) {
-  .button {
-    margin-right: 1rem;
-  }
 }

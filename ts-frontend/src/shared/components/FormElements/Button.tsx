@@ -43,7 +43,7 @@ const Button: React.FC<Props> = (props) => {
   }
   return (
     <button
-      className={`button button--default ${props.className} ${props.inverse ?
+      className={`button button--default ${props.className ? props.className : ''} ${props.inverse ?
         'button--inverse' : ''} ${props.danger ? 'button--danger' : ''}`}
       type={props.type}
       onClick={props.onClick}

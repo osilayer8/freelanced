@@ -7,15 +7,27 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
-import { usePdf } from '../../shared/hooks/pdf-hook';
 import Costs from '../components/Costs';
-//import TaskItem from '../components/TaskItem';
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import Invoice from '../../shared/components/Invoice/Invoice';
 import './CustomerForm.scss';
 
 interface Array {
   id: number,
   title: string,
   hours: number
+}
+
+interface pdfData {
+  invoiceNo: string,
+  tasks: Array,
+  price: number,
+  currency: string,
+  netto: number,
+  vat: number,
+  brutto: number,
+  hours: number,
+  customer: any
 }
 
 interface Result {
@@ -39,16 +51,19 @@ function projectCalc(res: any) {
 const UpdateProject: React.FC = () => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
-  const { updateState } = usePdf();
   const [loadedProject, setLoadedProject] = useState<any>();
   const [loadedUser, setLoadedUser] = useState<any>();
+  const [loadedCustomer, setLoadedCustomer] = useState<any>();
   const [result, setResult] = useState<Result>({
     costs: 0,
     hours: 0
   });
-  //const [show, setHide] = useState<boolean>(false);
+  const [show, setHide] = useState<boolean>(false);
+  const [delay, setDelay] = useState<boolean>(true);
   const projectId = useParams<{projectId: string}>().projectId;
+  const customerId = useParams<{customerId: string}>().customerId;
 
+  /* fetch project data */
   useEffect(() => {
     const fetchProject = async () => {
       try {
@@ -63,8 +78,8 @@ const UpdateProject: React.FC = () => {
     fetchProject();
   }, [sendRequest, projectId]);
 
+  /* fetch user data */
   useEffect(() => {
-    // move to invoice js
     const fetchUser = async () => {
       try {
         const responseData = await sendRequest(
@@ -77,8 +92,22 @@ const UpdateProject: React.FC = () => {
     auth.userId && fetchUser();
   }, [sendRequest, auth.userId]);
 
+  /* fetch customer data */
+  useEffect(() => {
+    const getCustomerData = async () => {
+      try {
+        const responseData = await sendRequest(
+          process.env.REACT_APP_BACKEND_URL + `/customers/${customerId}`,
+            'GET'
+        );
+        setLoadedCustomer(responseData.customer);
+      } catch (err) { }
+    };
+    getCustomerData();
+  }, [sendRequest, customerId]);
+
   const projectUpdateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
-    updateState(false);
+    setHide(false);
     event.preventDefault();
     try {
       const responseData = await sendRequest(
@@ -120,7 +149,7 @@ const UpdateProject: React.FC = () => {
 
     setLoadedProject({ ...loadedProject, [name]: value });
     setResult(projectCalc({ ...loadedProject, [name]: value }));
-    updateState(false);
+    setHide(false);
   }
 
   const handleSubInputChange = (idx: number) => (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -133,7 +162,7 @@ const UpdateProject: React.FC = () => {
     });
     setLoadedProject({ ...loadedProject, tasks: newTasks });
     setResult(projectCalc({ ...loadedProject, tasks: newTasks }));
-    updateState(false);
+    setHide(false);
   };
 
   const handleAddTask = () => {
@@ -146,26 +175,40 @@ const UpdateProject: React.FC = () => {
     setLoadedProject({
       ...loadedProject, tasks: loadedProject.tasks.filter((_s: any, sidx: number) => idx !== sidx)
     });
+    setHide(false);
   };
+
+  const showButton = () => {
+    setDelay(true);
+    setTimeout(() => {
+      setDelay(false);
+    }, 2000);
+    setHide(true);
+  }
+
+  const bruttoCalc = (costs: number, vat: number) => {
+    return costs * (1 + vat / 100);
+  }
+
+  const onGeneratePdf: pdfData = {
+    invoiceNo: loadedProject.invoiceNo,
+    tasks: loadedProject.tasks,
+    price: loadedProject.price,
+    netto: result.costs,
+    brutto: loadedUser && bruttoCalc(result.costs, loadedUser.vat),
+    hours: result.hours,
+    currency: loadedUser && loadedUser.currency,
+    vat: loadedUser && loadedUser.vat,
+    customer: loadedCustomer && loadedCustomer
+  }
 
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
       {!isLoading && loadedProject && loadedUser && (
         <div className="text-center">
-            {/* <h2>Price per Hour: {loadedProject.price},-</h2>
-            <ul className="customer-list">
-              {loadedProject.tasks.map((task: Array) => (
-                <TaskItem
-                  id={task.id}
-                  key={task.id}
-                  title={task.title}
-                  hours={task.hours}
-                />
-              ))}
-            </ul> */}
-          <form className="customer-form" onSubmit={projectUpdateSubmitHandler}>
-            <div className="center">
+          <form className="project-content" onSubmit={projectUpdateSubmitHandler}>
+            <div className="center edit-title">
               <input type="text" className="h1 inputTitle" name="name" value={loadedProject.name} onChange={handleInputChange} />
             </div>
             <label>Price per hour:</label>
@@ -189,21 +232,34 @@ const UpdateProject: React.FC = () => {
                 )}
               </div>
             ))}
-            <div className="sidebar">
-              <Costs
-                result={result}
-                project={loadedProject}
-              />
-              <p className="text-right">Invoice No: <input type="text" name="invoiceNo" value={loadedProject.invoiceNo} onChange={handleInputChange} className="invoice" /></p>
-            </div>
             <Button
               type="button"
               inverse
+              className="add-task"
               onClick={handleAddTask}>
-              Add Task
+              + Add Task
             </Button>
+
+            <div className="sidebar card">
+              <Button type="button" onClick={showButton} inverse hide={show}>Generate PDF</Button>
+              {show && loadedUser && (
+                <Button className="fadeIn" type="button" danger>
+                  <PDFDownloadLink
+                    document={<Invoice result={onGeneratePdf} user={loadedUser} />}
+                    fileName="invoice.pdf"
+                  >
+                    {({ blob, url, loading, error }) =>
+                      loading || delay ? "Loading document..." : "Download PDF"
+                    }
+                  </PDFDownloadLink>
+                </Button>
+              )}
+              <Costs result={onGeneratePdf} />
+              <hr />
+              <div className="text-right">Invoice No: <input type="text" name="invoiceNo" value={loadedProject.invoiceNo} onChange={handleInputChange} className="invoice" /></div>
+            </div>
+
             <div>
-              <p></p>
               <Button type="submit">
                 SAVE
               </Button>

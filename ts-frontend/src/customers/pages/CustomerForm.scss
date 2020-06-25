@@ -4,6 +4,19 @@
   width: 90%;
 }
 
+.project-content {
+  margin: 0 auto;
+  width: 95%;
+  .sidebar {
+    position: static;
+    margin-bottom: 1rem;
+  }
+}
+
+.add-task {
+  margin-bottom: 1rem;
+}
+
 .h1 {
   font-size: 2em;
   font-weight: 500;
@@ -59,6 +72,14 @@
   display: inline;
 }
 
+.edit-title {
+  &:hover {
+    input {
+      border-bottom: 1px solid #000;
+    }
+  }
+}
+
 .fadeIn {
   opacity: 1;
   animation: fadeIn 2s ease;
@@ -72,5 +93,34 @@
   100% {
     pointer-events: auto;
     opacity: 1;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .project-content {
+    margin: 0;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .project-content {
+    width: 100%;
+    max-width: 700px;
+    .sidebar {
+      position: fixed;
+    }
+  }
+}
+
+@media screen and (min-width: 1300px) {
+  .project-content {
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .project-content {
+    width: 90%;
+    max-width: none;
   }
 }
