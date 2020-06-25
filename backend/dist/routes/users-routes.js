@@ -130,13 +130,15 @@ exports.router.get("/:uid", (req, res, next) => __awaiter(void 0, void 0, void 0
     let securedUser;
     if (userObj.iban) {
         const decryptIban = crypter.decrypt(userObj.iban);
-        securedUser = Object.assign(Object.assign({}, userObj), { iban: '**** **** **** **** ' + decryptIban.substr(decryptIban.length - 4) });
+        const ibanCountry = decryptIban.substr(0, 2);
+        const ibanFun = parseInt('1' + decryptIban.substr(2)) / 1337;
+        securedUser = Object.assign(Object.assign({}, userObj), { iban: ibanCountry + ibanFun });
     }
     if (user.id !== req.userData.userId) {
         const error = new http_error_1.default("Not allowed to see this user", 401);
         return next(error);
     }
-    res.json({ user: userObj.iban ? securedUser : userObj });
+    res.json({ user: securedUser ? securedUser : userObj });
 }));
 // get all users
 exports.router.get("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -172,15 +174,7 @@ exports.router.patch("/:uid", (req, res, next) => __awaiter(void 0, void 0, void
         return next(error);
     }
     let encryptIban;
-    if (iban) {
-        try {
-            encryptIban = crypter.encrypt(iban);
-        }
-        catch (err) {
-            const error = new http_error_1.default("Could not encrypt iban", 500);
-            return next(error);
-        }
-    }
+    iban !== '' && (encryptIban = crypter.encrypt(iban));
     user.company = company;
     user.firstName = firstName;
     user.name = name;
@@ -191,7 +185,7 @@ exports.router.patch("/:uid", (req, res, next) => __awaiter(void 0, void 0, void
     user.phone = phone;
     user.businessMail = businessMail;
     user.web = web;
-    user.iban = encryptIban ? encryptIban : iban;
+    iban !== '' && (user.iban = encryptIban);
     user.bic = bic;
     user.bank = bank;
     user.taxId = taxId;
