@@ -5,7 +5,6 @@ import BillTo from './BillTo'
 import InvoiceNo from './InvoiceNo'
 import InvoiceItemsTable from './InvoiceItemsTable'
 import InvoiceThankYouMsg from './InvoiceThankYouMsg'
-import invoice from './data/invoice'
 
 Font.register({ family: 'Roboto', src: 'https://evoleeq.com/uploads/Roboto-Regular.ttf' });
 Font.register({ family: 'RobotoBold', src: 'https://evoleeq.com/uploads/Roboto-Bold.ttf' });
@@ -27,17 +26,19 @@ const styles = StyleSheet.create({
         marginRight: 'auto'
     }
   });
-  
-  const Invoice = ({result}) => (
-            <Document>
-                <Page size="A4" style={styles.page}>
-                    {/* <InvoiceTitle title='Invoice'/> */}
-                    <BillTo invoice={invoice}/>
-                    <InvoiceNo invoice={invoice} result={result}/>
-                    <InvoiceItemsTable invoice={invoice} result={result} />
-                    <InvoiceThankYouMsg />
-                </Page>
-            </Document>
-        );
+
+  const Invoice: React.FC<{ result: any, user: any }> = (props) => {
+    return (
+        <Document>
+            <Page size="A4" style={styles.page}>
+                {/* <InvoiceTitle title='Invoice'/> */}
+                <BillTo customer={props.result.customer} />
+                <InvoiceNo result={props.result}/>
+                <InvoiceItemsTable result={props.result} />
+                <InvoiceThankYouMsg user={props.user} />
+            </Page>
+        </Document>
+    );
+  };
   
   export default Invoice

@@ -10,14 +10,14 @@ const styles = StyleSheet.create({
         left: 60
     },
     reportTitle:{
-        textTransform: 'uppercase',
+
     }
   });
 
 
-  const InvoiceThankYouMsg = () => (
+  const InvoiceThankYouMsg = ({user}: any) => (
     <View style={styles.titleContainer}>
-        <Text style={styles.reportTitle}>Thank you for your business</Text>
+        <Text style={styles.reportTitle}>{user.bank}</Text>
     </View>
   );
   

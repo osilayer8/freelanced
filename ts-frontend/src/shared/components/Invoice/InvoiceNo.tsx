@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
   const today = new Date();
   const date = today.getDate()+'.'+(today.getMonth()+1)+'.'+today.getFullYear();
 
-  const InvoiceNo = ({invoice, result}) => (
+  const InvoiceNo = ({result}: any) => (
         <Fragment>
             <View style={styles.invoiceNoContainer}>
                 <Text style={styles.label}>Invoice No:</Text>

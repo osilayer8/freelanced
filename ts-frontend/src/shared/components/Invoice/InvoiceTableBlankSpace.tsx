@@ -1,46 +1,41 @@
 import React, {Fragment} from 'react';
 import {Text, View, StyleSheet } from '@react-pdf/renderer';
 
-const borderColor = '#aaaaaa'
+const borderColor = 'red'
 const styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
-        borderBottomColor: '#aaaaaa',
+        borderBottomColor: borderColor,
         borderBottomWidth: 1,
         alignItems: 'center',
         height: 24,
-        fontFamily: 'RobotoBold',
-        color: 'white'
+        color: 'black'
     },
     description: {
-        width: '60%',
+        width: '70%',
         borderRightColor: borderColor,
         borderRightWidth: 1,
     },
     qty: {
-        width: '10%',
-        borderRightColor: borderColor,
-        borderRightWidth: 1,
-    },
-    rate: {
         width: '15%',
         borderRightColor: borderColor,
         borderRightWidth: 1,
     },
     amount: {
         width: '15%',
+        paddingRight: 8,
+        textAlign: 'right'
     },
    
   });
 
-const InvoiceTableBlankSpace = ({rowsCount}) => {
+const InvoiceTableBlankSpace = (rowsCount: any) => {
     const blankRows = Array(rowsCount).fill(0)
     const rows = blankRows.map( (x, i) => 
         <View style={styles.row} key={`BR${i}`}>
-            <Text style={styles.description}>-</Text>
-            <Text style={styles.qty}>-</Text>
-            <Text style={styles.rate}>-</Text>
-            <Text style={styles.amount}>-</Text>
+            <Text style={styles.description}>12</Text>
+            <Text style={styles.qty}>23</Text>
+            <Text style={styles.amount}>45</Text>
         </View>
     )
     return (<Fragment>{rows}</Fragment> )

@@ -11,11 +11,10 @@ const styles = StyleSheet.create({
     },
   });
 
-
-  const BillTo = ({invoice}) => (
+  const BillTo = ({customer}: any) => (
     <View style={styles.headerContainer}>
-        <Text>{invoice.company}</Text>
-        <Text>{invoice.address}</Text>
+        <Text>{customer.company}</Text>
+        <Text>{customer.street}</Text>
     </View>
   );
   

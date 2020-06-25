@@ -20,9 +20,8 @@ const styles = StyleSheet.create({
     },
   });
 
-const InvoiceTableFooter = ({items, result}) => {
-    const total = items.map(item => item.qty * item.rate)
-        .reduce((accumulator, currentValue) => accumulator + currentValue , 0)
+const InvoiceTableFooter = ({result}: any) => {
+    //const total = items.map((item: any) => item.qty * item.rate).reduce((accumulator: number, currentValue: number) => accumulator + currentValue , 0)
     return(    
         <Fragment>
             <View style={styles.row}>
