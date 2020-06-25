@@ -20,11 +20,6 @@ const styles = StyleSheet.create({
         paddingRight: 8,
         textAlign: 'right'
     },
-    // rate: {
-    //     width: '15%',
-    //     paddingLeft: 8,
-    //     textAlign: 'right'
-    // },
     amount: {
         width: '15%',
         paddingRight: 8,

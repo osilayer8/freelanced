@@ -22,19 +22,19 @@ const styles = StyleSheet.create({
 
 const InvoiceTableFooter = ({result}: any) => {
     //const total = items.map((item: any) => item.qty * item.rate).reduce((accumulator: number, currentValue: number) => accumulator + currentValue , 0)
-    return(    
+    return (    
         <Fragment>
             <View style={styles.row}>
                 <Text style={styles.description}>Netto</Text>
-                <Text style={styles.total}>{ result.netto.toString() } {result.currency}</Text>
+                <Text style={styles.total}>{ result.netto.toFixed(2).toString() } {result.currency}</Text>
             </View>
             <View style={styles.row}>
                 <Text style={styles.description}>{ result.vat.toString() }% VAT</Text>
-                <Text style={styles.total}>{ (result.brutto - result.netto).toString() } {result.currency}</Text>
+                <Text style={styles.total}>{ (result.brutto - result.netto).toFixed(2).toString() } {result.currency}</Text>
             </View>
             <View style={styles.row}>
                 <Text style={styles.description}>TOTAL</Text>
-                <Text style={styles.total}>{ result.brutto.toString() } {result.currency}</Text>
+                <Text style={styles.total}>{ result.brutto.toFixed(2).toString() } {result.currency}</Text>
             </View>
         </Fragment>
     )

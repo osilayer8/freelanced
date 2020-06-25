@@ -11,7 +11,9 @@
   top: 2rem;
   z-index: 9;
   text-align: right;
-  padding: 2rem;
+  &.card {
+    padding: 2rem;
+  }
   h2, h3, h4 {
     display: flex;
     justify-content: space-between;
