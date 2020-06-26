@@ -4,7 +4,7 @@ import InvoiceTitle from './InvoiceTitle'
 import BillTo from './BillTo'
 import InvoiceNo from './InvoiceNo'
 import InvoiceItemsTable from './InvoiceItemsTable'
-import InvoiceThankYouMsg from './InvoiceThankYouMsg'
+import InvoicePageFooter from './InvoicePageFooter'
 
 Font.register({ family: 'Roboto', src: 'https://evoleeq.com/uploads/Roboto-Regular.ttf' });
 Font.register({ family: 'RobotoBold', src: 'https://evoleeq.com/uploads/Roboto-Bold.ttf' });
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
                 <BillTo customer={props.result.customer} />
                 <InvoiceNo result={props.result}/>
                 <InvoiceItemsTable result={props.result} />
-                <InvoiceThankYouMsg user={props.user} />
+                <InvoicePageFooter user={props.user} />
             </Page>
         </Document>
     );

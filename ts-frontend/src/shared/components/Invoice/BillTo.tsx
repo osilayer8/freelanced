@@ -15,6 +15,8 @@ const styles = StyleSheet.create({
     <View style={styles.headerContainer}>
         <Text>{customer.company}</Text>
         <Text>{customer.street}</Text>
+        <Text>{customer.plz} {customer.city}</Text>
+        <Text>{customer.country}</Text>
     </View>
   );
   
