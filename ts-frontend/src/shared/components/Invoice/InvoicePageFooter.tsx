@@ -22,32 +22,33 @@ const styles = StyleSheet.create({
   });
 
 
-  const InvoicePageFooter = ({user}: any) => (
-    <View style={styles.titleContainer}>
-      <View style={styles.flex}>
-        <View style={styles.cells}>
-          <Text>{user.company}</Text>
-          <Text>{user.firstName} {user.name}</Text>
-          <Text>{user.street}</Text>
-          <Text>{user.country && user.country + '-'}{user.zip} {user.city}</Text>
-        </View>
-        <View style={styles.cells}>
-          <Text>Telefon: {user.phone}</Text>
-          <Text>{user.businessMail}</Text>
-          <Text>{user.web}</Text>
-        </View>
-        <View style={styles.cells}>
-          <Text>{user.firstName} {user.name}</Text>
-          <Text>IBAN {user.iban}</Text>
-          <Text>BIC {user.bic}</Text>
-          <Text>Bank {user.bank}</Text>
-        </View>
-        <View style={styles.cells}>
-          <Text>{user.commercialRegister}</Text>
-          <Text>{user.taxId}</Text>
+  const InvoicePageFooter = ({user}: any) => {
+    return (
+      <View style={styles.titleContainer}>
+        <View style={styles.flex}>
+          <View style={styles.cells}>
+            <Text>{user.company}</Text>
+            <Text>{user.firstName} {user.name}</Text>
+            <Text>{user.street}</Text>
+            <Text>{user.country && user.country + '-'}{user.zip} {user.city}</Text>
+          </View>
+          <View style={styles.cells}>
+            <Text>Telefon: {user.phone}</Text>
+            <Text>{user.businessMail}</Text>
+            <Text>{user.web}</Text>
+          </View>
+          <View style={styles.cells}>
+            <Text>{user.firstName} {user.name}</Text>
+            <Text>IBAN {user.iban}</Text>
+            <Text>BIC {user.bic}</Text>
+            <Text>Bank {user.bank}</Text>
+          </View>
+          <View style={styles.cells}>
+            <Text>{user.commercialRegister}</Text>
+            <Text>{user.taxId}</Text>
+          </View>
         </View>
       </View>
-    </View>
-  );
+    )};
   
   export default InvoicePageFooter

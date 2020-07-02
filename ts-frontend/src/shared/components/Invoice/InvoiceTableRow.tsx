@@ -32,7 +32,7 @@ const InvoiceTableRow = ({items}: any) => {
     const rows = items.tasks.map((item: any) => (
         <View style={styles.row} key={item.id.toString()}>
             <Text style={styles.description}>{item.title}</Text>
-            <Text style={styles.qty}>{item.hours.toString()}</Text>
+            <Text style={styles.qty}>{item.hours.toString()}h</Text>
             <Text style={styles.amount}>{(item.hours * items.price).toFixed(2)}</Text>
         </View>
     ));

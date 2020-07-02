@@ -1,6 +1,24 @@
 .customer-item {
   margin: 1rem 0;
   list-style: none;
+  .customer-item__action {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 1.2rem;
+    cursor: pointer;
+    display: none;
+    svg {
+      width: 18px;
+      fill: #fff;
+      height: 18px;
+    }
+  }
+  &:hover {
+    .customer-item__action {
+      display: block;
+    }
+  }
 }
 
 .customer-item__content {
@@ -19,16 +37,17 @@
   background: #262626;
 }
 
-.customer-item__details p {
-  margin: 0 0 0.5rem 0;
+.customer-item__details {
+  display: flex;
+  .customer-address {
+    margin-right: 5rem;
+    min-width: 100px;
+  }
+  p {
+    margin: 0 0 0.5rem 0;
+  }
 }
 
 .customer-item__info h2 {
   margin: 0;
-}
-
-.customer-item__action {
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
 }

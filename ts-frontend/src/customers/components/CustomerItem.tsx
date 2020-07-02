@@ -76,15 +76,29 @@ const CustomerItem: React.FC<Props> = (props) => {
         <Row className="customer-item__content relative">
           {isLoading && <LoadingSpinner asOverlay />}
           {auth.userId === props.creatorId && props.onDelete && (
-            <button className="customer-item__action" onClick={showDeleteWarningHandler}>DELETE</button>
+            <div title="Delete customer" className="customer-item__action" onClick={showDeleteWarningHandler}>
+              <svg><use href="#trash" xlinkHref="#trash" /></svg>
+            </div>
+          )}
+          {!props.onDelete && (
+            <div title="Edit customer" className="customer-item__action">
+              <svg><use href="#edit" xlinkHref="#edit" /></svg>
+            </div>
           )}
           <Link to={props.onDelete ? `/customers/${props.id}` : `/customers/${props.id}/edit`}>
             <div className="customer-item__details">
-              <p>{props.email}</p>
-              {props.street ? <p>{props.street}</p> : null}
-              {props.plz ? <p>{props.country} {props.plz} {props.city}</p> : null}
-              {props.phone ? <p>{props.phone}</p> : null}
-              {props.website ? <p>{props.website}</p> : null}
+              {!props.street && !props.plz && !props.country ? '' : (
+                <div className="customer-address">
+                  {props.street && <p>{props.street}</p>}
+                  {props.plz && <p>{props.plz} {props.city}</p>}
+                  <p>{props.country}</p>
+                </div>
+              )}
+              <div className="customer-contact">
+                {props.phone && <p>{props.phone}</p>}
+                {props.email && <p>{props.email}</p>}
+                {props.website && <p>{props.website}</p>}
+              </div>
             </div>
             <div className="customer-item__info">
               <h2>{props.company}</h2>

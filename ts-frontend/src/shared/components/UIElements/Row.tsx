@@ -4,7 +4,7 @@ import './Row.scss';
 
 const Row: React.FC<{ style?: React.CSSProperties, className?: string }> = (props) => {
   return (
-    <div className={`row ${props.className ? props.className : ''}`} style={props.style}>
+    <div className={`full-box ${props.className ? props.className : ''}`} style={props.style}>
       {props.children}
     </div>
   );

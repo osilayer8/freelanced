@@ -87,15 +87,26 @@ const ProjectItem: React.FC<Props> = (props) => {
       <li className="project-item">
         <Card className="project-item__content relative">
           {isLoading && <LoadingSpinner asOverlay />}
-          <button className="project-item__action" onClick={showDeleteWarningHandler}>DELETE</button>
+          <div title="Delete project" className="project-item__action" onClick={showDeleteWarningHandler}>
+            <svg><use href="#trash" xlinkHref="#trash" /></svg>
+          </div>
           <Link to={`/customers/${props.ownerId}/projects/${props.id}`}>
           <div className="project-item__info">
             <h2>{props.name}</h2>
           </div>
           <div className="project-item__details">
-            <p>Tasks: {props.tasks.length}</p>
-            <p>Calculation: {projectCalc().hours}h</p>
-            <p>Price:  {projectCalc().costs},-</p>
+            <div className="row">
+              <label><svg className="fill"><use href="#check" xlinkHref="#check" /></svg>Tasks:</label>
+              <div className="numb">{props.tasks.length}</div>
+            </div>
+            <div className="row">
+              <label><svg className="fill stroke"><use href="#time" xlinkHref="#time" /></svg>Calculation:</label>
+              <div className="numb">{projectCalc().hours}h</div>
+            </div>
+            <div className="row">
+              <label><svg className="fill"><use href="#coins" xlinkHref="#coins" /></svg>Price:</label>
+              <div className="numb">{projectCalc().costs},-</div>
+            </div>
           </div>
           </Link>
         </Card>

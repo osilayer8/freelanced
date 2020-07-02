@@ -1,12 +1,12 @@
 .main-header {
-  position: fixed;
+  position: absolute;
   left: 2rem;
   top: 2rem;
   z-index: 9;
 }
 
 .sidebar {
-  position: fixed;
+  position: absolute;
   right: 2rem;
   top: 2rem;
   z-index: 9;
@@ -18,5 +18,11 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .sidebar, .main-header {
+    position: fixed;
   }
 }

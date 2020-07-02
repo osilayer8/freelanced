@@ -38,7 +38,7 @@ interface Result {
 function projectCalc(res: any) {
   let hours = 0, item = '';
   for(item in res.tasks) {
-    const hour = parseInt(res.tasks[item].hours);
+    const hour = parseFloat(res.tasks[item].hours);
     const parse = hour >= 0 ? hour : 0;
     hours += parse;
   }
@@ -223,12 +223,9 @@ const UpdateProject: React.FC = () => {
                 <input type="text" name="title" value={task.title} onChange={handleSubInputChange(idx)} />
                 <input type="number" name="hours" value={task.hours === null ? 0 : task.hours} onChange={handleSubInputChange(idx)} />
                 {idx > 0 && (
-                  <button
-                    type="button"
-                    onClick={handleRemoveTask(idx)}
-                  >
-                    Remove Task
-                  </button>
+                  <div className="del" title="Remove task" onClick={handleRemoveTask(idx)}>
+                    <svg><use href="#trash" xlinkHref="#trash" /></svg>
+                  </div>
                 )}
               </div>
             ))}

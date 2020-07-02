@@ -6,10 +6,16 @@
 .authentication {
   width: 90%;
   max-width: 25rem;
-  margin: 7rem auto;
+  margin: 0 auto;
   text-align: center;
 }
 
 .authentication form {
   margin-bottom: 1rem;
+}
+
+@media screen and (min-width: 1200px) {
+  .authentication {
+    margin: 7rem auto;
+  }
 }

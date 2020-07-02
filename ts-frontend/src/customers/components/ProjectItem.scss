@@ -1,6 +1,25 @@
 .project-item {
   margin: 1rem 0;
   flex: 0 100%;
+  overflow: hidden;
+  .project-item__action {
+    position: absolute;
+    right: 0;
+    top: 0;
+    padding: 1.2rem;
+    cursor: pointer;
+    display: none;
+    svg {
+      width: 18px;
+      fill: #fff;
+      height: 18px;
+    }
+  }
+  &:hover {
+    .project-item__action {
+      display: block;
+    }
+  }
 }
 
 .project-item__content {
@@ -12,25 +31,47 @@
 }
 
 .project-item__info {
-  padding: 1.5rem 1rem;
+  padding: 1rem;
 }
 
 .project-item__details {
   padding: .5rem 1rem;
   background: #262626;
-  p {
+  .row {
     margin: 0.5rem 0;
+    display: flex;
+    label {
+      white-space: nowrap;
+      font-weight: normal;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 70%;
+      text-transform: none;
+      cursor: pointer;
+    }
+    .numb {
+      white-space: nowrap;
+      text-align: right;
+      font-weight: 700;
+      width: 30%;
+    }
+    svg {
+      width: 16px;
+      height: 16px;
+      float: left;
+      margin-right: .75rem;
+      &.fill {
+        fill: #fff;
+      }
+      &.stroke {
+        stroke: #fff;
+      }
+    }
   }
 }
 
 .project-item__info h2 {
   margin: 0;
-}
-
-.project-item__action {
-  position: absolute;
-  right: 1rem;
-  top: 1rem;
 }
 
 @media (min-width: 768px) {

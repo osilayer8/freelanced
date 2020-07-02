@@ -15,17 +15,19 @@ const NavLinks: React.FC = () => {
     <ul className="nav-links">
       {auth.isLoggedIn && (
         <li>
-          <NavLink to={`/customers`}>MY CUSTOMERS</NavLink>
+          <NavLink to={`/customers`}><svg><use href="#business" xlinkHref="#business" /></svg><label>MY CUSTOMERS</label></NavLink>
         </li>
       )}
     </ul>
     {auth.isLoggedIn && (
     <div className="user-bar">
         <NavLink to="/user">
-          MY PROFILE
+          <svg><use href="#profile" xlinkHref="#profile" /></svg> <label>MY PROFILE</label>
         </NavLink>
       {auth.isLoggedIn && (
-        <button onClick={auth.logout}>LOGOUT</button>
+        <div className="logout" title="Logout" onClick={auth.logout}>
+          <svg><use href="#logout" xlinkHref="#logout" /></svg>
+        </div>
       )}
     </div>
     )}
