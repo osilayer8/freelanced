@@ -42,7 +42,7 @@ router.post("/login", async (req, res, next) => {
 
   let token: string;
   try {
-    token = jsonwebtoken.sign({ user: identifiedUser.id, email: identifiedUser.email }, process.env.JWL_KEY as string, { expiresIn: '2h' });
+    token = jsonwebtoken.sign({ user: identifiedUser.id, email: identifiedUser.email }, process.env.JWL_KEY as string, { expiresIn: '4h' });
   } catch (err) {
     const error = new HttpError("Login failed", 500);
     return next(error);
@@ -131,9 +131,9 @@ router.get("/:uid", async (req: any, res: any, next: any) => {
   let securedUser;
   if (userObj.iban) {
     const decryptIban = crypter.decrypt(userObj.iban);
-    const ibanCountry = decryptIban.substr(0, 2);
-    const ibanFun = parseInt('1' + decryptIban.substr(2)) / 1337;
-    securedUser = { ...userObj, iban: ibanCountry + ibanFun }
+    //const ibanCountry = decryptIban.substr(0, 2);
+    //const ibanFun = parseInt('1' + decryptIban.substr(2)) / 1337;
+    securedUser = { ...userObj, iban: decryptIban }
   }
 
   if (user.id !== req.userData.userId) {

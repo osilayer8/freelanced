@@ -50,7 +50,7 @@ exports.router.post("/login", (req, res, next) => __awaiter(void 0, void 0, void
     }
     let token;
     try {
-        token = jsonwebtoken_1.default.sign({ user: identifiedUser.id, email: identifiedUser.email }, process.env.JWL_KEY, { expiresIn: '2h' });
+        token = jsonwebtoken_1.default.sign({ user: identifiedUser.id, email: identifiedUser.email }, process.env.JWL_KEY, { expiresIn: '4h' });
     }
     catch (err) {
         const error = new http_error_1.default("Login failed", 500);
@@ -130,9 +130,9 @@ exports.router.get("/:uid", (req, res, next) => __awaiter(void 0, void 0, void 0
     let securedUser;
     if (userObj.iban) {
         const decryptIban = crypter.decrypt(userObj.iban);
-        const ibanCountry = decryptIban.substr(0, 2);
-        const ibanFun = parseInt('1' + decryptIban.substr(2)) / 1337;
-        securedUser = Object.assign(Object.assign({}, userObj), { iban: ibanCountry + ibanFun });
+        //const ibanCountry = decryptIban.substr(0, 2);
+        //const ibanFun = parseInt('1' + decryptIban.substr(2)) / 1337;
+        securedUser = Object.assign(Object.assign({}, userObj), { iban: decryptIban });
     }
     if (user.id !== req.userData.userId) {
         const error = new http_error_1.default("Not allowed to see this user", 401);
