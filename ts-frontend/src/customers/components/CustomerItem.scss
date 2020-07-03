@@ -1,3 +1,5 @@
+@import '../../scss/colors';
+
 .customer-item {
   margin: 1rem 0;
   list-style: none;
@@ -10,7 +12,7 @@
     display: none;
     svg {
       width: 18px;
-      fill: #fff;
+      fill: $box-text;
       height: 18px;
     }
   }
@@ -24,7 +26,7 @@
 .customer-item__content {
   padding: 0;
   a {
-    color: #fff;
+    color: $box-text;
     text-decoration: none;
   }
 }
@@ -34,7 +36,7 @@
 }
 
 .customer-item__info {
-  background: #262626;
+  background: $box;
 }
 
 .customer-item__details {

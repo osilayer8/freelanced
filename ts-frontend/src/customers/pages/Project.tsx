@@ -154,6 +154,11 @@ const UpdateProject: React.FC = () => {
 
   const handleSubInputChange = (idx: number) => (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
     const target = event.target;
+    if (target.name === 'hours') {
+        if (target.value.length > 4) {
+          target.value = target.value.slice(0,4); 
+        }
+    }
     const value = target.value;
     const name = target.name;
     const newTasks = loadedProject.tasks.map((task: Array, sidx: number) => {

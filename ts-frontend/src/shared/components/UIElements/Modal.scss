@@ -1,17 +1,19 @@
+@import '../../../scss/colors';
+
 .modal {
   z-index: 100;
   position: fixed;
   top: 22vh;
   left: 10%;
   width: 80%;
-  background: #fff;
+  background: $background;
   border-radius: 8px;
 }
 
 .modal__header {
   width: 100%;
   padding: 1rem 0.5rem;
-  background:#eee;
+  background: opacify($background, 0.5);
 }
 
 .modal__header h2 {

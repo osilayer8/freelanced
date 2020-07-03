@@ -1,3 +1,5 @@
+@import '../../../scss/colors';
+
 .nav-links {
   margin: 0;
   padding: 0;
@@ -15,7 +17,7 @@
 }
 
 .nav-links a {
-  color: #292929;
+  color: $text;
   text-decoration: none;
   padding: 1rem 0;
   display: flex;
@@ -35,7 +37,7 @@
 
 .nav-links button {
   cursor: pointer;
-  color: #292929;
+  color: $text;
   background: transparent;
   padding: 0.5rem;
   font: inherit;
@@ -47,7 +49,7 @@
 
 .nav-links button:hover,
 .nav-links button:active {
-  background: #292929;
+  background: $base;
   color: black;
 }
 
@@ -61,7 +63,7 @@
   display: flex;
   a {
     font-weight: bold;
-    color: #fff;
+    color: $box-text;
     text-decoration: none;
     margin-right: 1rem;
     display: flex;
@@ -71,7 +73,7 @@
     cursor: pointer;
   }
   svg {
-    fill: #fff;
+    fill: $box-text;
     width: 18px;
     height: 18px;
     margin-right: .5rem;

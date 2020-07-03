@@ -1,3 +1,5 @@
+@import '../../../scss/colors';
+
 .button {
   font: inherit;
   border: 0;
@@ -7,12 +9,12 @@
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
-  background: #000;
+  background: $base;
   &[hidden] {
     display: none;
   }
   a {
-    color: #fff;
+    color: $box-text;
     text-decoration: none;
   }
 }
@@ -26,14 +28,14 @@
 }
 
 .button--inverse {
-  background: #fff;
-  color: #000;
+  background: $background;
+  color: $text;
 }
 
 .button--inverse:hover,
 .button--inverse:active {
-  color: #000;
-  background: #fff;
+  color: $text;
+  background: $background;
 }
 
 .button:disabled,

@@ -1,11 +1,13 @@
+@import '../../../scss/colors';
+
 .card {
   margin: 0;
   border-radius: 10px;
   overflow: hidden;
-  background: #000;
-  color: #fff;
+  background: $base;
+  color: $box-text;
   input {
-    border-color: #fff;
-    color: #fff;
+    border-color: $box-text;
+    color: $box-text;
   }
 }
