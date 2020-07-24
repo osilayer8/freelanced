@@ -23,20 +23,41 @@ const UserItem: React.FC<Props> = (props) => {
       <Card className="user-item__content">
         <div className="user-item__info">
           <h1>
+            <label>Company</label>
             {props.company}
           </h1>
           <h1>
-          {props.firstName} {props.name}
+            <label>Name</label>
+            {props.firstName} {props.name}
           </h1>
-          <h2>{props.email}</h2>
-          <h2>{props.phone}</h2>
-          <h2>IBAN {props.iban}</h2>
-          <p>Currency: {props.currency}</p>
-          <p>Language: {props.language}</p>
-          <p>VAT: {props.vat}%</p>
-          <Button to="/user/edit">EDIT PROFILE</Button>
-          <Button to="/user/settings">EDIT PDF SETTINGS</Button>
-          <Button to="/user/password">CHANGE PASSWORD</Button>
+          <h2>
+            <label>Email</label>
+            {props.email}
+          </h2>
+          <h2>
+            <label>Phone</label>
+            {props.phone}
+          </h2>
+          <h2><label>IBAN</label>
+            {props.iban}
+          </h2>
+          <h2>
+            <label>Currency</label>
+            {props.currency}
+          </h2>
+          <h2>
+            <label>Language</label>
+            {props.language}
+          </h2>
+          <h2>
+            <label>VAT</label>
+            {props.vat}%
+          </h2>
+          <div className="flex">  
+            <Button className="outlined" to="/user/edit">EDIT PROFILE</Button>
+            <Button className="outlined" to="/user/settings">EDIT PDF SETTINGS</Button>
+            <Button className="outlined" to="/user/password">CHANGE PASSWORD</Button>
+          </div>
         </div>
       </Card>
     </li>

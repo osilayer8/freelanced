@@ -35,7 +35,7 @@ const Button: React.FC<Props> = (props) => {
       <Link
         to={props.to}
         className={`button button--default ${props.inverse ?
-          'button--inverse' : ''} ${props.danger ? 'button--danger' : ''}`}
+          'button--inverse' : ''} ${props.danger ? 'button--danger' : ''} ${props.className ? props.className : ''}`}
       >
         {props.children}
       </Link>

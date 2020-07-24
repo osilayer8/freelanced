@@ -221,7 +221,7 @@ const UpdateProject: React.FC = () => {
             <span>{loadedUser.currency}</span>
             <div className="labels">
               <label>Task</label>
-              <label>Calculation</label>
+              <label>Calculation / Hours</label>
             </div>
             {loadedProject.tasks.map((task: Array, idx: number) => (
               <div className="fields" key={task.id}>

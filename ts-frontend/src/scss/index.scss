@@ -86,8 +86,8 @@ textarea {
   width: 100%;
   font: inherit;
   background: transparent;
-  padding: .5rem 1rem;
-  font-size: 1.4rem;
+  padding: .5rem;
+  font-size: 1rem;
   appearance: none;
   border: 0;
   border-bottom: 1px solid #000;
@@ -103,6 +103,11 @@ textarea:focus {
 @media screen and (min-width: 768px) {
   .content {
     padding: 1.5rem 2rem;
+  }
+  input,
+  textarea {
+    padding: .5rem 1rem;
+    font-size: 1.4rem;
   }
 }
 

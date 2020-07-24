@@ -101,6 +101,7 @@ const Input: React.FC<Props> = (props) => {
       />
     ) : props.element === 'select' ? (
       <select
+        className="select-css"
         id={props.id}
         onChange={changeHandler}
         onBlur={touchHandler}

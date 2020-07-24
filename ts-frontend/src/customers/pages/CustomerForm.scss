@@ -34,8 +34,8 @@
 
 .price {
   text-align: center;
-  font-size: 4rem;
-  width: 140px;
+  font-size: 2rem;
+  width: 80px;
   margin: 0 auto;
   padding: .5rem 0;
   display: inline-block;
@@ -50,7 +50,7 @@
   flex-wrap: wrap;
   justify-content: space-between;
   label {
-    margin: 0 3rem 0 1.5rem;
+    margin: 0 3rem 0 1rem;
   }
 }
 
@@ -119,6 +119,15 @@
         padding: .5rem 1rem;
       }
     }
+  }
+  .labels {
+    label {
+      margin: 0 3rem 0 1.5rem;
+    }
+  }
+  .price {
+    font-size: 4rem;
+    width: 140px;
   }
 }
 

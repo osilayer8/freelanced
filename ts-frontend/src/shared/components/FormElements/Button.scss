@@ -17,6 +17,9 @@
     color: $box-text;
     text-decoration: none;
   }
+  &.outlined {
+    border: 1px solid $box-text;
+  }
 }
 
 .button:hover {
