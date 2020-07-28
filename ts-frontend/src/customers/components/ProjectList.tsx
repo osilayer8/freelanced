@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Card from '../../shared/components/UIElements/Card';
 import ProjectItem from './ProjectItem';
 import './ProjectList.scss';
 
@@ -8,9 +7,9 @@ const ProjectList: React.FC<any> = (props) => {
   if (props.items.length === 0) {
     return (
       <div className="project-list center">
-        <Card>
+        <div className="row">
           <h2>No projects found. Maybe create one?</h2>
-        </Card>
+        </div>
       </div>
     );
   }

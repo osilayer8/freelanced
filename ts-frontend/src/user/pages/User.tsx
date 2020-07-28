@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 
 import UserItem from '../components/UserItem';
-import Card from '../../shared/components/UIElements/Card';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useHttpClient } from '../../shared/hooks/http-hook';
@@ -29,9 +28,9 @@ const User: React.FC = () => {
   if (!isLoading && !loadedUser) {
     return (
       <div className="center">
-        <Card>
+        <div className="row">
           <h2>Could not find User!</h2>
-        </Card>
+        </div>
       </div>
     );
   }

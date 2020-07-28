@@ -10,6 +10,7 @@ const projectSchema = new mongoose.Schema({
     hours: { type: Number, required: false },
   }],
   invoiceNo: { type: String, required: false },
+  additionalPdfText: { type: String, required: false },
   owner: { type: mongoose.Types.ObjectId, required: true, ref: 'Customer' }
 });
 

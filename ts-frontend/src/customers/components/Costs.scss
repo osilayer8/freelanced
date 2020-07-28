@@ -1,5 +1,21 @@
+@import '../../scss/colors';
 
 .sidebar {
+  &__settings {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    .pdfSettings {
+      cursor: pointer;
+      padding: 0 1rem;
+      line-height: 0;
+      svg {
+        width: 25px;
+        height: 25px;
+        fill: $box-text;
+      }
+    }
+  }
   label {
     font-weight: 100;
     font-size: 1rem;
@@ -8,5 +24,10 @@
 
   input {
     text-align: center;
+  }
+  h2, h3, h4 {
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }

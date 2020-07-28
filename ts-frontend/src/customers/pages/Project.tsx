@@ -2,13 +2,15 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 
 import Button from '../../shared/components/FormElements/Button';
-import Card from '../../shared/components/UIElements/Card';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
+import Modal from '../../shared/components/UIElements/Modal';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
 import Costs from '../components/Costs';
 import { PDFDownloadLink } from "@react-pdf/renderer";
+import Input from '../../shared/components/FormElements/Input';
+import { useForm } from '../../shared/hooks/form-hook';
 import Invoice from '../../shared/components/Invoice/Invoice';
 import './CustomerForm.scss';
 
@@ -20,6 +22,7 @@ interface Array {
 
 interface pdfData {
   invoiceNo: string,
+  additionalPdfText: string,
   tasks: Array,
   price: number,
   currency: string,
@@ -51,6 +54,7 @@ function projectCalc(res: any) {
 const UpdateProject: React.FC = () => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
+  const [showPdfSettings, setShowPdfSettings] = useState(false);
   const [loadedProject, setLoadedProject] = useState<any>();
   const [loadedUser, setLoadedUser] = useState<any>();
   const [loadedCustomer, setLoadedCustomer] = useState<any>();
@@ -63,6 +67,45 @@ const UpdateProject: React.FC = () => {
   const projectId = useParams<{projectId: string}>().projectId;
   const customerId = useParams<{customerId: string}>().customerId;
 
+  const [formState, inputHandler, setFormData] = useForm(
+    {
+      invoiceNo: {
+        value: '',
+        isValid: false
+      },
+      additionalPdfText: {
+        value: '',
+        isValid: false
+      }
+    },
+    false
+  );
+
+  const openPdfSettings = () => {
+    setShowPdfSettings(true);
+  };
+  
+  const cancelPdfSettings = () => {
+    setFormData(
+      {
+        invoiceNo: {
+          value: loadedProject.invoiceNo,
+          isValid: true
+        },
+        additionalPdfText: {
+          value: loadedProject.additionalPdfText,
+          isValid: true
+        }
+      },
+      true
+    );
+    setShowPdfSettings(false);
+  };
+
+  const confirmPdfSettings = () => {
+    setShowPdfSettings(false);
+  };
+
   /* fetch project data */
   useEffect(() => {
     const fetchProject = async () => {
@@ -73,10 +116,23 @@ const UpdateProject: React.FC = () => {
         );
         setLoadedProject(responseData.project);
         setResult(projectCalc(responseData.project));
+        setFormData(
+          {
+            invoiceNo: {
+              value: responseData.project.invoiceNo,
+              isValid: true
+            },
+            additionalPdfText: {
+              value: responseData.project.additionalPdfText,
+              isValid: true
+            }
+          },
+          true
+        );
       } catch (err) { }
     }
     fetchProject();
-  }, [sendRequest, projectId]);
+  }, [sendRequest, setFormData, projectId]);
 
   /* fetch user data */
   useEffect(() => {
@@ -117,7 +173,8 @@ const UpdateProject: React.FC = () => {
           name: loadedProject.name,
           price: loadedProject.price,
           tasks: loadedProject.tasks,
-          invoiceNo: loadedProject.invoiceNo
+          invoiceNo: formState.inputs.invoiceNo.value,
+          additionalPdfText: formState.inputs.additionalPdfText.value
         }),
       );
       setLoadedProject(responseData.project);
@@ -135,15 +192,15 @@ const UpdateProject: React.FC = () => {
   if (!loadedProject && !error) {
     return (
       <div className="center">
-        <Card>
+        <div className="row">
           <h2>Could not find Project!</h2>
-        </Card>
+        </div>
       </div>
     );
   }
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const target = event.target;
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
+    const target: any = event.target;
     const value = target.type === 'checkbox' ? target.checked : target.value;
     const name = target.name;
 
@@ -197,6 +254,7 @@ const UpdateProject: React.FC = () => {
 
   const onGeneratePdf: pdfData = {
     invoiceNo: loadedProject.invoiceNo,
+    additionalPdfText: loadedProject.additionalPdfText,
     tasks: loadedProject.tasks,
     price: loadedProject.price,
     netto: result.costs,
@@ -243,7 +301,12 @@ const UpdateProject: React.FC = () => {
             </Button>
 
             <div className="sidebar card">
-              <Button type="button" onClick={showButton} inverse hide={show}>Generate PDF</Button>
+              <div title="PDF Settings" className="sidebar__settings">
+                {!show && <div className="pdfSettings" onClick={openPdfSettings}>
+                  <svg><use href="#settings" xlinkHref="#settings" /></svg>
+                </div>}
+                <Button type="button" onClick={showButton} inverse hide={show}>Generate PDF</Button>
+              </div>
               {show && loadedUser && (
                 <Button className="fadeIn" type="button" danger>
                   <PDFDownloadLink
@@ -257,8 +320,6 @@ const UpdateProject: React.FC = () => {
                 </Button>
               )}
               <Costs result={onGeneratePdf} />
-              <hr />
-              <div className="text-right">Invoice No: <input type="text" name="invoiceNo" value={loadedProject.invoiceNo} onChange={handleInputChange} className="invoice" /></div>
             </div>
 
             <div>
@@ -266,6 +327,42 @@ const UpdateProject: React.FC = () => {
                 SAVE
               </Button>
             </div>
+            <Modal
+              show={showPdfSettings}
+              onCancel={cancelPdfSettings}
+              header="PDF Settings"
+              footerClass="project-item__modal-actions"
+              footer={
+                <React.Fragment>
+                  <div className="button" onClick={cancelPdfSettings}>CANCEL</div>
+                  <Button type="submit" inverse onClick={confirmPdfSettings}>
+                    Save
+                  </Button>
+                </React.Fragment>
+              }
+            >
+              <Input
+                id="invoiceNo"
+                element="input"
+                type="text"
+                label="Invoice No."
+                validators={[]}
+                onInput={inputHandler}
+                initialValue={loadedProject.invoiceNo}
+                initialValid={true}
+              />
+              <Input
+                id="additionalPdfText"
+                element="textarea"
+                label="Additional Text"
+                rows={5}
+                validators={[]}
+                onInput={inputHandler}
+                initialValue={loadedProject.additionalPdfText}
+                initialValid={true}
+              />
+              {/* <textarea name="additionalPdfText" rows={5} value={loadedProject.additionalPdfText ? loadedProject.additionalPdfText : ''} /> */}
+            </Modal>
           </form>
         </div>
       )}

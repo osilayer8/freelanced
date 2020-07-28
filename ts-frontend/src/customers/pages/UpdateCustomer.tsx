@@ -3,7 +3,6 @@ import { useParams, useHistory } from 'react-router-dom';
 
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
-import Card from '../../shared/components/UIElements/Card';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import {
@@ -92,9 +91,9 @@ const UpdateCustomer: React.FC = () => {
   if (!loadedCustomer && !error) {
     return (
       <div className="center">
-        <Card>
+        <div className="row">
           <h2>Could not find Customer!</h2>
-        </Card>
+        </div>
       </div>
     );
   }

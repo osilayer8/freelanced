@@ -18,6 +18,9 @@ const styles = StyleSheet.create({
         paddingRight: 8,
         fontFamily: 'RobotoBold',
     },
+    extraText: {
+        paddingTop: 20,
+    }
   });
 
 const InvoiceTableFooter = ({result}: any) => {
@@ -35,6 +38,9 @@ const InvoiceTableFooter = ({result}: any) => {
             <View style={styles.row}>
                 <Text style={styles.description}>TOTAL</Text>
                 <Text style={styles.total}>{ result.brutto.toFixed(2).toString() } {result.currency}</Text>
+            </View>
+            <View style={styles.row}>
+                <Text style={styles.extraText}>{result.additionalPdfText}</Text>
             </View>
         </Fragment>
     )

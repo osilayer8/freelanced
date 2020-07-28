@@ -69,7 +69,8 @@ router.patch("/:pid", async (req: any, res: any, next: any) => {
     price,
     status,
     tasks,
-    invoiceNo
+    invoiceNo,
+    additionalPdfText
   } = req.body;
 
   const projectId = req.params.pid;
@@ -92,6 +93,7 @@ router.patch("/:pid", async (req: any, res: any, next: any) => {
   project.status = status;
   project.tasks = tasks;
   project.invoiceNo = invoiceNo;
+  project.additionalPdfText = additionalPdfText;
 
   try {
     await project.save();

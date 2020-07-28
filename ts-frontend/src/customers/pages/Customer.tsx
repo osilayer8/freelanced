@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 
 import CustomerProjects from './CustomerProjects';
 import CustomerItem from '../components/CustomerItem';
-import Card from '../../shared/components/UIElements/Card';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useHttpClient } from '../../shared/hooks/http-hook';
@@ -39,9 +38,9 @@ const Customer: React.FC = () => {
   if (!loadedCustomer && !error) {
     return (
       <div className="center">
-        <Card>
+        <div className="row">
           <h2>Could not find Customer!</h2>
-        </Card>
+        </div>
       </div>
     );
   }

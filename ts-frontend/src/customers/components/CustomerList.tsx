@@ -1,6 +1,5 @@
 import React from 'react';
 
-import Card from '../../shared/components/UIElements/Card';
 import CustomerItem from './CustomerItem';
 import Button from '../../shared/components/FormElements/Button';
 import './CustomerList.scss';
@@ -9,10 +8,10 @@ const CustomerList: React.FC<any> = (props) => {
   if (props.items.length === 0) {
     return (
       <div className="customer-list center">
-        <Card>
+        <div className="row">
           <h2>No customers found. Maybe create one?</h2>
           <Button to="/customer/new">New customer</Button>
-        </Card>
+        </div>
       </div>
     );
   }
