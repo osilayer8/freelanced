@@ -51,19 +51,16 @@ router.post("/login", async (req, res, next) => {
   res.json({ userId: identifiedUser.id, email: identifiedUser.email, token: token });
 });
 
-// register new user
+// register new user UPDATE: temporary invite
 router.post("/signup", async (req, res, next) => {
-  const { name, email, pass, language, currency } = req.body;
-
-  const error = new HttpError("Not allowed to create user", 401);
-  return next(error);
+  const { name, email, /*pass,*/ language, currency } = req.body;
 
   let existingUser;
 
   try {
     existingUser = await User.findOne({ email: email });
   } catch (err) {
-    const error = new HttpError("Signing up failed", 500);
+    const error = new HttpError("Invite failed", 500);
     return next(error);
   }
 
@@ -72,19 +69,19 @@ router.post("/signup", async (req, res, next) => {
     return next(error);
   }
 
-  let hashedPassword: string;
-  try {
-    hashedPassword = await bcrypt.hash(pass, 12);
-  } catch (err) {
-    const error = new HttpError("Could not create user", 500);
-    return next(error);
-  }
+  // let hashedPassword: string;
+  // try {
+  //   hashedPassword = await bcrypt.hash(pass, 12);
+  // } catch (err) {
+  //   const error = new HttpError("Could not create user", 500);
+  //   return next(error);
+  // }
 
   const createdUser: any = new User({
     created: new Date(),
     name,
     email,
-    pass: hashedPassword,
+    //pass: hashedPassword,
     language,
     currency,
     vat: 0,
@@ -94,7 +91,7 @@ router.post("/signup", async (req, res, next) => {
   try {
     await createdUser.save();
   } catch (err) {
-    const error = new HttpError("Signing up failed", 500);
+    const error = new HttpError("Invite failed", 500);
     return next(error);
   }
 
@@ -102,7 +99,7 @@ router.post("/signup", async (req, res, next) => {
   try {
     token = jsonwebtoken.sign({ user: createdUser.id, email: createdUser.email }, process.env.JWL_KEY as string, { expiresIn: '4h' });
   } catch (err) {
-    const error = new HttpError("Signing up failed", 500);
+    const error = new HttpError("Invite failed", 500);
     return next(error);
   }
 

@@ -1,16 +1,16 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams } from 'react-router-dom';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 
 import Button from '../../shared/components/FormElements/Button';
+import Input from '../../shared/components/FormElements/Input';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import Modal from '../../shared/components/UIElements/Modal';
+import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
 import Costs from '../components/Costs';
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import Input from '../../shared/components/FormElements/Input';
-import { useForm } from '../../shared/hooks/form-hook';
 import Invoice from '../../shared/components/Invoice/Invoice';
 import './CustomerForm.scss';
 
@@ -361,7 +361,6 @@ const UpdateProject: React.FC = () => {
                 initialValue={loadedProject.additionalPdfText}
                 initialValid={true}
               />
-              {/* <textarea name="additionalPdfText" rows={5} value={loadedProject.additionalPdfText ? loadedProject.additionalPdfText : ''} /> */}
             </Modal>
           </form>
         </div>

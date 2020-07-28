@@ -25,6 +25,7 @@ interface authProps {
 const Auth: React.FC = () => {
   const auth: authProps = useContext(AuthContext);
   const [isLoginMode, setIsLoginMode] = useState(true);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
   const [formState, inputHandler, setFormData] = useForm(
@@ -54,6 +55,10 @@ const Auth: React.FC = () => {
       setFormData(
         {
           ...formState.inputs,
+          pass: {
+            value: '',
+            isValid: true
+          },
           name: {
             value: '',
             isValid: false
@@ -63,6 +68,7 @@ const Auth: React.FC = () => {
       );
     }
     setIsLoginMode(prevMode => !prevMode);
+    setIsSubmitted(false);
   };
 
   const authSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -93,7 +99,7 @@ const Auth: React.FC = () => {
           JSON.stringify({
             name: formState.inputs.name.value,
             email: formState.inputs.email.value,
-            pass: formState.inputs.pass.value,
+            //pass: formState.inputs.pass.value,
             language: countryCode,
             currency: Currency(countryCode)
           }),
@@ -101,7 +107,9 @@ const Auth: React.FC = () => {
             'Content-Type': 'application/json'
           }
         );
-        auth.login(responseData.userId, responseData.token);
+        console.log('invite saved');
+        setIsSubmitted(true);
+        //auth.login(responseData.userId, responseData.token);
       } catch (err) { }
     }
   };
@@ -135,44 +143,50 @@ const Auth: React.FC = () => {
             </defs>
           </svg>
         </div>
-        <h2>Login Required</h2>
-        <form onSubmit={authSubmitHandler}>
-          {!isLoginMode && (
+        <h1>{isLoginMode ? "Login Required" : "Request Invite"}</h1>
+        {isSubmitted ? <h2>Request successfully sent</h2> : (
+          <form onSubmit={authSubmitHandler}>
+            {!isLoginMode && (
+              <div>
+                <Input
+                  element="input"
+                  id="name"
+                  type="text"
+                  label="Your Name"
+                  validators={[VALIDATOR_REQUIRE()]}
+                  errorText="Please enter a name."
+                  onInput={inputHandler}
+                />
+              </div>
+            )}
             <Input
               element="input"
-              id="name"
-              type="text"
-              label="Your Name"
-              validators={[VALIDATOR_REQUIRE()]}
-              errorText="Please enter a name."
+              id="email"
+              type="email"
+              label="E-Mail"
+              validators={[VALIDATOR_EMAIL()]}
+              errorText="Please enter a valid email address."
               onInput={inputHandler}
             />
-          )}
-          <Input
-            element="input"
-            id="email"
-            type="email"
-            label="E-Mail"
-            validators={[VALIDATOR_EMAIL()]}
-            errorText="Please enter a valid email address."
-            onInput={inputHandler}
-          />
-          <Input
-            element="input"
-            id="pass"
-            type="password"
-            label="Password"
-            autoComplete="current-password"
-            validators={[VALIDATOR_MINLENGTH(6)]}
-            errorText="Please enter a valid password"
-            onInput={inputHandler}
-          />
-          <Button type="submit" disabled={!formState.isValid}>
-            {isLoginMode ? 'LOGIN' : 'SIGNUP'}
-          </Button>
-        </form>
+            {isLoginMode && (
+              <Input
+                element="input"
+                id="pass"
+                type="password"
+                label="Password"
+                autoComplete="current-password"
+                validators={[VALIDATOR_MINLENGTH(6)]}
+                errorText="Please enter a valid password"
+                onInput={inputHandler}
+              />
+            )}
+            <Button type="submit" disabled={!formState.isValid}>
+              {isLoginMode ? 'LOGIN' : 'SEND'}
+            </Button>
+          </form>
+        )}
         <Button onClick={switchModeHandler}>
-          SWITCH TO {isLoginMode ? 'SIGNUP' : 'LOGIN'}
+          SWITCH TO {isLoginMode ? 'INVITE' : 'LOGIN'}
         </Button>
       </div>
     </React.Fragment>

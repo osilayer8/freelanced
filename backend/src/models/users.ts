@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
   taxId: { type: String, required: false },
   commercialRegister: { type: String, required: false },
   email: { type: String, required: true, unique: true },
-  pass: { type: String, required: true },
+  pass: { type: String, required: false },
   language: { type: String, required: true },
   currency: { type: String, required: false },
   vat: { type: Number, required: true },
