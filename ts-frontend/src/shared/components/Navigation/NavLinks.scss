@@ -1,5 +1,3 @@
-@import '../../../scss/colors';
-
 .nav-links {
   margin: 0;
   padding: 0;
@@ -17,7 +15,7 @@
 }
 
 .nav-links a {
-  color: $text;
+  color: var(--text);
   text-decoration: none;
   padding: 1rem 0;
   display: flex;
@@ -28,6 +26,7 @@
   }
   svg {
     margin-right: .5rem;
+    fill: var(--text);
   }
 }
 
@@ -37,7 +36,7 @@
 
 .nav-links button {
   cursor: pointer;
-  color: $text;
+  color: var(--text);
   background: transparent;
   padding: 0.5rem;
   font: inherit;
@@ -49,7 +48,7 @@
 
 .nav-links button:hover,
 .nav-links button:active {
-  background: $base;
+  background: var(--base);
   color: black;
 }
 
@@ -63,7 +62,7 @@
   display: flex;
   a {
     font-weight: bold;
-    color: $box-text;
+    color: var(--box-text);
     text-decoration: none;
     margin-right: 1rem;
     display: flex;
@@ -73,7 +72,7 @@
     cursor: pointer;
   }
   svg {
-    fill: $box-text;
+    fill: var(--box-text);
     width: 18px;
     height: 18px;
     margin-right: .5rem;

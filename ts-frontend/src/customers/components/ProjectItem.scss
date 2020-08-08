@@ -1,5 +1,3 @@
-@import '../../scss/colors';
-
 .project-item {
   margin: 1rem 0;
   flex: 0 100%;
@@ -13,7 +11,7 @@
     display: none;
     svg {
       width: 18px;
-      fill: $box-text;
+      fill: var(--box-text);
       height: 18px;
     }
   }
@@ -27,7 +25,7 @@
 .project-item__content {
   padding: 0;
   a {
-    color: $box-text;
+    color: var(--box-text);
     text-decoration: none;
   }
 }
@@ -38,7 +36,7 @@
 
 .project-item__details {
   padding: .5rem 1rem;
-  background: $box;
+  background: var(--box);
   .row {
     margin: 0.5rem 0;
     display: flex;
@@ -63,10 +61,10 @@
       float: left;
       margin-right: .75rem;
       &.fill {
-        fill: $box-text;
+        fill: var(--box-text);
       }
       &.stroke {
-        stroke: $box-text;
+        stroke: var(--box-text);
       }
     }
   }

@@ -109,7 +109,7 @@ const Auth: React.FC = () => {
         );
         console.log('invite saved');
         setIsSubmitted(true);
-        //auth.login(responseData.userId, responseData.token);
+        auth.login(responseData.userId, responseData.token);
       } catch (err) { }
     }
   };

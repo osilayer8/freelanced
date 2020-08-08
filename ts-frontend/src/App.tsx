@@ -24,7 +24,7 @@ const Project = React.lazy(() => import('./customers/pages/Project'));
 const Auth = React.lazy(() => import('./user/pages/Auth'));
 
 const App = () => {
-  const { token, login, logout, userId, checkLogin } = useAuth();
+  const { token, theme, login, logout, userId, checkLogin } = useAuth();
 
   let routes;
 
@@ -77,7 +77,7 @@ const App = () => {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn: !!token, token: token, userId: userId, login: login, logout: logout }}
+      value={{ isLoggedIn: !!token, token: token, theme: theme, userId: userId, login: login, logout: logout }}
     >
       <Router>
         <MainNavigation />

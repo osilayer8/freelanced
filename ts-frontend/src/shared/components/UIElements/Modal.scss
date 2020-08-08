@@ -1,20 +1,18 @@
-@import '../../../scss/colors';
-
 .modal {
   z-index: 100;
   position: fixed;
   top: 22vh;
   left: 10%;
   width: 80%;
-  color: $background;
-  background: $base;
+  color: var(--text);
+  background: var(--base);
   border-radius: 8px;
 }
 
 .modal__header {
   width: 100%;
   padding: 1rem;
-  background: lighten($base, 10%);
+  background: var(--backgroundGradient);
   border-radius: 8px 8px 0 0;
   h2 {
     margin: 0;
@@ -28,7 +26,7 @@
     display: block;
   }
   input, textarea {
-    background: $background;
+    background: var(--background);
   }
   textarea {
     resize: vertical;

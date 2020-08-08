@@ -1,7 +1,5 @@
-@import '../../scss/colors';
-
 .authentication__header {
-  color: $box-text;
+  color: var(--box-text);
   text-align: center;
 }
 

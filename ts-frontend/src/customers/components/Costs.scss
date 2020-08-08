@@ -1,5 +1,3 @@
-@import '../../scss/colors';
-
 .sidebar {
   &__settings {
     display: flex;
@@ -12,7 +10,7 @@
       svg {
         width: 25px;
         height: 25px;
-        fill: $box-text;
+        fill: var(--box-text);
       }
     }
   }

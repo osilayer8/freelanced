@@ -1,5 +1,3 @@
-@import '../../../scss/colors';
-
 .button {
   font: inherit;
   border: 0;
@@ -9,16 +7,16 @@
   cursor: pointer;
   text-decoration: none;
   display: inline-block;
-  background: $base;
+  background: var(--base);
   &[hidden] {
     display: none;
   }
   a {
-    color: $box-text;
+    color: var(--box-text);
     text-decoration: none;
   }
   &.outlined {
-    border: 1px solid $box-text;
+    border: 1px solid var(--box-text);
   }
 }
 
@@ -31,14 +29,14 @@
 }
 
 .button--inverse {
-  background: $background;
-  color: $text;
+  background: var(--background);
+  color: var(--text);
 }
 
 .button--inverse:hover,
 .button--inverse:active {
-  color: $text;
-  background: $background;
+  color: var(--text);
+  background: var(--background);
 }
 
 .button:disabled,

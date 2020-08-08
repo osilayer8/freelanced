@@ -1,9 +1,7 @@
-@import '../../../scss/colors';
-
 .full-box {
   margin: 0;
   border-radius: 10px;
   overflow: hidden;
-  background: $base;
-  color: $box-text;
+  background: var(--base);
+  color: var(--box-text);
 }

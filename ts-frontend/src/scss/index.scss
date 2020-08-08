@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-@import 'colors';
 
 * {
   box-sizing: border-box;
@@ -12,9 +11,9 @@ html {
 
 body {
   margin: 0;
-  background-color: #ffffff;
-  background: radial-gradient(circle at top left, rgba(238,238,238,1) 0%, rgba(255,255,255,1) 100%);
-  color: #000;
+  background: var(--background);
+  background: radial-gradient(circle at top left, var(--backgroundGradient), var(--background));
+  color: var(--text);
   min-height: 100vh;
 }
 
@@ -90,8 +89,9 @@ textarea {
   font-size: 1rem;
   appearance: none;
   border: 0;
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid var(--text);
   border-radius: 0;
+  color: var(--text);
   display: block;
 }
 
@@ -104,11 +104,11 @@ textarea:focus {
   margin: 0;
   border-radius: 10px;
   overflow: hidden;
-  background: $base;
-  color: $box-text;
+  background: var(--base);
+  color: var(--box-text);
   input {
-    border-color: $box-text;
-    color: $box-text;
+    border-color: var(--box-text);
+    color: var(--box-text);
   }
 }
 
@@ -127,4 +127,13 @@ textarea:focus {
   .content {
     padding: 1.5rem 0;
   }
+}
+
+:root {
+  --background: #fff;
+  --backgroundGradient: #f2f2f2;
+  --base: #000;
+  --box: #262626;
+  --text: #000;
+  --box-text: #fff;
 }

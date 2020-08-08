@@ -4,6 +4,7 @@ let logoutTimer: any;
 
 export const useAuth = () => {
   const [token, setToken] = useState<any>(false);
+  const [theme, setTheme] = useState<string>('light');
   const [tokenExpirationDate, setTokenExpirationDate] = useState<Date>();
   const [userId, setUserId] = useState<any>();
   const [checkLogin, setCheckLogin] = useState<boolean>(false);
@@ -18,6 +19,7 @@ export const useAuth = () => {
 
   const logout = useCallback(() => {
     setToken(false);
+    setTheme('');
     setTokenExpirationDate(undefined);
     setUserId(null);
     localStorage.removeItem('userData');
@@ -41,5 +43,5 @@ export const useAuth = () => {
     setCheckLogin(true);
   }, [login]);
 
-  return { token, login, logout, userId, checkLogin }
+  return { token, theme, login, logout, userId, checkLogin }
 };

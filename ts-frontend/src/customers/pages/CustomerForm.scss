@@ -1,5 +1,3 @@
-@import '../../scss/colors';
-
 .customer-form {
   list-style: none;
   margin: 0 auto;
@@ -28,7 +26,7 @@
 .inputTitle {
   border-bottom: 1px solid transparent;
   &:focus {
-    border-color: $base;
+    border-color: var(--base);
   }
 }
 
@@ -75,7 +73,7 @@
     right: 0;
     top: 0;
     svg {
-      fill: $base;
+      fill: var(--text);
       width: 22px;
       height: 22px;
     }
