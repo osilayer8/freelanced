@@ -3,7 +3,7 @@ import {
   BrowserRouter as Router,
   Route,
   Redirect,
-  Switch
+  Switch,
 } from 'react-router-dom';
 
 import MainNavigation from './shared/components/Navigation/MainNavigation';
@@ -16,15 +16,19 @@ const UpdateUser = React.lazy(() => import('./user/pages/UpdateUser'));
 const UpdateSettings = React.lazy(() => import('./user/pages/UpdateSettings'));
 const UpdatePassword = React.lazy(() => import('./user/pages/UpdatePassword'));
 const NewCustomer = React.lazy(() => import('./customers/pages/NewCustomer'));
-const UserCustomers = React.lazy(() => import('./customers/pages/UserCustomers'));
+const UserCustomers = React.lazy(
+  () => import('./customers/pages/UserCustomers')
+);
 const Customer = React.lazy(() => import('./customers/pages/Customer'));
-const UpdateCustomer = React.lazy(() => import('./customers/pages/UpdateCustomer'));
+const UpdateCustomer = React.lazy(
+  () => import('./customers/pages/UpdateCustomer')
+);
 const NewProject = React.lazy(() => import('./customers/pages/NewProject'));
 const Project = React.lazy(() => import('./customers/pages/Project'));
 const Auth = React.lazy(() => import('./user/pages/Auth'));
 
 const App = () => {
-  const { token, theme, login, logout, userId, checkLogin } = useAuth();
+  const { token, login, theme, logout, userId, checkLogin } = useAuth();
 
   let routes;
 
@@ -77,19 +81,33 @@ const App = () => {
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn: !!token, token: token, theme: theme, userId: userId, login: login, logout: logout }}
+      value={{
+        isLoggedIn: !!token,
+        token: token,
+        userId: userId,
+        theme: theme,
+        login: login,
+        logout: logout,
+      }}
     >
       <Router>
         <MainNavigation />
-        {checkLogin && <div className="content"><Suspense fallback={
-          <div className="center">
-            <LoadingSpinner />
+        {checkLogin && (
+          <div className="content">
+            <Suspense
+              fallback={
+                <div className="center">
+                  <LoadingSpinner />
+                </div>
+              }
+            >
+              {routes}
+            </Suspense>
           </div>
-        }>{routes}</Suspense></div>}
+        )}
       </Router>
     </AuthContext.Provider>
   );
 };
-
 
 export default App;

@@ -5,9 +5,7 @@ import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
-import {
-  VALIDATOR_REQUIRE
-} from '../../shared/util/validators';
+import { VALIDATOR_REQUIRE } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
@@ -19,13 +17,14 @@ const UpdateUser: React.FC = () => {
   const [loadedUser, setLoadedUser] = useState<any>();
   const history = useHistory();
   const languages = ['de-DE', 'en-US'];
+  const themes = ['light', 'dark'];
 
   const [formState, inputHandler, setFormData] = useForm(
     {
       name: {
         value: '',
-        isValid: false
-      }
+        isValid: false,
+      },
     },
     false
   );
@@ -35,36 +34,42 @@ const UpdateUser: React.FC = () => {
       try {
         const responseData = await sendRequest(
           process.env.REACT_APP_BACKEND_URL + `/users/${auth.userId}`,
-          'GET',
+          'GET'
         );
         setLoadedUser(responseData.user);
         setFormData(
           {
             company: {
               value: responseData.user.company,
-              isValid: true
+              isValid: true,
             },
             firstName: {
               value: responseData.user.firstName,
-              isValid: true
+              isValid: true,
             },
             name: {
               value: responseData.user.name,
-              isValid: true
+              isValid: true,
             },
             language: {
               value: responseData.user.language,
-              isValid: true
-            }
+              isValid: true,
+            },
+            theme: {
+              value: responseData.user.theme,
+              isValid: true,
+            },
           },
           true
         );
-      } catch (err) { }
-    }
+      } catch (err) {}
+    };
     auth.userId && fetchUser();
   }, [sendRequest, auth.userId, setFormData]);
 
-  const userUpdateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+  const userUpdateSubmitHandler = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
     try {
       await sendRequest(
@@ -88,11 +93,12 @@ const UpdateUser: React.FC = () => {
           commercialRegister: loadedUser.commercialRegister,
           language: formState.inputs.language.value,
           currency: loadedUser.currency,
-          vat: loadedUser.vat
-        }),
+          vat: loadedUser.vat,
+          theme: formState.inputs.theme.value,
+        })
       );
       history.push('/user');
-    } catch (err) { }
+    } catch (err) {}
   };
 
   if (isLoading) {
@@ -116,55 +122,67 @@ const UpdateUser: React.FC = () => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      {!isLoading && loadedUser && (<form className="customer-form" onSubmit={userUpdateSubmitHandler}>
-        <div className="center">
-          <h1>Edit profile</h1>
-        </div>
-        <Input
-          id="company"
-          element="input"
-          type="text"
-          label="Company Name"
-          validators={[]}
-          onInput={inputHandler}
-          initialValue={loadedUser.company}
-          initialValid={true}
-        />
-        <Input
-          id="firstName"
-          element="input"
-          type="text"
-          label="First Name"
-          validators={[]}
-          onInput={inputHandler}
-          initialValue={loadedUser.firstName}
-          initialValid={true}
-        />
-        <Input
-          id="name"
-          element="input"
-          type="text"
-          label="Name"
-          validators={[VALIDATOR_REQUIRE()]}
-          errorText="Please enter a valid name."
-          onInput={inputHandler}
-          initialValue={loadedUser.name}
-          initialValid={true}
-        />
-        <Input
-          id="language"
-          element="select"
-          label="Language"
-          validators={[]}
-          onInput={inputHandler}
-          datas={languages}
-          initialValue={loadedUser.language}
-          initialValid={true}
-        />
-        <Button type="submit" disabled={!formState.isValid}>
-          UPDATE USER
-        </Button>
-      </form>)}
+      {!isLoading && loadedUser && (
+        <form className="customer-form" onSubmit={userUpdateSubmitHandler}>
+          <div className="center">
+            <h1>Edit profile</h1>
+          </div>
+          <Input
+            id="company"
+            element="input"
+            type="text"
+            label="Company Name"
+            validators={[]}
+            onInput={inputHandler}
+            initialValue={loadedUser.company}
+            initialValid={true}
+          />
+          <Input
+            id="firstName"
+            element="input"
+            type="text"
+            label="First Name"
+            validators={[]}
+            onInput={inputHandler}
+            initialValue={loadedUser.firstName}
+            initialValid={true}
+          />
+          <Input
+            id="name"
+            element="input"
+            type="text"
+            label="Name"
+            validators={[VALIDATOR_REQUIRE()]}
+            errorText="Please enter a valid name."
+            onInput={inputHandler}
+            initialValue={loadedUser.name}
+            initialValid={true}
+          />
+          <Input
+            id="language"
+            element="select"
+            label="Language"
+            validators={[]}
+            onInput={inputHandler}
+            datas={languages}
+            initialValue={loadedUser.language}
+            initialValid={true}
+          />
+          <Input
+            id="theme"
+            element="select"
+            label="Theme"
+            validators={[]}
+            onInput={inputHandler}
+            datas={themes}
+            initialValue={loadedUser.theme}
+            initialValid={true}
+          />
+          <Button type="submit" disabled={!formState.isValid}>
+            UPDATE USER
+          </Button>
+        </form>
+      )}
     </React.Fragment>
   );
 };

@@ -23,7 +23,10 @@ const userSchema = new mongoose.Schema({
   language: { type: String, required: true },
   currency: { type: String, required: false },
   vat: { type: Number, required: true },
-  customers: [{ type: mongoose.Types.ObjectId, required: true, ref: 'Customer' }]
+  theme: { type: String, required: true },
+  customers: [
+    { type: mongoose.Types.ObjectId, required: true, ref: 'Customer' },
+  ],
 });
 
 userSchema.plugin(uniqueValidator);
