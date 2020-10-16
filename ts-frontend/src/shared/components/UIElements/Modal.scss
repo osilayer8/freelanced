@@ -4,7 +4,7 @@
   top: 22vh;
   left: 10%;
   width: 80%;
-  color: var(--text);
+  color: var(--box-text);
   background: var(--base);
   border-radius: 8px;
 }
@@ -12,7 +12,7 @@
 .modal__header {
   width: 100%;
   padding: 1rem;
-  background: var(--backgroundGradient);
+  background: var(--box);
   border-radius: 8px 8px 0 0;
   h2 {
     margin: 0;
@@ -21,11 +21,15 @@
 
 .modal__content {
   padding: 1rem;
-  label {
-    padding: .5rem 0;
-    display: block;
+  .form-control {
+    label {
+      padding: 0.5rem 0;
+      display: block;
+      color: var(--box-text);
+    }
   }
-  input, textarea {
+  input,
+  textarea {
     background: var(--background);
   }
   textarea {
