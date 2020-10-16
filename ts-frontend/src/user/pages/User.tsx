@@ -5,6 +5,7 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
+import { themeCheck } from '../../shared/components/UIElements/themeCheck';
 import '../components/UsersList.scss';
 
 const User: React.FC = () => {
@@ -17,10 +18,11 @@ const User: React.FC = () => {
       try {
         const responseData = await sendRequest(
           process.env.REACT_APP_BACKEND_URL + `/users/${auth.userId}`,
-          'GET',
+          'GET'
         );
         setLoadedUser(responseData.user);
-      } catch (err) { }
+        themeCheck(responseData.user.theme);
+      } catch (err) {}
     };
     auth.userId && fetchUser();
   }, [sendRequest, auth.userId]);
@@ -44,21 +46,23 @@ const User: React.FC = () => {
         </div>
       )}
 
-      {!isLoading && loadedUser && (<ul className="users-list">
-      <UserItem
-        key={loadedUser.id}
-        id={loadedUser.id}
-        company={loadedUser.company}
-        firstName={loadedUser.firstName}
-        name={loadedUser.name}
-        iban={loadedUser.iban}
-        phone={loadedUser.phone}
-        email={loadedUser.email}
-        currency={loadedUser.currency}
-        language={loadedUser.language}
-        vat={loadedUser.vat}
-      />
-      </ul>)}
+      {!isLoading && loadedUser && (
+        <ul className="users-list">
+          <UserItem
+            key={loadedUser.id}
+            id={loadedUser.id}
+            company={loadedUser.company}
+            firstName={loadedUser.firstName}
+            name={loadedUser.name}
+            iban={loadedUser.iban}
+            phone={loadedUser.phone}
+            email={loadedUser.email}
+            currency={loadedUser.currency}
+            language={loadedUser.language}
+            vat={loadedUser.vat}
+          />
+        </ul>
+      )}
     </React.Fragment>
   );
 };

@@ -6,14 +6,15 @@ export const useHttpClient = () => {
   const [error, setError] = useState<string>();
   const auth = useContext(AuthContext);
 
-
   const activeHttpRequests: React.MutableRefObject<any> = useRef([]);
 
   const sendRequest = useCallback(
     async (url, method = 'GET', body = null, headers = {}) => {
       headers = {
-        ...headers, 'Authorization': 'Bearer ' + auth.token, 'Content-Type': 'application/json',
-      }
+        ...headers,
+        Authorization: 'Bearer ' + auth.token,
+        'Content-Type': 'application/json',
+      };
 
       setIsLoading(true);
       const httpAbortCtrl = new AbortController();
@@ -24,12 +25,14 @@ export const useHttpClient = () => {
           method,
           body,
           headers,
-          signal: httpAbortCtrl.signal
+          signal: httpAbortCtrl.signal,
         });
 
         const responseData = await response.json();
 
-        activeHttpRequests.current = activeHttpRequests.current.filter((reqCtrl: AbortController) => reqCtrl !== httpAbortCtrl);
+        activeHttpRequests.current = activeHttpRequests.current.filter(
+          (reqCtrl: AbortController) => reqCtrl !== httpAbortCtrl
+        );
 
         if (!response.ok) {
           throw new Error(responseData.message);
