@@ -6,32 +6,28 @@ import Backdrop from './Backdrop';
 import './Modal.scss';
 
 interface Props {
-  className?: string,
-  style?: React.CSSProperties,
-  headerClass?: string,
-  header: string,
-  onSubmit?: () => void,
-  contentClass?: string,
-  footerClass?: string,
-  footer?: JSX.Element,
-  show: boolean,
-  onCancel: () => void
+  className?: string | undefined;
+  style?: React.CSSProperties;
+  header: string;
+  onSubmit?: () => void;
+  footerClass?: string | undefined;
+  footer?: JSX.Element;
+  show: boolean;
+  onCancel: () => void;
 }
 
 const ModalOverlay: React.FC<Props> = (props) => {
   const content = (
     <div className={`modal ${props.className}`} style={props.style}>
-      <header className={`modal__header ${props.headerClass}`}>
+      <header className={`modal__header`}>
         <h2>{props.header}</h2>
       </header>
       <form
         onSubmit={
-          props.onSubmit ? props.onSubmit : event => event.preventDefault()
+          props.onSubmit ? props.onSubmit : (event) => event.preventDefault()
         }
       >
-        <div className={`modal__content ${props.contentClass}`}>
-          {props.children}
-        </div>
+        <div className={`modal__content`}>{props.children}</div>
         <footer className={`modal__footer ${props.footerClass}`}>
           {props.footer}
         </footer>

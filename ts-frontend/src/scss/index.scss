@@ -12,12 +12,18 @@ html {
 body {
   margin: 0;
   background: var(--background);
-  background: radial-gradient(circle at top left, var(--backgroundGradient), var(--background));
+  background: radial-gradient(
+    circle at top left,
+    var(--backgroundGradient),
+    var(--background)
+  );
   color: var(--text);
   min-height: 100vh;
 }
 
-h1,h2,h3 {
+h1,
+h2,
+h3 {
   font-weight: 500;
 }
 
@@ -85,7 +91,7 @@ textarea {
   width: 100%;
   font: inherit;
   background: transparent;
-  padding: .5rem;
+  padding: 0.5rem;
   font-size: 1rem;
   appearance: none;
   border: 0;
@@ -118,7 +124,7 @@ textarea:focus {
   }
   input,
   textarea {
-    padding: .5rem 1rem;
+    padding: 0.5rem 1rem;
     font-size: 1.4rem;
   }
 }

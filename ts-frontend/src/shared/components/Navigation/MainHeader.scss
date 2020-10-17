@@ -1,6 +1,6 @@
 .main-header {
   position: absolute;
-  left: 2rem;
+  left: 1rem;
   top: 2rem;
   z-index: 9;
 }
@@ -14,15 +14,24 @@
   &.card {
     padding: 2rem;
   }
-  h2, h3, h4 {
+  h2,
+  h3,
+  h4 {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
   }
 }
 
+@media screen and (min-width: 1200px) {
+  .main-header {
+    left: 2rem;
+  }
+}
+
 @media screen and (min-width: 1400px) {
-  .sidebar, .main-header {
+  .sidebar,
+  .main-header {
     position: fixed;
   }
 }
