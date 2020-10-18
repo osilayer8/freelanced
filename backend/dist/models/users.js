@@ -22,11 +22,14 @@ const userSchema = new mongoose_1.default.Schema({
     taxId: { type: String, required: false },
     commercialRegister: { type: String, required: false },
     email: { type: String, required: true, unique: true },
-    pass: { type: String, required: true },
+    pass: { type: String, required: false },
     language: { type: String, required: true },
     currency: { type: String, required: false },
     vat: { type: Number, required: true },
-    customers: [{ type: mongoose_1.default.Types.ObjectId, required: true, ref: 'Customer' }]
+    theme: { type: String, required: true },
+    customers: [
+        { type: mongoose_1.default.Types.ObjectId, required: true, ref: 'Customer' },
+    ],
 });
 userSchema.plugin(mongoose_unique_validator_1.default);
 module.exports = mongoose_1.default.model('User', userSchema);

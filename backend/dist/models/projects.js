@@ -13,6 +13,7 @@ const projectSchema = new mongoose_1.default.Schema({
             hours: { type: Number, required: false },
         }],
     invoiceNo: { type: String, required: false },
+    additionalPdfText: { type: String, required: false },
     owner: { type: mongoose_1.default.Types.ObjectId, required: true, ref: 'Customer' }
 });
 module.exports = mongoose_1.default.model('Project', projectSchema);

@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.router = void 0;
 const express_1 = __importDefault(require("express"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const projects_1 = __importDefault(require("../models/projects"));
@@ -65,7 +66,7 @@ exports.router.get("/customer/:cid", (req, res, next) => __awaiter(void 0, void 
 }));
 // update project
 exports.router.patch("/:pid", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, price, status, tasks, invoiceNo } = req.body;
+    const { name, price, status, tasks, invoiceNo, additionalPdfText } = req.body;
     const projectId = req.params.pid;
     let project;
     try {
@@ -84,6 +85,7 @@ exports.router.patch("/:pid", (req, res, next) => __awaiter(void 0, void 0, void
     project.status = status;
     project.tasks = tasks;
     project.invoiceNo = invoiceNo;
+    project.additionalPdfText = additionalPdfText;
     try {
         yield project.save();
     }

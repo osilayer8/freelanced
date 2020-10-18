@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.router = void 0;
 const express_1 = __importDefault(require("express"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const cryptr_1 = __importDefault(require("cryptr"));
@@ -22,18 +23,18 @@ const check_auth_1 = __importDefault(require("../middleware/check-auth"));
 exports.router = express_1.default.Router();
 const crypter = new cryptr_1.default(`${process.env.CYP_KEY}`);
 // identify user
-exports.router.post("/login", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.router.post('/login', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { pass, email } = req.body;
     let identifiedUser;
     try {
         identifiedUser = yield users_1.default.findOne({ email: email });
     }
     catch (err) {
-        const error = new http_error_1.default("Login failed", 500);
+        const error = new http_error_1.default('Login failed', 500);
         return next(error);
     }
     if (!identifiedUser) {
-        const error = new http_error_1.default("Could not identity user", 401);
+        const error = new http_error_1.default('Could not identity user', 401);
         return next(error);
     }
     let isValidPassword = false;
@@ -41,11 +42,11 @@ exports.router.post("/login", (req, res, next) => __awaiter(void 0, void 0, void
         isValidPassword = yield bcryptjs_1.default.compare(pass, identifiedUser.pass);
     }
     catch (err) {
-        const error = new http_error_1.default("Credentials wrong, try again", 500);
+        const error = new http_error_1.default('Credentials wrong, try again', 500);
         return next(error);
     }
     if (!isValidPassword) {
-        const error = new http_error_1.default("Invalid credentials", 401);
+        const error = new http_error_1.default('Invalid credentials', 401);
         return next(error);
     }
     let token;
@@ -53,51 +54,54 @@ exports.router.post("/login", (req, res, next) => __awaiter(void 0, void 0, void
         token = jsonwebtoken_1.default.sign({ user: identifiedUser.id, email: identifiedUser.email }, process.env.JWL_KEY, { expiresIn: '4h' });
     }
     catch (err) {
-        const error = new http_error_1.default("Login failed", 500);
+        const error = new http_error_1.default('Login failed', 500);
         return next(error);
     }
-    res.json({ userId: identifiedUser.id, email: identifiedUser.email, token: token });
+    res.json({
+        userId: identifiedUser.id,
+        email: identifiedUser.email,
+        theme: identifiedUser.theme,
+        token: token,
+    });
 }));
-// register new user
-exports.router.post("/signup", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, email, pass, language, currency } = req.body;
-    const error = new http_error_1.default("Not allowed to create user", 401);
-    return next(error);
+// register new user UPDATE: temporary invite
+exports.router.post('/signup', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { name, email, /*pass,*/ language, currency } = req.body;
     let existingUser;
     try {
         existingUser = yield users_1.default.findOne({ email: email });
     }
     catch (err) {
-        const error = new http_error_1.default("Signing up failed", 500);
+        const error = new http_error_1.default('Invite failed', 500);
         return next(error);
     }
     if (existingUser) {
-        const error = new http_error_1.default("User exists already", 422);
+        const error = new http_error_1.default('User exists already', 422);
         return next(error);
     }
-    let hashedPassword;
-    try {
-        hashedPassword = yield bcryptjs_1.default.hash(pass, 12);
-    }
-    catch (err) {
-        const error = new http_error_1.default("Could not create user", 500);
-        return next(error);
-    }
+    // let hashedPassword: string;
+    // try {
+    //   hashedPassword = await bcrypt.hash(pass, 12);
+    // } catch (err) {
+    //   const error = new HttpError("Could not create user", 500);
+    //   return next(error);
+    // }
     const createdUser = new users_1.default({
         created: new Date(),
         name,
         email,
-        pass: hashedPassword,
+        //pass: hashedPassword,
         language,
+        theme: 'light',
         currency,
         vat: 0,
-        customers: []
+        customers: [],
     });
     try {
         yield createdUser.save();
     }
     catch (err) {
-        const error = new http_error_1.default("Signing up failed", 500);
+        const error = new http_error_1.default('Invite failed', 500);
         return next(error);
     }
     let token;
@@ -105,25 +109,30 @@ exports.router.post("/signup", (req, res, next) => __awaiter(void 0, void 0, voi
         token = jsonwebtoken_1.default.sign({ user: createdUser.id, email: createdUser.email }, process.env.JWL_KEY, { expiresIn: '4h' });
     }
     catch (err) {
-        const error = new http_error_1.default("Signing up failed", 500);
+        const error = new http_error_1.default('Invite failed', 500);
         return next(error);
     }
-    res.status(201).json({ userId: createdUser.id, email: createdUser.email, token: token });
+    res.status(201).json({
+        userId: createdUser.id,
+        email: createdUser.email,
+        token: token,
+        theme: createdUser.theme,
+    });
 }));
 exports.router.use(check_auth_1.default);
 // get user
-exports.router.get("/:uid", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.router.get('/:uid', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const reqId = yield req.params.uid;
     let user;
     try {
         user = yield users_1.default.findById(reqId, '-pass');
     }
     catch (err) {
-        const error = new http_error_1.default("Looking for user failed", 500);
+        const error = new http_error_1.default('Looking for user failed', 500);
         return next(error);
     }
     if (!user) {
-        const error = new http_error_1.default("Could not find an user", 404);
+        const error = new http_error_1.default('Could not find an user', 404);
         return next(error);
     }
     const userObj = user.toObject({ getters: true });
@@ -135,42 +144,44 @@ exports.router.get("/:uid", (req, res, next) => __awaiter(void 0, void 0, void 0
         securedUser = Object.assign(Object.assign({}, userObj), { iban: decryptIban });
     }
     if (user.id !== req.userData.userId) {
-        const error = new http_error_1.default("Not allowed to see this user", 401);
+        const error = new http_error_1.default('Not allowed to see this user', 401);
         return next(error);
     }
     res.json({ user: securedUser ? securedUser : userObj });
 }));
 // get all users
-exports.router.get("/", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.router.get('/', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     let users;
     try {
         users = yield users_1.default.find({}, '-pass');
     }
     catch (err) {
-        const error = new http_error_1.default("Fetching users failed", 500);
+        const error = new http_error_1.default('Fetching users failed', 500);
         return next(error);
     }
     // no one allowed to see all customers
     if (req.userData.userId !== '0123456789') {
-        const error = new http_error_1.default("Not allowed to see this users", 401);
+        const error = new http_error_1.default('Not allowed to see this users', 401);
         return next(error);
     }
-    res.json({ users: users.map((user) => user.toObject({ getters: true })) });
+    res.json({
+        users: users.map((user) => user.toObject({ getters: true })),
+    });
 }));
 // update user
-exports.router.patch("/:uid", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { company, firstName, name, street, zip, city, country, phone, businessMail, web, iban, bic, bank, taxId, commercialRegister, language, currency, vat } = req.body;
+exports.router.patch('/:uid', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { company, firstName, name, street, zip, city, country, phone, businessMail, web, iban, bic, bank, taxId, commercialRegister, language, theme, currency, vat, } = req.body;
     const userId = req.params.uid;
     let user;
     try {
         user = yield users_1.default.findById(userId);
     }
     catch (err) {
-        const error = new http_error_1.default("Could not update user", 500);
+        const error = new http_error_1.default('Could not update user', 500);
         return next(error);
     }
     if (user.id !== req.userData.userId) {
-        const error = new http_error_1.default("Not allowed to edit this user", 401);
+        const error = new http_error_1.default('Not allowed to edit this user', 401);
         return next(error);
     }
     let encryptIban;
@@ -191,19 +202,20 @@ exports.router.patch("/:uid", (req, res, next) => __awaiter(void 0, void 0, void
     user.taxId = taxId;
     user.commercialRegister = commercialRegister;
     user.language = language;
+    user.theme = theme;
     user.currency = currency;
     user.vat = vat;
     try {
         yield user.save();
     }
     catch (err) {
-        const error = new http_error_1.default("User update failed", 500);
+        const error = new http_error_1.default('User update failed', 500);
         return next(error);
     }
     res.status(200).json({ user: user.toObject({ getters: true }) });
 }));
 // update password
-exports.router.patch("/password/:uid", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.router.patch('/password/:uid', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { pass } = req.body;
     const userId = req.params.uid;
     let user;
@@ -211,11 +223,11 @@ exports.router.patch("/password/:uid", (req, res, next) => __awaiter(void 0, voi
         user = yield users_1.default.findById(userId);
     }
     catch (err) {
-        const error = new http_error_1.default("Could not update password", 500);
+        const error = new http_error_1.default('Could not update password', 500);
         return next(error);
     }
     if (user.id !== req.userData.userId) {
-        const error = new http_error_1.default("Not allowed to change password", 401);
+        const error = new http_error_1.default('Not allowed to change password', 401);
         return next(error);
     }
     let hashedPassword;
@@ -223,7 +235,7 @@ exports.router.patch("/password/:uid", (req, res, next) => __awaiter(void 0, voi
         hashedPassword = yield bcryptjs_1.default.hash(pass, 12);
     }
     catch (err) {
-        const error = new http_error_1.default("Could not save password", 500);
+        const error = new http_error_1.default('Could not save password', 500);
         return next(error);
     }
     user.pass = hashedPassword;
@@ -231,32 +243,32 @@ exports.router.patch("/password/:uid", (req, res, next) => __awaiter(void 0, voi
         yield user.save();
     }
     catch (err) {
-        const error = new http_error_1.default("Update password failed", 500);
+        const error = new http_error_1.default('Update password failed', 500);
         return next(error);
     }
     res.status(200).json({ user: user.toObject({ getters: true }) });
 }));
 // delete user
-exports.router.delete("/:uid", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.router.delete('/:uid', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const userId = req.params.uid;
     let user;
     try {
         user = yield users_1.default.findById(userId);
     }
     catch (err) {
-        const error = new http_error_1.default("Could not delete user", 500);
+        const error = new http_error_1.default('Could not delete user', 500);
         return next(error);
     }
     if (user.id !== req.userData.userId) {
-        const error = new http_error_1.default("Not allowed to delete this user", 401);
+        const error = new http_error_1.default('Not allowed to delete this user', 401);
         return next(error);
     }
     try {
         yield user.remove();
     }
     catch (err) {
-        const error = new http_error_1.default("Delete user failed", 500);
+        const error = new http_error_1.default('Delete user failed', 500);
         return next(error);
     }
-    res.status(200).json({ message: "Deleted user." });
+    res.status(200).json({ message: 'Deleted user.' });
 }));
