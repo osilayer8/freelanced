@@ -6,9 +6,7 @@ import Button from '../../shared/components/FormElements/Button';
 import Modal from '../../shared/components/UIElements/Modal';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
-import {
-  VALIDATOR_MINLENGTH
-} from '../../shared/util/validators';
+import { VALIDATOR_MINLENGTH } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
@@ -26,29 +24,32 @@ const UpdatePassword: React.FC = () => {
 
   const [formState, inputHandler] = useForm(
     {
-       pass: {
+      pass: {
         value: '',
-        isValid: false
-      }
+        isValid: false,
+      },
     },
     false
   );
 
-  const passwordUpdateSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+  const passwordUpdateSubmitHandler = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
 
-    if (formState.inputs.pass.value !== formState.inputs.confirm.value) return setShowConfirmModal(true);
-    
+    if (formState.inputs.pass.value !== formState.inputs.confirm.value)
+      return setShowConfirmModal(true);
+
     try {
       await sendRequest(
         process.env.REACT_APP_BACKEND_URL + `/users/password/${auth.userId}`,
         'PATCH',
         JSON.stringify({
-          pass: formState.inputs.pass.value
-        }),
+          pass: formState.inputs.pass.value,
+        })
       );
       history.push('/user');
-    } catch (err) { }
+    } catch (err) {}
   };
 
   if (isLoading) {
@@ -86,33 +87,40 @@ const UpdatePassword: React.FC = () => {
       >
         <p>Passwords are not matching!</p>
       </Modal>
-      {!isLoading && (<form className="customer-form" onSubmit={passwordUpdateSubmitHandler}>
-        <div className="center">
-          <h1>Change password</h1>
-        </div>
-        <Input
-          id="pass"
-          element="input"
-          type="password"
-          label="Password"
-          autoComplete="new-password"
-          validators={[VALIDATOR_MINLENGTH(6)]}
-          errorText="Please enter a valid password."
-          onInput={inputHandler}
-        />
-        <Input
-          id="confirm"
-          element="input"
-          type="password"
-          autoComplete="new-password"
-          label="Password confirm"
-          validators={[]}
-          onInput={inputHandler}
-        />
-        <Button type="submit" disabled={!formState.isValid}>
-          UPDATE PASSWORD
-        </Button>
-      </form>)}
+      {!isLoading && (
+        <>
+          <div className="center">
+            <h1>Change password</h1>
+          </div>
+          <form
+            className="customer-form"
+            onSubmit={passwordUpdateSubmitHandler}
+          >
+            <Input
+              id="pass"
+              element="input"
+              type="password"
+              label="Password"
+              autoComplete="new-password"
+              validators={[VALIDATOR_MINLENGTH(6)]}
+              errorText="Please enter a valid password."
+              onInput={inputHandler}
+            />
+            <Input
+              id="confirm"
+              element="input"
+              type="password"
+              autoComplete="new-password"
+              label="Password confirm"
+              validators={[]}
+              onInput={inputHandler}
+            />
+            <Button type="submit" disabled={!formState.isValid}>
+              UPDATE PASSWORD
+            </Button>
+          </form>
+        </>
+      )}
     </React.Fragment>
   );
 };

@@ -1,20 +1,20 @@
-import React from "react";
+import React from 'react';
 
-import Card from "../../shared/components/UIElements/Card";
+import Card from '../../shared/components/UIElements/Card';
 import Button from '../../shared/components/FormElements/Button';
-import "./UserItem.scss";
+import './UserItem.scss';
 
 interface Props {
-  company?: string,
-  firstName?: string,
-  name: string,
-  phone?: string,
-  iban?: string,
-  email: string,
-  currency?: string,
-  language: string,
-  vat: number,
-  id?: string
+  company?: string;
+  firstName?: string;
+  name: string;
+  phone?: string;
+  iban?: string;
+  email: string;
+  currency?: string;
+  language: string;
+  vat: number;
+  id?: string;
 }
 
 const UserItem: React.FC<Props> = (props) => {
@@ -38,7 +38,8 @@ const UserItem: React.FC<Props> = (props) => {
             <label>Phone</label>
             {props.phone}
           </h2>
-          <h2><label>IBAN</label>
+          <h2>
+            <label>IBAN</label>
             {props.iban}
           </h2>
           <h2>
@@ -53,10 +54,16 @@ const UserItem: React.FC<Props> = (props) => {
             <label>VAT</label>
             {props.vat}%
           </h2>
-          <div className="flex">  
-            <Button className="outlined" to="/user/edit">EDIT PROFILE</Button>
-            <Button className="outlined" to="/user/settings">EDIT PDF SETTINGS</Button>
-            <Button className="outlined" to="/user/password">CHANGE PASSWORD</Button>
+          <div className="flex">
+            <Button className="outlined" to="/user/edit">
+              EDIT PROFILE
+            </Button>
+            <Button className="outlined" to="/user/settings">
+              SETTINGS
+            </Button>
+            <Button className="outlined" to="/user/password">
+              CHANGE PASSWORD
+            </Button>
           </div>
         </div>
       </Card>

@@ -123,65 +123,67 @@ const UpdateUser: React.FC = () => {
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
       {!isLoading && loadedUser && (
-        <form className="customer-form" onSubmit={userUpdateSubmitHandler}>
+        <>
           <div className="center">
             <h1>Edit profile</h1>
           </div>
-          <Input
-            id="company"
-            element="input"
-            type="text"
-            label="Company Name"
-            validators={[]}
-            onInput={inputHandler}
-            initialValue={loadedUser.company}
-            initialValid={true}
-          />
-          <Input
-            id="firstName"
-            element="input"
-            type="text"
-            label="First Name"
-            validators={[]}
-            onInput={inputHandler}
-            initialValue={loadedUser.firstName}
-            initialValid={true}
-          />
-          <Input
-            id="name"
-            element="input"
-            type="text"
-            label="Name"
-            validators={[VALIDATOR_REQUIRE()]}
-            errorText="Please enter a valid name."
-            onInput={inputHandler}
-            initialValue={loadedUser.name}
-            initialValid={true}
-          />
-          <Input
-            id="language"
-            element="select"
-            label="Language"
-            validators={[]}
-            onInput={inputHandler}
-            datas={languages}
-            initialValue={loadedUser.language}
-            initialValid={true}
-          />
-          <Input
-            id="theme"
-            element="select"
-            label="Theme"
-            validators={[]}
-            onInput={inputHandler}
-            datas={themes}
-            initialValue={loadedUser.theme}
-            initialValid={true}
-          />
-          <Button type="submit" disabled={!formState.isValid}>
-            UPDATE USER
-          </Button>
-        </form>
+          <form className="customer-form" onSubmit={userUpdateSubmitHandler}>
+            <Input
+              id="company"
+              element="input"
+              type="text"
+              label="Company Name"
+              validators={[]}
+              onInput={inputHandler}
+              initialValue={loadedUser.company}
+              initialValid={true}
+            />
+            <Input
+              id="firstName"
+              element="input"
+              type="text"
+              label="First Name"
+              validators={[]}
+              onInput={inputHandler}
+              initialValue={loadedUser.firstName}
+              initialValid={true}
+            />
+            <Input
+              id="name"
+              element="input"
+              type="text"
+              label="Name"
+              validators={[VALIDATOR_REQUIRE()]}
+              errorText="Please enter a valid name."
+              onInput={inputHandler}
+              initialValue={loadedUser.name}
+              initialValid={true}
+            />
+            <Input
+              id="language"
+              element="select"
+              label="Language"
+              validators={[]}
+              onInput={inputHandler}
+              datas={languages}
+              initialValue={loadedUser.language}
+              initialValid={true}
+            />
+            <Input
+              id="theme"
+              element="select"
+              label="Theme"
+              validators={[]}
+              onInput={inputHandler}
+              datas={themes}
+              initialValue={loadedUser.theme}
+              initialValid={true}
+            />
+            <Button type="submit" disabled={!formState.isValid}>
+              UPDATE USER
+            </Button>
+          </form>
+        </>
       )}
     </React.Fragment>
   );

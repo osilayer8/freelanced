@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { Prompt } from 'react-router';
 import { useParams } from 'react-router-dom';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 
@@ -59,6 +60,7 @@ const UpdateProject: React.FC = () => {
   const [loadedProject, setLoadedProject] = useState<any>();
   const [loadedUser, setLoadedUser] = useState<any>();
   const [loadedCustomer, setLoadedCustomer] = useState<any>();
+  const [formChanged, setFormChanged] = useState(false);
   const [result, setResult] = useState<Result>({
     costs: 0,
     hours: 0,
@@ -167,6 +169,7 @@ const UpdateProject: React.FC = () => {
     event: React.FormEvent<HTMLFormElement>
   ) => {
     setHide(false);
+    setFormChanged(false);
     event.preventDefault();
     try {
       const responseData = await sendRequest(
@@ -214,6 +217,7 @@ const UpdateProject: React.FC = () => {
     setLoadedProject({ ...loadedProject, [name]: value });
     setResult(projectCalc({ ...loadedProject, [name]: value }));
     setHide(false);
+    setFormChanged(true);
   };
 
   const handleSubInputChange = (idx: number) => (
@@ -236,6 +240,7 @@ const UpdateProject: React.FC = () => {
     setLoadedProject({ ...loadedProject, tasks: newTasks });
     setResult(projectCalc({ ...loadedProject, tasks: newTasks }));
     setHide(false);
+    setFormChanged(true);
   };
 
   const handleAddTask = () => {
@@ -284,6 +289,10 @@ const UpdateProject: React.FC = () => {
 
   return (
     <React.Fragment>
+      <Prompt
+        when={formChanged}
+        message="You have unsaved changes, are you sure you want to leave?"
+      />
       <ErrorModal error={error} onClear={clearError} />
       {!isLoading && loadedProject && loadedUser && (
         <div className="text-center">
