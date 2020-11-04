@@ -5,12 +5,9 @@ import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
-import {
-  VALIDATOR_REQUIRE
-} from '../../shared/util/validators';
+import { VALIDATOR_REQUIRE } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
-import './CustomerForm.scss';
 
 const NewProject: React.FC = () => {
   const customerId = useParams<{ customerId: string }>().customerId;
@@ -19,15 +16,17 @@ const NewProject: React.FC = () => {
     {
       name: {
         value: '',
-        isValid: false
-      }
+        isValid: false,
+      },
     },
     false
   );
 
   const history = useHistory();
 
-  const projectSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+  const projectSubmitHandler = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
@@ -36,16 +35,16 @@ const NewProject: React.FC = () => {
         JSON.stringify({
           name: formState.inputs.name.value,
           price: formState.inputs.price.value,
-          owner: customerId
-        }),
+          owner: customerId,
+        })
       );
       redirectToProject(customerId, responseData.project.id);
-    } catch (err) { }
+    } catch (err) {}
   };
 
   const redirectToProject = (cid: string, pid: number) => {
     history.push('/customers/' + cid + '/projects/' + pid);
-  }
+  };
 
   return (
     <React.Fragment>

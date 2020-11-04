@@ -6,6 +6,7 @@ import {
   Switch,
 } from 'react-router-dom';
 
+import ScrollToTop from './shared/components/ScrollToTop';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
 import { AuthContext } from './shared/context/auth-context';
 import { useAuth } from './shared/hooks/auth-hook';
@@ -26,6 +27,8 @@ const UpdateCustomer = React.lazy(
 const NewProject = React.lazy(() => import('./customers/pages/NewProject'));
 const Project = React.lazy(() => import('./customers/pages/Project'));
 const Auth = React.lazy(() => import('./user/pages/Auth'));
+const Landing = React.lazy(() => import('./Landing'));
+const Policy = React.lazy(() => import('./user/pages/Policy'));
 
 const App = () => {
   const { token, login, theme, logout, userId, checkLogin } = useAuth();
@@ -74,7 +77,13 @@ const App = () => {
         <Route path="/auth">
           <Auth />
         </Route>
-        <Redirect to="/auth" />
+        <Route path="/policy">
+          <Policy />
+        </Route>
+        <Route path="/landing">
+          <Landing />
+        </Route>
+        <Redirect to="/landing" />
       </Switch>
     );
   }
@@ -91,6 +100,7 @@ const App = () => {
       }}
     >
       <Router>
+        <ScrollToTop />
         <MainNavigation />
         {checkLogin && (
           <div className="content">

@@ -2,7 +2,6 @@ import React from 'react';
 
 import CustomerItem from './CustomerItem';
 import Button from '../../shared/components/FormElements/Button';
-import './CustomerList.scss';
 
 const CustomerList: React.FC<any> = (props) => {
   if (props.items.length === 0) {

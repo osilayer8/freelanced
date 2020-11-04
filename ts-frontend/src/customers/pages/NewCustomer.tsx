@@ -7,11 +7,10 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import {
   VALIDATOR_EMAIL,
-  VALIDATOR_REQUIRE
+  VALIDATOR_REQUIRE,
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
-import './CustomerForm.scss';
 
 const NewCustomer: React.FC = () => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -19,18 +18,19 @@ const NewCustomer: React.FC = () => {
     {
       company: {
         value: '',
-        isValid: false
+        isValid: false,
       },
       email: {
         value: '',
-        isValid: false
-      }
+        isValid: false,
+      },
     },
     false
   );
 
-
-  const customerSubmitHandler = async (event: React.FormEvent<HTMLFormElement>) => {
+  const customerSubmitHandler = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
     try {
       const responseData = await sendRequest(
@@ -44,18 +44,18 @@ const NewCustomer: React.FC = () => {
           city: formState.inputs.city.value,
           country: formState.inputs.country.value,
           phone: formState.inputs.phone.value,
-          website: formState.inputs.website.value
+          website: formState.inputs.website.value,
         })
       );
       redirectToCustomer(responseData.customer.id);
-    } catch (err) { }
+    } catch (err) {}
   };
 
   const history = useHistory();
 
   const redirectToCustomer = (id: number) => {
     history.push('/customers/' + id);
-  }
+  };
 
   return (
     <React.Fragment>

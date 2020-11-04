@@ -4,12 +4,11 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 
 import { useHttpClient } from '../../shared/hooks/http-hook';
-import './CustomerItem.scss';
 
 interface Props {
-  id: number,
-  title: string,
-  hours?: number,
+  id: number;
+  title: string;
+  hours?: number;
 }
 
 const TaskItem: React.FC<Props> = (props) => {

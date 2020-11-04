@@ -14,13 +14,15 @@ select:-webkit-autofill:focus {
 
 .form-control {
   margin: 1rem 0;
-}
-
-.form-control label,
-.form-control input,
-.form-control textarea {
-  display: block;
-  color: var(--text);
+  label,
+  input,
+  textarea {
+    display: block;
+    color: var(--text);
+  }
+  label {
+    padding: 0 0 0.5rem;
+  }
 }
 
 .form-control--invalid label,
@@ -44,7 +46,7 @@ select:-webkit-autofill:focus {
     max-width: 100%;
     box-sizing: border-box;
     margin: 0.5rem 0 0;
-    border: 1px solid var(--text);
+    border: 1px solid #9a9a9a73;
     border-radius: 0.5em;
     -moz-appearance: none;
     -webkit-appearance: none;
@@ -64,5 +66,16 @@ select:-webkit-autofill:focus {
       font-weight: normal;
       background-color: var(--background);
     }
+  }
+  .input-checkbox {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    label {
+      cursor: pointer;
+    }
+  }
+  input[type='checkbox'] {
+    margin-right: 0.5rem;
   }
 }

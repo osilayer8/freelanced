@@ -1,23 +1,25 @@
 import React, { useReducer, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import { validate } from '../../util/validators';
-import './Input.scss';setTimeout(() => {}, 500);
+import './Input.scss';
 
 interface State {
-  value: string,
-  isTouched?: boolean,
-  isValid?: boolean
+  value: string;
+  isTouched?: boolean;
+  isValid?: boolean;
 }
 
 interface Action {
-  type: string,
-  val: string,
-  validators: Validators
+  type: string;
+  val: string;
+  validators: Validators;
+  checkbox: HTMLInputElement;
 }
 
 interface array {
-  type: string,
-  val: number
+  type: string;
+  val: number;
 }
 
 type Validators = array[];
@@ -28,13 +30,13 @@ const inputReducer = (state: State, action: Action) => {
       return {
         ...state,
         value: action.val,
-        isValid: validate(action.val, action.validators)
+        isValid: validate(action.val, action.validators, action.checkbox),
       };
     case 'TOUCH': {
       return {
         ...state,
-        isTouched: true
-      }
+        isTouched: true,
+      };
     }
     default:
       return state;
@@ -42,41 +44,47 @@ const inputReducer = (state: State, action: Action) => {
 };
 
 interface Props {
-  initialValue?: string,
-  initialValid?: boolean,
-  id: string,
-  onInput: (id: string, value: string, isValid: boolean) => void,
-  validators?: any,
-  element: string,
-  type?: string,
-  placeholder?: string,
-  rows?: number,
-  label?: string,
-  errorText?: string,
-  autoComplete?: string,
-  datas?: any
+  initialValue?: string;
+  initialValid?: boolean;
+  id: string;
+  onInput: (id: string, value: string, isValid: boolean) => void;
+  validators?: any;
+  element: string;
+  type?: string;
+  placeholder?: string;
+  rows?: number;
+  label?: string;
+  errorText?: string;
+  autoComplete?: string;
+  to?: string;
+  datas?: any;
 }
 
 const Input: React.FC<Props> = (props) => {
   const [inputState, dispatch] = useReducer(inputReducer, {
     value: props.initialValue || '',
     isTouched: false,
-    isValid: props.initialValid || false
+    isValid: props.initialValid || false,
   });
 
   const { id, onInput } = props;
   const { value, isValid }: any = inputState;
 
-
   useEffect(() => {
-    onInput(id, value, isValid)
+    onInput(id, value, isValid);
   }, [id, value, isValid, onInput]);
 
-  const changeHandler = (event: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement> | React.ChangeEvent<HTMLSelectElement>) => {
+  const changeHandler = (
+    event:
+      | React.ChangeEvent<HTMLInputElement>
+      | React.ChangeEvent<HTMLTextAreaElement>
+      | React.ChangeEvent<HTMLSelectElement>
+  ) => {
     dispatch({
       type: 'CHANGE',
       val: event.target.value,
-      validators: props.validators
+      validators: props.validators,
+      checkbox: event.target as HTMLInputElement,
     });
   };
 
@@ -84,7 +92,8 @@ const Input: React.FC<Props> = (props) => {
     dispatch({
       type: 'TOUCH',
       val: '',
-      validators: []
+      validators: [],
+      checkbox: undefined as any,
     });
   };
 
@@ -108,7 +117,9 @@ const Input: React.FC<Props> = (props) => {
         value={inputState.value}
       >
         {props.datas.map((data: string, index: number) => (
-          <option key={index} value={data}>{data}</option>
+          <option key={index} value={data}>
+            {data}
+          </option>
         ))}
       </select>
     ) : (
@@ -123,11 +134,23 @@ const Input: React.FC<Props> = (props) => {
 
   return (
     <div
-      className={`form-control ${!inputState.isValid && inputState.isTouched &&
-        'form-control--invalid'}`}
+      className={`form-control ${
+        !inputState.isValid && inputState.isTouched && 'form-control--invalid'
+      }`}
     >
-      <label htmlFor={props.id}>{props.label}</label>
-      {element}
+      <div className={props.type === 'checkbox' ? 'input-checkbox' : ''}>
+        {props.label && (
+          <label htmlFor={props.id}>
+            {props.label}{' '}
+            {props.to && (
+              <>
+                (<Link to={props.to}>Read</Link>)
+              </>
+            )}
+          </label>
+        )}
+        {element}
+      </div>
       {!inputState.isValid && inputState.isTouched && <p>{props.errorText}</p>}
     </div>
   );

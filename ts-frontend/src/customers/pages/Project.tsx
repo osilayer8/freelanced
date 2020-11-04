@@ -13,7 +13,6 @@ import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
 import Costs from '../components/Costs';
 import Invoice from '../../shared/components/Invoice/Invoice';
-import './CustomerForm.scss';
 
 interface Tasks {
   id: number;

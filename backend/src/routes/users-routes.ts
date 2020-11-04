@@ -62,7 +62,7 @@ router.post('/login', async (req, res, next) => {
 
 // register new user UPDATE: temporary invite
 router.post('/signup', async (req, res, next) => {
-  const { name, email, /*pass,*/ language, currency } = req.body;
+  const { name, email, pass, language, currency } = req.body;
 
   let existingUser;
 
@@ -78,19 +78,19 @@ router.post('/signup', async (req, res, next) => {
     return next(error);
   }
 
-  // let hashedPassword: string;
-  // try {
-  //   hashedPassword = await bcrypt.hash(pass, 12);
-  // } catch (err) {
-  //   const error = new HttpError("Could not create user", 500);
-  //   return next(error);
-  // }
+  let hashedPassword: string;
+  try {
+    hashedPassword = await bcrypt.hash(pass, 12);
+  } catch (err) {
+    const error = new HttpError('Could not create user', 500);
+    return next(error);
+  }
 
   const createdUser: any = new User({
     created: new Date(),
     name,
     email,
-    //pass: hashedPassword,
+    pass: hashedPassword,
     language,
     theme: 'light',
     currency,

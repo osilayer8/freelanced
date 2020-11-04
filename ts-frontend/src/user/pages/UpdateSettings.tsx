@@ -13,7 +13,6 @@ import { useForm } from '../../shared/hooks/form-hook';
 import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
 import { currencies } from '../../shared/util/currency';
-import '../../customers/pages/CustomerForm.scss';
 
 const UpdateSettings: React.FC = () => {
   const auth = useContext(AuthContext);

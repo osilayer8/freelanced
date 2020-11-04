@@ -6,8 +6,6 @@ import CustomerItem from '../components/CustomerItem';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useHttpClient } from '../../shared/hooks/http-hook';
-import './CustomerForm.scss';
-import '../components/CustomerList.scss';
 
 const Customer: React.FC = () => {
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
@@ -19,11 +17,11 @@ const Customer: React.FC = () => {
       try {
         const responseData = await sendRequest(
           process.env.REACT_APP_BACKEND_URL + `/customers/${customerId}`,
-          'GET',
+          'GET'
         );
         setLoadedCustomer(responseData.customer);
-      } catch (err) { }
-    }
+      } catch (err) {}
+    };
     fetchCustomer();
   }, [sendRequest, customerId]);
 
@@ -48,22 +46,24 @@ const Customer: React.FC = () => {
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
-      <div className="center"><h1>Projects at {loadedCustomer.company}</h1></div>
+      <div className="center">
+        <h1>Projects at {loadedCustomer.company}</h1>
+      </div>
       <CustomerProjects />
       {!isLoading && loadedCustomer && (
         <ul className="customer-list">
-        <CustomerItem
-          id={loadedCustomer.id}
-          company={loadedCustomer.company}
-          email={loadedCustomer.email}
-          street={loadedCustomer.street}
-          plz={loadedCustomer.plz}
-          city={loadedCustomer.city}
-          country={loadedCustomer.country}
-          phone={loadedCustomer.phone}
-          website={loadedCustomer.website}
-          creatorId={loadedCustomer.creator}
-          onDelete={false}
+          <CustomerItem
+            id={loadedCustomer.id}
+            company={loadedCustomer.company}
+            email={loadedCustomer.email}
+            street={loadedCustomer.street}
+            plz={loadedCustomer.plz}
+            city={loadedCustomer.city}
+            country={loadedCustomer.country}
+            phone={loadedCustomer.phone}
+            website={loadedCustomer.website}
+            creatorId={loadedCustomer.creator}
+            onDelete={false}
           />
         </ul>
       )}

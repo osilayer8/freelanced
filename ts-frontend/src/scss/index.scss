@@ -67,6 +67,10 @@ h3 {
   position: relative;
 }
 
+.block {
+  display: block;
+}
+
 .content {
   max-width: 1200px;
   margin: 0 auto;
@@ -88,17 +92,30 @@ hr {
 
 input,
 textarea {
-  width: 100%;
   font: inherit;
-  background: transparent;
+  background: #c7c7c721;
   padding: 0.5rem;
   font-size: 1rem;
-  appearance: none;
   border: 0;
-  border-bottom: 1px solid var(--text);
-  border-radius: 0;
+  border-radius: 4px;
   color: var(--text);
   display: block;
+}
+
+input:not([type='checkbox']),
+textarea {
+  width: 100%;
+  appearance: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
 }
 
 input:focus,
@@ -142,4 +159,229 @@ textarea:focus {
   --box: #262626;
   --text: #000;
   --box-text: #fff;
+}
+
+// Customer & Projects
+
+.customer-form {
+  list-style: none;
+  margin: 0 auto;
+  max-width: 600px;
+  label {
+    padding: 0 0 0.5rem;
+  }
+}
+
+.project-content {
+  margin: 0 auto;
+  .sidebar {
+    position: static;
+    margin-bottom: 1rem;
+  }
+}
+
+.add-task {
+  margin-bottom: 1rem;
+}
+
+.h1 {
+  font-size: 2em;
+  font-weight: 500;
+  border: 0;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.inputTitle {
+  border-bottom: 1px solid transparent;
+  &:focus {
+    border-color: var(--base);
+  }
+}
+
+input.price {
+  text-align: center;
+  font-size: 2rem;
+  width: 80px;
+  margin: 0 1rem;
+  padding: 0.5rem 0;
+  display: inline-block;
+  + span {
+    font-size: 2rem;
+  }
+}
+
+.labels {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  label {
+    margin: 0 3rem 0 1rem;
+    padding: 0 0 0.5rem;
+  }
+}
+
+.fields {
+  display: flex;
+  margin-bottom: 1.5rem;
+  padding-right: 2.5rem;
+  position: relative;
+  input {
+    margin: 0 0.5rem;
+    &[type='number'] {
+      max-width: 35px;
+      text-align: center;
+      font-weight: 700;
+      padding: 0.5rem 0;
+    }
+  }
+  .del {
+    padding: 0.5rem;
+    cursor: pointer;
+    position: absolute;
+    right: 0;
+    top: 0;
+    svg {
+      fill: var(--text);
+      width: 22px;
+      height: 22px;
+    }
+  }
+}
+
+.invoice {
+  max-width: 100px;
+  display: inline;
+}
+
+.edit-title {
+  &:hover {
+    input {
+      border-bottom: 1px solid #000;
+    }
+  }
+}
+
+.customer-list {
+  list-style: none;
+  margin: 1rem auto;
+  padding: 0;
+}
+
+.customer-item {
+  margin: 1rem 0;
+  list-style: none;
+  .customer-item__action {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 1.2rem;
+    cursor: pointer;
+    display: none;
+    svg {
+      width: 18px;
+      fill: var(--box-text);
+      height: 18px;
+    }
+  }
+  &:hover {
+    .customer-item__action {
+      display: block;
+    }
+  }
+}
+
+.customer-item__content {
+  padding: 0;
+  a {
+    color: var(--box-text);
+    text-decoration: none;
+  }
+}
+
+.customer-item__info,
+.customer-item__details {
+  padding: 1rem;
+}
+
+.customer-item__info {
+  background: var(--box);
+}
+
+.customer-item__details {
+  display: flex;
+  .customer-address {
+    margin-right: 5rem;
+    min-width: 100px;
+  }
+  p {
+    margin: 0 0 0.5rem 0;
+  }
+}
+
+.customer-item__info h2 {
+  margin: 0;
+}
+
+.fadeIn {
+  opacity: 1;
+  animation: fadeIn 2s ease;
+}
+
+@keyframes fadeIn {
+  0% {
+    pointer-events: none;
+    opacity: 0;
+  }
+  100% {
+    pointer-events: auto;
+    opacity: 1;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .customer-list {
+    width: auto;
+  }
+  .fields {
+    input {
+      &[type='number'] {
+        max-width: 100px;
+        padding: 0.5rem 1rem;
+      }
+    }
+  }
+  .labels {
+    label {
+      margin: 0 3rem 0 1.5rem;
+    }
+  }
+  input.price {
+    font-size: 4rem;
+    width: 110px;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .project-content {
+    margin: 0;
+    width: 100%;
+    max-width: 700px;
+    .sidebar {
+      position: fixed;
+    }
+  }
+}
+
+@media screen and (min-width: 1300px) {
+  .project-content {
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .project-content {
+    max-width: none;
+  }
 }
