@@ -60,7 +60,7 @@ router.post('/login', async (req, res, next) => {
   });
 });
 
-// register new user UPDATE: temporary invite
+// register new user
 router.post('/signup', async (req, res, next) => {
   const { name, email, pass, language, currency } = req.body;
 
@@ -95,6 +95,7 @@ router.post('/signup', async (req, res, next) => {
     theme: 'light',
     currency,
     vat: 0,
+    active: 0,
     customers: [],
   });
 
