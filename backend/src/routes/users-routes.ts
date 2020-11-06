@@ -27,6 +27,11 @@ router.post('/login', async (req, res, next) => {
     return next(error);
   }
 
+  if (identifiedUser.active === false) {
+    const error = new HttpError('This user is not activated yet', 401);
+    return next(error);
+  }
+
   let isValidPassword: boolean = false;
   try {
     isValidPassword = await bcrypt.compare(pass, identifiedUser.pass);
@@ -95,7 +100,7 @@ router.post('/signup', async (req, res, next) => {
     theme: 'light',
     currency,
     vat: 0,
-    active: 0,
+    active: false, // for invite phase
     customers: [],
   });
 

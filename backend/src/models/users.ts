@@ -24,6 +24,7 @@ const userSchema = new mongoose.Schema({
   currency: { type: String, required: false },
   vat: { type: Number, required: true },
   theme: { type: String, required: true },
+  active: { type: Boolean, required: false },
   customers: [
     { type: mongoose.Types.ObjectId, required: true, ref: 'Customer' },
   ],
