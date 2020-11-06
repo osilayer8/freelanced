@@ -137,47 +137,59 @@ const UpdateUser: React.FC = () => {
               initialValue={loadedUser.company}
               initialValid={true}
             />
-            <Input
-              id="firstName"
-              element="input"
-              type="text"
-              label="First Name"
-              validators={[]}
-              onInput={inputHandler}
-              initialValue={loadedUser.firstName}
-              initialValid={true}
-            />
-            <Input
-              id="name"
-              element="input"
-              type="text"
-              label="Name"
-              validators={[VALIDATOR_REQUIRE()]}
-              errorText="Please enter a valid name."
-              onInput={inputHandler}
-              initialValue={loadedUser.name}
-              initialValid={true}
-            />
-            <Input
-              id="language"
-              element="select"
-              label="Language"
-              validators={[]}
-              onInput={inputHandler}
-              datas={languages}
-              initialValue={loadedUser.language}
-              initialValid={true}
-            />
-            <Input
-              id="theme"
-              element="select"
-              label="Theme"
-              validators={[]}
-              onInput={inputHandler}
-              datas={themes}
-              initialValue={loadedUser.theme}
-              initialValid={true}
-            />
+            <div className="columns">
+              <div className="col-5">
+                <Input
+                  id="firstName"
+                  element="input"
+                  type="text"
+                  label="First Name"
+                  validators={[]}
+                  onInput={inputHandler}
+                  initialValue={loadedUser.firstName}
+                  initialValid={true}
+                />
+              </div>
+              <div className="col-5">
+                <Input
+                  id="name"
+                  element="input"
+                  type="text"
+                  label="Last Name"
+                  validators={[VALIDATOR_REQUIRE()]}
+                  errorText="Please enter a valid name."
+                  onInput={inputHandler}
+                  initialValue={loadedUser.name}
+                  initialValid={true}
+                />
+              </div>
+            </div>
+            <div className="columns">
+              <div className="col-5">
+                <Input
+                  id="language"
+                  element="select"
+                  label="Language"
+                  validators={[]}
+                  onInput={inputHandler}
+                  datas={languages}
+                  initialValue={loadedUser.language}
+                  initialValid={true}
+                />
+              </div>
+              <div className="col-5">
+                <Input
+                  id="theme"
+                  element="select"
+                  label="Theme"
+                  validators={[]}
+                  onInput={inputHandler}
+                  datas={themes}
+                  initialValue={loadedUser.theme}
+                  initialValid={true}
+                />
+              </div>
+            </div>
             <Button type="submit" disabled={!formState.isValid}>
               UPDATE USER
             </Button>

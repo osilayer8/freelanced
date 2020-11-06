@@ -12,7 +12,7 @@ select:-webkit-autofill:focus {
   transition: background-color 5000s ease-in-out 0s;
 }
 
-.form-control {
+.form-element {
   margin: 1rem 0;
   label,
   input,
@@ -25,18 +25,18 @@ select:-webkit-autofill:focus {
   }
 }
 
-.form-control--invalid label,
-.form-control--invalid p {
+.form-element--invalid label,
+.form-element--invalid p {
   color: red;
   margin-top: 0.1rem;
 }
 
-.form-control--invalid input,
-.form-control--invalid textarea {
+.form-element--invalid input,
+.form-element--invalid textarea {
   border-color: red;
 }
 
-.form-control {
+.form-element {
   .select-css {
     display: block;
     color: var(--text);
@@ -77,5 +77,30 @@ select:-webkit-autofill:focus {
   }
   input[type='checkbox'] {
     margin-right: 0.5rem;
+  }
+}
+
+.columns {
+  display: flex;
+  margin: 1rem 0;
+  [class*='col-'] {
+    padding-right: 2rem;
+    &:last-child {
+      padding-right: 0;
+    }
+  }
+  .col-5 {
+    width: 50%;
+  }
+
+  .col-4 {
+    width: 33.33%;
+  }
+
+  .col-8 {
+    width: 66.66%;
+  }
+  .form-element {
+    margin: 0;
   }
 }

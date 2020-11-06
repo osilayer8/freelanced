@@ -95,25 +95,31 @@ const UpdatePassword: React.FC = () => {
             className="customer-form"
             onSubmit={passwordUpdateSubmitHandler}
           >
-            <Input
-              id="pass"
-              element="input"
-              type="password"
-              label="Password"
-              autoComplete="new-password"
-              validators={[VALIDATOR_MINLENGTH(6)]}
-              errorText="Please enter a valid password."
-              onInput={inputHandler}
-            />
-            <Input
-              id="confirm"
-              element="input"
-              type="password"
-              autoComplete="new-password"
-              label="Password confirm"
-              validators={[]}
-              onInput={inputHandler}
-            />
+            <div className="columns">
+              <div className="col-5">
+                <Input
+                  id="pass"
+                  element="input"
+                  type="password"
+                  label="Password"
+                  autoComplete="new-password"
+                  validators={[VALIDATOR_MINLENGTH(6)]}
+                  errorText="Please enter a valid password."
+                  onInput={inputHandler}
+                />
+              </div>
+              <div className="col-5">
+                <Input
+                  id="confirm"
+                  element="input"
+                  type="password"
+                  autoComplete="new-password"
+                  label="Password confirm"
+                  validators={[]}
+                  onInput={inputHandler}
+                />
+              </div>
+            </div>
             <Button type="submit" disabled={!formState.isValid}>
               UPDATE PASSWORD
             </Button>

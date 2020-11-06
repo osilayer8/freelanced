@@ -63,15 +63,19 @@ const NewProject: React.FC = () => {
           errorText="Please enter a valid name."
           onInput={inputHandler}
         />
-        <Input
-          id="price"
-          element="input"
-          type="number"
-          label="Price"
-          validators={[VALIDATOR_REQUIRE()]}
-          errorText="Please enter a valid price."
-          onInput={inputHandler}
-        />
+        <div className="columns">
+          <div className="col-4">
+            <Input
+              id="price"
+              element="input"
+              type="number"
+              label="Price per hour"
+              validators={[VALIDATOR_REQUIRE()]}
+              errorText="Please enter a valid price."
+              onInput={inputHandler}
+            />
+          </div>
+        </div>
         <Button type="submit" disabled={!formState.isValid}>
           ADD PROJECT
         </Button>

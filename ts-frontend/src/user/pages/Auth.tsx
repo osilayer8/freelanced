@@ -7,7 +7,6 @@ import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import {
   VALIDATOR_EMAIL,
-  VALIDATOR_REQUIRE,
   VALIDATOR_MINLENGTH,
 } from '../../shared/util/validators';
 import { useForm } from '../../shared/hooks/form-hook';
@@ -94,13 +93,13 @@ const Auth: React.FC = () => {
       } catch (err) {}
     } else {
       try {
-        const responseData = await sendRequest(
+        await sendRequest(
           process.env.REACT_APP_BACKEND_URL + '/users/signup',
           'POST',
           JSON.stringify({
             name: formState.inputs.name.value,
             email: formState.inputs.email.value,
-            //pass: formState.inputs.pass.value,
+            pass: formState.inputs.pass.value,
             language: countryCode,
             currency: Currency(countryCode),
           }),
@@ -108,9 +107,8 @@ const Auth: React.FC = () => {
             'Content-Type': 'application/json',
           }
         );
-        console.log('invite saved');
         setIsSubmitted(true);
-        auth.login(responseData.userId, responseData.token);
+        //auth.login(responseData.userId, responseData.token);
       } catch (err) {}
     }
   };
@@ -202,7 +200,10 @@ const Auth: React.FC = () => {
         </div>
         <h1>{isLoginMode ? 'Login' : 'Request Invite'}</h1>
         {isSubmitted ? (
-          <h2>Request successfully sent</h2>
+          <>
+            <b>Request successfully sent</b>
+            <p>We will check your data and get back to you within 24 hours.</p>
+          </>
         ) : (
           <form onSubmit={authSubmitHandler}>
             {!isLoginMode && (

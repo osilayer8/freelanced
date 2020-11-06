@@ -75,15 +75,6 @@ const NewCustomer: React.FC = () => {
           onInput={inputHandler}
         />
         <Input
-          id="email"
-          element="input"
-          type="email"
-          label="E-Mail"
-          validators={[VALIDATOR_EMAIL()]}
-          errorText="Please enter a valid email address."
-          onInput={inputHandler}
-        />
-        <Input
           id="street"
           element="input"
           type="text"
@@ -92,24 +83,30 @@ const NewCustomer: React.FC = () => {
           onInput={inputHandler}
           initialValid={true}
         />
-        <Input
-          id="plz"
-          element="input"
-          type="text"
-          label="PLZ"
-          validators={[]}
-          onInput={inputHandler}
-          initialValid={true}
-        />
-        <Input
-          id="city"
-          element="input"
-          type="text"
-          label="City Name"
-          validators={[]}
-          onInput={inputHandler}
-          initialValid={true}
-        />
+        <div className="columns">
+          <div className="col-4">
+            <Input
+              id="plz"
+              element="input"
+              type="text"
+              label="PLZ"
+              validators={[]}
+              onInput={inputHandler}
+              initialValid={true}
+            />
+          </div>
+          <div className="col-8">
+            <Input
+              id="city"
+              element="input"
+              type="text"
+              label="City Name"
+              validators={[]}
+              onInput={inputHandler}
+              initialValid={true}
+            />
+          </div>
+        </div>
         <Input
           id="country"
           element="input"
@@ -119,15 +116,30 @@ const NewCustomer: React.FC = () => {
           onInput={inputHandler}
           initialValid={true}
         />
-        <Input
-          id="phone"
-          element="input"
-          type="text"
-          label="Phone"
-          validators={[]}
-          onInput={inputHandler}
-          initialValid={true}
-        />
+        <div className="columns">
+          <div className="col-5">
+            <Input
+              id="email"
+              element="input"
+              type="email"
+              label="E-Mail"
+              validators={[VALIDATOR_EMAIL()]}
+              errorText="Please enter a valid email address."
+              onInput={inputHandler}
+            />
+          </div>
+          <div className="col-5">
+            <Input
+              id="phone"
+              element="input"
+              type="text"
+              label="Phone"
+              validators={[]}
+              onInput={inputHandler}
+              initialValid={true}
+            />
+          </div>
+        </div>
         <Input
           id="website"
           element="input"

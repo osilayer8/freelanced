@@ -134,19 +134,17 @@ const Input: React.FC<Props> = (props) => {
 
   return (
     <div
-      className={`form-control ${
-        !inputState.isValid && inputState.isTouched && 'form-control--invalid'
+      className={`form-element${
+        !inputState.isValid && inputState.isTouched
+          ? ' form-element--invalid'
+          : ''
       }`}
     >
       <div className={props.type === 'checkbox' ? 'input-checkbox' : ''}>
         {props.label && (
           <label htmlFor={props.id}>
             {props.label}{' '}
-            {props.to && (
-              <>
-                (<Link to={props.to}>Read</Link>)
-              </>
-            )}
+            {props.to && <Link to={props.to}>Privacy Policy</Link>}
           </label>
         )}
         {element}

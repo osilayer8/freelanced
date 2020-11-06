@@ -119,17 +119,6 @@ const UpdateCustomer: React.FC = () => {
             initialValid={true}
           />
           <Input
-            id="email"
-            element="input"
-            type="email"
-            label="E-Mail"
-            validators={[VALIDATOR_EMAIL()]}
-            errorText="Please enter a valid email address."
-            onInput={inputHandler}
-            initialValue={loadedCustomer.email}
-            initialValid={true}
-          />
-          <Input
             id="street"
             element="input"
             type="text"
@@ -139,26 +128,32 @@ const UpdateCustomer: React.FC = () => {
             initialValue={loadedCustomer.street}
             initialValid={true}
           />
-          <Input
-            id="plz"
-            element="input"
-            type="text"
-            label="PLZ"
-            validators={[]}
-            onInput={inputHandler}
-            initialValue={loadedCustomer.plz}
-            initialValid={true}
-          />
-          <Input
-            id="city"
-            element="input"
-            type="text"
-            label="City Name"
-            validators={[]}
-            onInput={inputHandler}
-            initialValue={loadedCustomer.city}
-            initialValid={true}
-          />
+          <div className="columns">
+            <div className="col-4">
+              <Input
+                id="plz"
+                element="input"
+                type="text"
+                label="PLZ"
+                validators={[]}
+                onInput={inputHandler}
+                initialValue={loadedCustomer.plz}
+                initialValid={true}
+              />
+            </div>
+            <div className="col-8">
+              <Input
+                id="city"
+                element="input"
+                type="text"
+                label="City Name"
+                validators={[]}
+                onInput={inputHandler}
+                initialValue={loadedCustomer.city}
+                initialValid={true}
+              />
+            </div>
+          </div>
           <Input
             id="country"
             element="input"
@@ -169,16 +164,33 @@ const UpdateCustomer: React.FC = () => {
             initialValue={loadedCustomer.country}
             initialValid={true}
           />
-          <Input
-            id="phone"
-            element="input"
-            type="text"
-            label="Phone"
-            validators={[]}
-            onInput={inputHandler}
-            initialValue={loadedCustomer.phone}
-            initialValid={true}
-          />
+          <div className="columns">
+            <div className="col-5">
+              <Input
+                id="email"
+                element="input"
+                type="email"
+                label="E-Mail"
+                validators={[VALIDATOR_EMAIL()]}
+                errorText="Please enter a valid email address."
+                onInput={inputHandler}
+                initialValue={loadedCustomer.email}
+                initialValid={true}
+              />
+            </div>
+            <div className="col-5">
+              <Input
+                id="phone"
+                element="input"
+                type="text"
+                label="Phone"
+                validators={[]}
+                onInput={inputHandler}
+                initialValue={loadedCustomer.phone}
+                initialValid={true}
+              />
+            </div>
+          </div>
           <Input
             id="website"
             element="input"

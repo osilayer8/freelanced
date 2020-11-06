@@ -22,14 +22,14 @@ const UserItem: React.FC<Props> = (props) => {
     <li className="user-item">
       <Card className="user-item__content">
         <div className="user-item__info">
-          <h1>
+          <h2>
             <label>Company</label>
             {props.company}
-          </h1>
-          <h1>
+          </h2>
+          <h2>
             <label>Name</label>
             {props.firstName} {props.name}
-          </h1>
+          </h2>
           <h2>
             <label>Email</label>
             {props.email}
@@ -40,7 +40,7 @@ const UserItem: React.FC<Props> = (props) => {
           </h2>
           <h2>
             <label>IBAN</label>
-            {props.iban}
+            **** {props.iban && props.iban.substring(props.iban.length - 4)}
           </h2>
           <h2>
             <label>Currency</label>

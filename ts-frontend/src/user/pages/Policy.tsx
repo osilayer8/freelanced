@@ -51,16 +51,15 @@ const Policy: React.FC = () => {
         monitoring.
         <p>We process data:</p>
         <p>
-          in order to provide the services and fulfill our obligations pursuant
-          to the Terms of Service. For example, we cannot provide our services
-          without an email address to sign into your account, conduct customer
-          support, or send educational materials; we cannot provide the service
-          without users providing financial information on which a budget is
-          based; to protect your vital interests, or those of others, such as in
-          the case of emergencies; where you have made the information public;
-          where necessary in the public interest; such as those of visitors,
-          members or partners; where you provide consent (for example, to join
-          email mailing lists).
+          in order to provide the services. For example, we cannot provide our
+          services without an email address to sign into your account, conduct
+          customer support, or send educational materials; we cannot provide the
+          service without users providing financial information on which a
+          budget is based; to protect your vital interests, or those of others,
+          such as in the case of emergencies; where you have made the
+          information public; where necessary in the public interest; such as
+          those of visitors, members or partners; where you provide consent (for
+          example, to join email mailing lists).
         </p>
         <p>We also process your data based on our legitimate interest in:</p>
         <p>
@@ -219,9 +218,8 @@ const Policy: React.FC = () => {
         <p>
           <b>Deletion</b>
         </p>
-        You may delete your account by visiting your account settings. You can
-        always contact us and we will confirm the full deletion of all your
-        personal data on our servers.
+        You can always contact us and we will confirm the full deletion of all
+        your personal data on our servers.
         <p>
           <b>Adjust Notification and Email Preferences</b>
         </p>
@@ -252,9 +250,8 @@ const Policy: React.FC = () => {
         information will be transferred, processed, and stored in the EU.
         <h2>Further reading</h2>
         We take security quite seriously around here, and go into detail about
-        the steps we take to protect users’ data in our Security Policy. For
-        more legal reading, see our Terms of Service. If you need further
-        assistance, email privacy@evoleeq.com.
+        the steps we take to protect users data in our Security Policy. If you
+        need further assistance, email privacy@evoleeq.com.
       </div>
     </React.Fragment>
   );

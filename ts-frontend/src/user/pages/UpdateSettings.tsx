@@ -174,26 +174,32 @@ const UpdateSettings: React.FC = () => {
               initialValue={loadedUser.street}
               initialValid={true}
             />
-            <Input
-              id="zip"
-              element="input"
-              type="text"
-              label="Zip Code"
-              validators={[]}
-              onInput={inputHandler}
-              initialValue={loadedUser.zip}
-              initialValid={true}
-            />
-            <Input
-              id="city"
-              element="input"
-              type="text"
-              label="City"
-              validators={[]}
-              onInput={inputHandler}
-              initialValue={loadedUser.city}
-              initialValid={true}
-            />
+            <div className="columns">
+              <div className="col-4">
+                <Input
+                  id="zip"
+                  element="input"
+                  type="text"
+                  label="Zip Code"
+                  validators={[]}
+                  onInput={inputHandler}
+                  initialValue={loadedUser.zip}
+                  initialValid={true}
+                />
+              </div>
+              <div className="col-8">
+                <Input
+                  id="city"
+                  element="input"
+                  type="text"
+                  label="City"
+                  validators={[]}
+                  onInput={inputHandler}
+                  initialValue={loadedUser.city}
+                  initialValid={true}
+                />
+              </div>
+            </div>
             <Input
               id="country"
               element="input"
@@ -204,26 +210,32 @@ const UpdateSettings: React.FC = () => {
               initialValue={loadedUser.country}
               initialValid={true}
             />
-            <Input
-              id="phone"
-              element="input"
-              type="text"
-              label="Phone"
-              validators={[]}
-              onInput={inputHandler}
-              initialValue={loadedUser.phone}
-              initialValid={true}
-            />
-            <Input
-              id="businessMail"
-              element="input"
-              type="text"
-              label="Business Email"
-              validators={[]}
-              onInput={inputHandler}
-              initialValue={loadedUser.businessMail}
-              initialValid={true}
-            />
+            <div className="columns">
+              <div className="col-5">
+                <Input
+                  id="phone"
+                  element="input"
+                  type="text"
+                  label="Phone"
+                  validators={[]}
+                  onInput={inputHandler}
+                  initialValue={loadedUser.phone}
+                  initialValid={true}
+                />
+              </div>
+              <div className="col-5">
+                <Input
+                  id="businessMail"
+                  element="input"
+                  type="text"
+                  label="Business Email"
+                  validators={[]}
+                  onInput={inputHandler}
+                  initialValue={loadedUser.businessMail}
+                  initialValid={true}
+                />
+              </div>
+            </div>
             <Input
               id="web"
               element="input"
@@ -234,27 +246,33 @@ const UpdateSettings: React.FC = () => {
               initialValue={loadedUser.web}
               initialValid={true}
             />
-            <Input
-              id="iban"
-              element="input"
-              type="text"
-              label="IBAN (Decryped)"
-              validators={[VALIDATOR_IBAN()]}
-              errorText="Enter a valid IBAN"
-              onInput={inputHandler}
-              initialValid={true}
-              placeholder="hidden"
-            />
-            <Input
-              id="bic"
-              element="input"
-              type="text"
-              label="BIC"
-              validators={[]}
-              onInput={inputHandler}
-              initialValue={loadedUser.bic}
-              initialValid={true}
-            />
+            <div className="columns">
+              <div className="col-8">
+                <Input
+                  id="iban"
+                  element="input"
+                  type="text"
+                  label="IBAN (Decryped)"
+                  validators={[VALIDATOR_IBAN()]}
+                  errorText="Enter a valid IBAN"
+                  onInput={inputHandler}
+                  initialValid={true}
+                  placeholder="hidden"
+                />
+              </div>
+              <div className="col-4">
+                <Input
+                  id="bic"
+                  element="input"
+                  type="text"
+                  label="BIC"
+                  validators={[]}
+                  onInput={inputHandler}
+                  initialValue={loadedUser.bic}
+                  initialValid={true}
+                />
+              </div>
+            </div>
             <Input
               id="bank"
               element="input"
@@ -265,47 +283,59 @@ const UpdateSettings: React.FC = () => {
               initialValue={loadedUser.bank}
               initialValid={true}
             />
-            <Input
-              id="taxId"
-              element="input"
-              type="text"
-              label="UID / Tax No."
-              validators={[]}
-              onInput={inputHandler}
-              initialValue={loadedUser.taxId}
-              initialValid={true}
-            />
-            <Input
-              id="commercialRegister"
-              element="input"
-              type="text"
-              label="Commercial Register"
-              validators={[]}
-              onInput={inputHandler}
-              initialValue={loadedUser.commercialRegister}
-              initialValid={true}
-            />
-            <Input
-              id="currency"
-              element="select"
-              label="Currency"
-              validators={[]}
-              onInput={inputHandler}
-              datas={currencies}
-              initialValue={loadedUser.currency}
-              initialValid={true}
-            />
-            <Input
-              id="vat"
-              element="input"
-              type="number"
-              label="VAT (%)"
-              validators={[VALIDATOR_REQUIRE()]}
-              errorText="Please enter a VAT % value."
-              onInput={inputHandler}
-              initialValue={loadedUser.vat}
-              initialValid={true}
-            />
+            <div className="columns">
+              <div className="col-4">
+                <Input
+                  id="taxId"
+                  element="input"
+                  type="text"
+                  label="UID / Tax No."
+                  validators={[]}
+                  onInput={inputHandler}
+                  initialValue={loadedUser.taxId}
+                  initialValid={true}
+                />
+              </div>
+              <div className="col-8">
+                <Input
+                  id="commercialRegister"
+                  element="input"
+                  type="text"
+                  label="Commercial Register"
+                  validators={[]}
+                  onInput={inputHandler}
+                  initialValue={loadedUser.commercialRegister}
+                  initialValid={true}
+                />
+              </div>
+            </div>
+            <div className="columns">
+              <div className="col-5">
+                <Input
+                  id="currency"
+                  element="select"
+                  label="Currency"
+                  validators={[]}
+                  onInput={inputHandler}
+                  datas={currencies}
+                  initialValue={loadedUser.currency}
+                  initialValid={true}
+                />
+              </div>
+              <div className="col-5">
+                <Input
+                  id="vat"
+                  element="input"
+                  type="number"
+                  label="VAT (%)"
+                  validators={[VALIDATOR_REQUIRE()]}
+                  errorText="Please enter a VAT % value."
+                  onInput={inputHandler}
+                  initialValue={loadedUser.vat}
+                  initialValid={true}
+                />
+              </div>
+            </div>
             <Button type="submit" disabled={!formState.isValid}>
               UPDATE SETTINGS
             </Button>

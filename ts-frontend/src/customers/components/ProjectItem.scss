@@ -8,16 +8,10 @@
     top: 0;
     padding: 1.2rem;
     cursor: pointer;
-    display: none;
     svg {
       width: 18px;
       fill: var(--box-text);
       height: 18px;
-    }
-  }
-  &:hover {
-    .project-item__action {
-      display: block;
     }
   }
 }
@@ -35,7 +29,7 @@
 }
 
 .project-item__details {
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   background: var(--box);
   .row {
     margin: 0.5rem 0;
@@ -59,7 +53,7 @@
       width: 16px;
       height: 16px;
       float: left;
-      margin-right: .75rem;
+      margin-right: 0.75rem;
       &.fill {
         fill: var(--box-text);
       }
@@ -85,6 +79,19 @@
   .project-item {
     flex: 0 32.3%;
     margin-left: 1%;
+  }
+}
+
+@media screen and (min-width: 1300px) {
+  .project-item {
+    .project-item__action {
+      display: none;
+    }
+    &:hover {
+      .project-item__action {
+        display: block;
+      }
+    }
   }
 }
 

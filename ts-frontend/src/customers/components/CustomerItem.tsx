@@ -67,11 +67,11 @@ const CustomerItem: React.FC<Props> = (props) => {
         }
       >
         <p>
-          Do you want to proceed and delete this customer? Please note that it
-          can't be undone thereafter.
+          Do you want to proceed and delete this customer? Please note that this
+          will delete also all projects of this customer!
         </p>
       </Modal>
-      <li className="customer-item">
+      <li className={`customer-item${!props.onDelete ? ' customer-edit' : ''}`}>
         <Row className="customer-item__content relative">
           {isLoading && <LoadingSpinner asOverlay />}
           {auth.userId === props.creatorId && props.onDelete && (
@@ -99,7 +99,7 @@ const CustomerItem: React.FC<Props> = (props) => {
                 : `/customers/${props.id}/edit`
             }
           >
-            <div className="customer-item__details">
+            {/* <div className="customer-item__details">
               {!props.street && !props.plz && !props.country ? (
                 ''
               ) : (
@@ -118,7 +118,7 @@ const CustomerItem: React.FC<Props> = (props) => {
                 {props.email && <p>{props.email}</p>}
                 {props.website && <p>{props.website}</p>}
               </div>
-            </div>
+            </div> */}
             <div className="customer-item__info">
               <h2>{props.company}</h2>
             </div>

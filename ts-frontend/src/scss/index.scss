@@ -278,16 +278,15 @@ input.price {
     bottom: 0;
     padding: 1.2rem;
     cursor: pointer;
-    display: none;
     svg {
       width: 18px;
       fill: var(--box-text);
       height: 18px;
     }
   }
-  &:hover {
-    .customer-item__action {
-      display: block;
+  &.customer-edit {
+    svg {
+      vertical-align: middle;
     }
   }
 }
@@ -306,7 +305,7 @@ input.price {
 }
 
 .customer-item__info {
-  background: var(--box);
+  background: var(--base);
 }
 
 .customer-item__details {
@@ -377,6 +376,21 @@ input.price {
 @media screen and (min-width: 1300px) {
   .project-content {
     margin: 0 auto;
+  }
+  .customer-item {
+    .customer-item__action {
+      display: none;
+    }
+    &:hover {
+      .customer-item__action {
+        display: block;
+      }
+    }
+    &.customer-edit {
+      .customer-item__action {
+        display: block;
+      }
+    }
   }
 }
 

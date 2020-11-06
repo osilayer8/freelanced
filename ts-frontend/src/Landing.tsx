@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 
 import Input from './shared/components/FormElements/Input';
 import Button from './shared/components/FormElements/Button';
@@ -11,19 +11,10 @@ import {
 } from './shared/util/validators';
 import { useForm } from './shared/hooks/form-hook';
 import { useHttpClient } from './shared/hooks/http-hook';
-import { AuthContext } from './shared/context/auth-context';
 import { Currency } from './shared/util/currency';
 import './scss/Landing.scss';
 
-interface authProps {
-  isLoggedIn: boolean;
-  userId: number | null;
-  login: (userId?: number, token?: string, theme?: string) => void;
-  logout: () => void;
-}
-
 const Landing: React.FC = () => {
-  const auth: authProps = useContext(AuthContext);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
 
@@ -47,13 +38,13 @@ const Landing: React.FC = () => {
     const countryCode = navigator.language ? navigator.language : 'en-US';
 
     try {
-      const responseData = await sendRequest(
+      await sendRequest(
         process.env.REACT_APP_BACKEND_URL + '/users/signup',
         'POST',
         JSON.stringify({
           name: formState.inputs.name.value,
           email: formState.inputs.email.value,
-          //pass: formState.inputs.pass.value,
+          pass: formState.inputs.pass.value,
           language: countryCode,
           currency: Currency(countryCode),
         }),
@@ -63,7 +54,7 @@ const Landing: React.FC = () => {
       );
       console.log('invite saved');
       setIsSubmitted(true);
-      auth.login(responseData.userId, responseData.token);
+      //auth.login(responseData.userId, responseData.token);
     } catch (err) {}
   };
 
@@ -166,7 +157,7 @@ const Landing: React.FC = () => {
           <h2>Get access</h2>
           {isSubmitted ? (
             <>
-              <h2>Request successfully sent</h2>
+              <b>Request successfully sent</b>
               <p>
                 We will check your data and get back to you within 24 hours.
               </p>
@@ -205,7 +196,7 @@ const Landing: React.FC = () => {
                 element="input"
                 id="conditions"
                 type="checkbox"
-                label="I accept the Privacy Policy"
+                label="I accept the "
                 validators={[VALIDATOR_CHECKBOX()]}
                 errorText="Please accept the conditions"
                 to="policy"
