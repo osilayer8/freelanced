@@ -37,6 +37,10 @@ exports.router.post('/login', (req, res, next) => __awaiter(void 0, void 0, void
         const error = new http_error_1.default('Could not identity user', 401);
         return next(error);
     }
+    if (identifiedUser.active === false) {
+        const error = new http_error_1.default('This user is not activated yet', 401);
+        return next(error);
+    }
     let isValidPassword = false;
     try {
         isValidPassword = yield bcryptjs_1.default.compare(pass, identifiedUser.pass);
@@ -64,9 +68,9 @@ exports.router.post('/login', (req, res, next) => __awaiter(void 0, void 0, void
         token: token,
     });
 }));
-// register new user UPDATE: temporary invite
+// register new user
 exports.router.post('/signup', (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, email, /*pass,*/ language, currency } = req.body;
+    const { name, email, pass, language, currency } = req.body;
     let existingUser;
     try {
         existingUser = yield users_1.default.findOne({ email: email });
@@ -79,22 +83,24 @@ exports.router.post('/signup', (req, res, next) => __awaiter(void 0, void 0, voi
         const error = new http_error_1.default('User exists already', 422);
         return next(error);
     }
-    // let hashedPassword: string;
-    // try {
-    //   hashedPassword = await bcrypt.hash(pass, 12);
-    // } catch (err) {
-    //   const error = new HttpError("Could not create user", 500);
-    //   return next(error);
-    // }
+    let hashedPassword;
+    try {
+        hashedPassword = yield bcryptjs_1.default.hash(pass, 12);
+    }
+    catch (err) {
+        const error = new http_error_1.default('Could not create user', 500);
+        return next(error);
+    }
     const createdUser = new users_1.default({
         created: new Date(),
         name,
         email,
-        //pass: hashedPassword,
+        pass: hashedPassword,
         language,
         theme: 'light',
         currency,
         vat: 0,
+        active: false,
         customers: [],
     });
     try {
