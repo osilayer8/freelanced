@@ -149,7 +149,7 @@ router.get('/:uid', async (req: any, res: any, next: any) => {
     return next(error);
   }
 
-  const userObj = user.toObject({ getters: true });
+  const userObj: any = user.toObject({ getters: true });
   let securedUser;
   if (userObj.iban) {
     const decryptIban = crypter.decrypt(userObj.iban);

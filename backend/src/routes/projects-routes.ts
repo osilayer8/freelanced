@@ -11,18 +11,18 @@ export const router = express.Router();
 router.use(checkAuth);
 
 // get project
-router.get("/:pid", async (req: any, res: any, next: any) => {
+router.get('/:pid', async (req: any, res: any, next: any) => {
   const reqId = await req.params.pid;
   let project;
   try {
     project = await Project.findById(reqId);
   } catch (err) {
-    const error = new HttpError("Looking for project failed!", 500);
+    const error = new HttpError('Looking for project failed!', 500);
     return next(error);
   }
 
   if (!project) {
-    const error = new HttpError("Could not find an project", 404);
+    const error = new HttpError('Could not find an project', 404);
     return next(error);
   }
 
@@ -35,20 +35,20 @@ router.get("/:pid", async (req: any, res: any, next: any) => {
 });
 
 // get projects by customer id
-router.get("/customer/:cid", async (req: any, res: any, next: any) => {
+router.get('/customer/:cid', async (req: any, res: any, next: any) => {
   const customerId = req.params.cid;
 
   let projects;
   try {
     projects = await Project.find({ owner: customerId });
   } catch (err) {
-    const error = new HttpError("Could not find customer", 500);
+    const error = new HttpError('Could not find customer', 500);
     return next(error);
   }
 
   if (!projects || projects.length === 0) {
     return next(
-      new HttpError("Could not find projects for the provided customer id", 404)
+      new HttpError('Could not find projects for the provided customer id', 404)
     );
   }
 
@@ -58,20 +58,13 @@ router.get("/customer/:cid", async (req: any, res: any, next: any) => {
   // }
 
   res.json({
-    projects: projects.map(project => project.toObject({ getters: true }))
+    projects: projects.map((project) => project.toObject({ getters: true })),
   });
 });
 
 // update project
-router.patch("/:pid", async (req: any, res: any, next: any) => {
-  const {
-    name,
-    price,
-    status,
-    tasks,
-    invoiceNo,
-    additionalPdfText
-  } = req.body;
+router.patch('/:pid', async (req: any, res: any, next: any) => {
+  const { name, price, status, tasks, invoiceNo, additionalPdfText } = req.body;
 
   const projectId = req.params.pid;
 
@@ -79,7 +72,7 @@ router.patch("/:pid", async (req: any, res: any, next: any) => {
   try {
     project = await Project.findById(projectId);
   } catch (err) {
-    const error = new HttpError("Could not update project", 500);
+    const error = new HttpError('Could not update project', 500);
     return next(error);
   }
 
@@ -98,7 +91,7 @@ router.patch("/:pid", async (req: any, res: any, next: any) => {
   try {
     await project.save();
   } catch (err) {
-    const error = new HttpError("Project updade failed", 500);
+    const error = new HttpError('Project updade failed', 500);
     return next(error);
   }
 
@@ -106,19 +99,19 @@ router.patch("/:pid", async (req: any, res: any, next: any) => {
 });
 
 // delete project
-router.delete("/:pid", async (req: any, res: any, next: any) => {
+router.delete('/:pid', async (req: any, res: any, next: any) => {
   const projectId = req.params.pid;
 
   let project: any;
   try {
     project = await Project.findById(projectId).populate('owner');
   } catch (err) {
-    const error = new HttpError("Could not delete project", 500);
+    const error = new HttpError('Could not delete project', 500);
     return next(error);
   }
 
   if (!project) {
-    const error = new HttpError("Could not find project for this id", 404);
+    const error = new HttpError('Could not find project for this id', 404);
     return next(error);
   }
 
@@ -135,54 +128,51 @@ router.delete("/:pid", async (req: any, res: any, next: any) => {
     await project.owner.save({ session: sess });
     await sess.commitTransaction();
   } catch (err) {
-    const error = new HttpError("Delete project failed", 500);
+    const error = new HttpError('Delete project failed', 500);
     return next(error);
   }
 
-  res.status(200).json({ message: "Deleted project." });
+  res.status(200).json({ message: 'Deleted project.' });
 });
 
 // get all projects
-router.get("/", async (req: any, res: any, next: any) => {
+router.get('/', async (req: any, res: any, next: any) => {
   let projects;
   try {
     projects = await Project.find().exec();
   } catch (err) {
-    const error = new HttpError("Fetching projects failed", 500);
+    const error = new HttpError('Fetching projects failed', 500);
     return next(error);
   }
 
   //no one allowed to see all projects
   if (req.userData.userId !== '0123456789') {
-    const error = new HttpError("Not allowed to see this places", 401);
+    const error = new HttpError('Not allowed to see this places', 401);
     return next(error);
   }
 
   res.json({
-    projects: projects.map(project => project.toObject({ getters: true }))
+    projects: projects.map((project) => project.toObject({ getters: true })),
   });
 });
 
 // add new project
-router.post("/", async (req: any, res: any, next: any) => {
-  const {
-    name,
-    price,
-    status,
-    owner
-  } = req.body;
+router.post('/', async (req: any, res: any, next: any) => {
+  const { name, price, status, owner } = req.body;
 
-  const createdProject = new Project({
+  const createdProject: any = new Project({
     created: new Date(),
     name,
     price,
     status,
-    tasks: [{
-      title: '',
-      hours: 0
-    }],
+    tasks: [
+      {
+        title: '',
+        hours: 0,
+      },
+    ],
     invoiceNo: '0',
-    owner
+    owner,
   });
 
   let customer: any;
@@ -190,13 +180,13 @@ router.post("/", async (req: any, res: any, next: any) => {
   try {
     customer = await Customer.findById(owner);
   } catch (err) {
-    const error = new HttpError("Create project failed", 500);
+    const error = new HttpError('Create project failed', 500);
     return next(error);
   }
 
   if (!customer) {
     const error = new HttpError(
-      "Could not find customer for the provided id",
+      'Could not find customer for the provided id',
       404
     );
     return next(error);
@@ -210,11 +200,12 @@ router.post("/", async (req: any, res: any, next: any) => {
     await customer.save({ session: sess });
     await sess.commitTransaction();
   } catch (err) {
-    const error = new HttpError("creating project failed while customer connection", 500);
+    const error = new HttpError(
+      'creating project failed while customer connection',
+      500
+    );
     return next(error);
   }
 
-  res
-    .status(201)
-    .json({ project: createdProject.toObject({ getters: true }) });
+  res.status(201).json({ project: createdProject.toObject({ getters: true }) });
 });
